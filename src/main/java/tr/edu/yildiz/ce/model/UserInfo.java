@@ -4,18 +4,16 @@ public class UserInfo {
 	
     private String username;
     private String password;
-    private Integer stdId;
     private boolean enabled;
 	
     public UserInfo() {
     	
     }
     
-    public UserInfo(String username, String password, Integer stdId, boolean enabled) {
+    public UserInfo(String username, String password, boolean enabled) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.stdId = stdId;
 		this.enabled = enabled;
 	}
 
@@ -33,14 +31,6 @@ public class UserInfo {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Integer getStdId() {
-		return stdId;
-	}
-
-	public void setStdId(Integer stdId) {
-		this.stdId = stdId;
 	}
 
 	public boolean isEnabled() {

@@ -34,14 +34,14 @@ public class ApplicationContextConfig {
  
  // @Autowired
 //  private UserInfoDAO userInfoDAO;
- 
-  @Bean
+  // created for validation(will fill)
+ /* @Bean
   public ResourceBundleMessageSource messageSource() {
       ResourceBundleMessageSource rb = new ResourceBundleMessageSource();
       // Load property in message/validator.properties
       rb.setBasenames(new String[] { "messages/validator" });
       return rb;
-  }
+  }*/
  
   @Bean(name = "viewResolver")
   public InternalResourceViewResolver getViewResolver() {
@@ -78,7 +78,7 @@ public class ApplicationContextConfig {
        
   
       LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
-      factoryBean.setPackagesToScan(new String[] { "com.mertaydar.springmvcsecurity.entity" });
+      factoryBean.setPackagesToScan(new String[] { "tr.edu.yildiz.ce.entity" });
       factoryBean.setDataSource(dataSource);
       factoryBean.setHibernateProperties(properties);
       factoryBean.afterPropertiesSet();

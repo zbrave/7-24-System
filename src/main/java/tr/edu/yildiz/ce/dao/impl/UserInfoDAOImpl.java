@@ -9,14 +9,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import tr.edu.yildiz.ce.dao.UserInfoDAO;
-import tr.edu.yildiz.ce.mapper.UserInfoMapper;
 import tr.edu.yildiz.ce.model.UserInfo;
+import tr.edu.yildiz.ce.entity.User;
  
 @Service
 @Transactional
@@ -24,26 +23,28 @@ public class UserInfoDAOImpl extends JdbcDaoSupport implements UserInfoDAO {
  
 	@Autowired
 	private SessionFactory sessionFactory;
+	
     @Autowired
     public UserInfoDAOImpl(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
-  
- 
+    
     @Override
-    public UserInfo findUserInfo(String userName) {
-        String sql = "Select u.username, u.password, u.std_id, u.enabled  "//
-                + " from user u where u.username = ? ";
- 
-        Object[] params = new Object[] { userName };
-        UserInfoMapper mapper = new UserInfoMapper();
-        try {
-            UserInfo userInfo = this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            return userInfo;
-        } catch (EmptyResultDataAccessException e) {
+    public User findUser(String userName) {
+    	Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(User.class);
+        crit.add(Restrictions.eq("username", userName));
+        return (User) crit.uniqueResult();
+    }
+    
+    @Override
+	public UserInfo findUserInfo(String username) {
+		User user = this.findUser(username);
+        if (user == null) {
             return null;
         }
-    }
+        return new UserInfo(user.getUsername(), user.getPassword(), user.getEnabled());
+	}
     
 	public UserInfo findUserInfoById(int id) {
         Session session = sessionFactory.getCurrentSession();
