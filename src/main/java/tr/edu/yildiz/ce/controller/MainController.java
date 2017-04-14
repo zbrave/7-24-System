@@ -34,6 +34,16 @@ public class MainController {
 	public String loginPage(Model model ) {
 		return "loginPage";
 	}
+	
+	@RequestMapping(value = "/supporter", method = RequestMethod.GET)
+	public String supporterPage(Model model ) {
+		return "supporter";
+	}
+	
+	@RequestMapping(value = "/manager", method = RequestMethod.GET)
+	public String managerPage(Model model ) {
+		return "manager";
+	}
 
 	@RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
 	public String logoutSuccessfulPage(Model model) {
