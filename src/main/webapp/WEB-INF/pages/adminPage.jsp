@@ -20,7 +20,15 @@
     <%@include file="navbar.jsp" %>	
  
     <h2>Admin Page</h2>
- 
+ 	<label>Konum ekle:</label>
+ 	<select><option>Yeni Ekle</option></select>
+ 	<input type="text" value="Bölüm"/>
+ 	<button>Ekle</button>
+ 	
+ 	<label>Destek ekle:</label>
+ 	<select><option>Konum seç</option></select>
+ 	<input type="text" value="Destek adı"/>
+ 	<button>Ekle</button>
  
     <h3>Welcome : ${pageContext.request.userPrincipal.name}</h3>
  

@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tr.edu.yildiz.ce.dao.UserInfoDAO;
 import tr.edu.yildiz.ce.model.UserInfo;
 import tr.edu.yildiz.ce.entity.User;
- 
+
 @Service
 @Transactional
 public class UserInfoDAOImpl extends JdbcDaoSupport implements UserInfoDAO {
@@ -45,15 +45,15 @@ public class UserInfoDAOImpl extends JdbcDaoSupport implements UserInfoDAO {
         }
         return new UserInfo(user.getUsername(), user.getPassword(), user.getEnabled());
 	}
-    
+
 	public UserInfo findUserInfoById(int id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(UserInfo.class);
         crit.add(Restrictions.eq("std_id", id));
         return (UserInfo) crit.uniqueResult();
 	}
- 
- 
+
+
     @Override
     public List<String> getUserRoles(String userName) {
         String sql = "Select r.user_role "//
