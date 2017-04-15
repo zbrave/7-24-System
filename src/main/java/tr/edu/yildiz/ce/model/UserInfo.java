@@ -2,8 +2,6 @@ package tr.edu.yildiz.ce.model;
  
 public class UserInfo {
 	
-	private Integer id;
-	private String email;
     private String username;
     private String password;
     private boolean enabled;
@@ -12,28 +10,11 @@ public class UserInfo {
     	
     }
     
-    public UserInfo(Integer id,String email,String username, String password, boolean enabled) {
-    	this.id=id;
-    	this.email=email;
+    public UserInfo(String username, String password, boolean enabled) {
+		super();
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getUsername() {

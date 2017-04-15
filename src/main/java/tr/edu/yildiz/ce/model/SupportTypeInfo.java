@@ -1,23 +1,22 @@
 package tr.edu.yildiz.ce.model;
 
 public class SupportTypeInfo {
-	
-	private Integer id;
+	private int id;
 	private String type;
 	
 	public SupportTypeInfo(){
 		
 	}
 	
-	public SupportTypeInfo(Integer id,String type){
+	public SupportTypeInfo(int id,String type){
 		this.id=id;
 		this.type=type;
 	}
 	
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	

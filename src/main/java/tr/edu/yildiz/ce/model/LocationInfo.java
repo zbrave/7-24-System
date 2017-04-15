@@ -1,24 +1,23 @@
 package tr.edu.yildiz.ce.model;
 
 public class LocationInfo {
-	
-	private Integer id;
+	private int id;
 	private String description;
 	private LocationInfo parent;
 	
 	public LocationInfo(){
 		
 	}
-	public LocationInfo(Integer id,String description,LocationInfo parent){
+	public LocationInfo(int id,String description,LocationInfo parent){
 		this.id=id;
 		this.description=description;
 		this.parent=parent;
 	}	
 	
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
