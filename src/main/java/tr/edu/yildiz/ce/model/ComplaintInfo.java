@@ -5,15 +5,17 @@ import java.util.Date;
 
 
 public class ComplaintInfo{
-	private int id;
+	private Integer id;
 	private LocationInfo locationInfo;
 	private SupportTypeInfo supportTypeInfo;
 	private ComplaintInfo parentInfo;
+	private UserInfo complainantUserInfo;
+
 	
 	private Date complaintTime;
 	private String complaintText;
 	
-	private SupporterInfo supporterInfo;
+	private UserInfo supportUserInfo;
 	private Date responseTime;
 	private String responseText;
 	private ComplaintInfo childInfo;
@@ -21,24 +23,25 @@ public class ComplaintInfo{
 	public ComplaintInfo(){
 		
 	}
-	public ComplaintInfo(int id,LocationInfo locationInfo,SupportTypeInfo supportTypeInfo,ComplaintInfo parentInfo,Date complaintTime,
-			String complaintText,SupporterInfo supporterInfo,Date responseTime,String responseText,ComplaintInfo childInfo){
+	public ComplaintInfo(Integer id,LocationInfo locationInfo,SupportTypeInfo supportTypeInfo,ComplaintInfo parentInfo,UserInfo complainantUserInfo,Date complaintTime,
+			String complaintText,UserInfo supportUserInfo,Date responseTime,String responseText,ComplaintInfo childInfo){
 		this.id=id;
 		this.locationInfo=locationInfo;
 		this.supportTypeInfo=supportTypeInfo;
 		this.parentInfo=parentInfo;
+		this.complainantUserInfo=complainantUserInfo;
 		this.complaintTime=complaintTime;
 		this.complaintText=complaintText;
-		this.supporterInfo=supporterInfo;
+		this.supportUserInfo=supportUserInfo;
 		this.responseTime=responseTime;
 		this.responseText=responseText;
 		this.childInfo=childInfo;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -63,6 +66,13 @@ public class ComplaintInfo{
 		this.parentInfo = parentInfo;
 	}
 	
+	public UserInfo  getComplainantUserInfo() {
+		return complainantUserInfo;
+	}
+	public void setComplainantUserInfo(UserInfo complainantUserInfo) {
+		this.complainantUserInfo = complainantUserInfo;
+	}
+	
 	public Date getComplaintTime() {
 		return complaintTime;
 	}
@@ -77,11 +87,11 @@ public class ComplaintInfo{
 		this.complaintText = complaintText;
 	}
 	
-	public SupporterInfo getSupporterInfo() {
-		return supporterInfo;
+	public UserInfo  getSupportUserInfo() {
+		return supportUserInfo;
 	}
-	public void setSupporterInfo(SupporterInfo supporterInfo) {
-		this.supporterInfo = supporterInfo;
+	public void setSupportUserInfo(UserInfo supportUserInfo) {
+		this.supportUserInfo = supportUserInfo;
 	}
 	
 	public Date getResponseTime() {
