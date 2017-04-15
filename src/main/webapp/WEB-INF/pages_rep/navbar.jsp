@@ -19,6 +19,8 @@ $(document).ready(function(){
 					<c:if test="${pageContext.request.userPrincipal.name != null}">
 						<li id ="userInfo"><a href="${pageContext.request.contextPath}/userInfo"><span class="glyphicon glyphicon-log-in"></span> UserInfo</a></li>
 						<li id="admin"><a href="${pageContext.request.contextPath}/admin" ><span class="glyphicon glyphicon-user"></span> Admin</a></li>
+						<li id="supporter"><a href="${pageContext.request.contextPath}/supporter" ><span class="glyphicon glyphicon-user"></span> Support</a></li>
+						<li id="manager"><a href="${pageContext.request.contextPath}/manager" ><span class="glyphicon glyphicon-user"></span> Manager</a></li>
 						<c:forEach var="role"
 					items="${pageContext['request'].userPrincipal.principal.authorities}">
 						<c:if test="${role.authority == 'ROLE_SUPER_ADMIN' }">

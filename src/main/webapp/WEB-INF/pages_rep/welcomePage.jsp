@@ -5,19 +5,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<spring:url value="/resources/css/bootstrap.min.css" var="bootstrapCSS" />
-	<spring:url value="/resources/css/bootstrap-theme.min.css" var="bootstrapThemeCSS" />
-	<spring:url value="/resources/css/style.css" var="styleCSS" />
-	<spring:url value="/resources/js/bootstrap.min.js" var="bootstrapJS" />
-	<spring:url value="/resources/js/jquery.js" var="jqueryJS" />
-	<spring:url value="/resources/ico724.png" var="ico" />
+	<spring:url value="/resources/css/bootstrap.css" var="bootstrapCSS" />
+	<spring:url value="/resources/js/bootstrap.js" var="bootstrapJS" />
+	<spring:url value="/resources/others/ams.css" var="amsCSS" />
+	<spring:url value="/resources/others/ams.js" var="amsJS" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 	<link href="${bootstrapCSS}" rel="stylesheet" />
-	<link href="${bootstrapThemeCSS}" rel="stylesheet" />
-	<link href="${styleCSS}" rel="stylesheet" />
-	<script src="${jqueryJS}"></script>
-	<script src="${bootstrapJS}"></script>	
+	<script src="${bootstrapJS}"></script>
+	<link href="${amsCSS}" rel="stylesheet" />
+	<script src="${amsJS}"></script>	
 	<title>${title}</title>
 </head>
 <script type="text/javascript">
@@ -27,7 +23,7 @@ $.get("http://freegeoip.net/json/", function (response) {
 }, "jsonp");
 </script>
 <body>
-	<%@include file="navbar2.jsp" %>
+	<%@include file="navbar.jsp" %>
 	<div id="country"></div>
 	<div class="text-center">
         <div class="media">
@@ -50,6 +46,5 @@ $.get("http://freegeoip.net/json/", function (response) {
             </div>
         </div>
     </div>
-    <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
 </body>
 </html>

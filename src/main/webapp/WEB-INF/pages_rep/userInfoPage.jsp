@@ -17,9 +17,13 @@
 	<title>${title}</title>
 </head>
 <body>
-	<%@include file="navbar2.jsp" %>	
+	<%@include file="navbar.jsp" %>	
  
- 
+ 	<label>Şikayet ekle</label>
+ 	<select><option>Konum</option></select>
+ 	<select><option>İlgili birim</option></select>
+ 	<input type="text" value="tanım"/>
+ 	<button>Ekle</button>
     <h1>Message : ${message}</h1>
 </body>
 </html>
