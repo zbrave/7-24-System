@@ -67,6 +67,6 @@ public class LocationController {
 		redirectAttributes.addFlashAttribute("message", "Bölüm eklendi.");
 
 //		return "redirect:/deptList";
-		return "redirect:/addRules";
+		return "redirect:/admin";
 	}
 }
