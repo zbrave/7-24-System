@@ -44,15 +44,30 @@ public class ComplaintDAOImpl implements ComplaintDAO {
             complaint = new Complaint();
         }
         complaint.setId(complaintInfo.getId());
-        complaint.setLocationId(complaintInfo.getLocationInfo().getId());
-        complaint.setSupportTypeId(complaintInfo.getSupportTypeInfo().getId());
-        complaint.setParentId(complaintInfo.getParentInfo().getId());
+        complaint.setLocationId(null);
+        if(complaintInfo.getLocationInfo()!=null){
+        	complaint.setLocationId(complaintInfo.getLocationInfo().getId());
+        }
+        complaint.setSupportTypeId(null);
+        if(complaintInfo.getSupportTypeInfo()!=null){
+        	complaint.setSupportTypeId(complaintInfo.getSupportTypeInfo().getId());
+        }
+        complaint.setParentId(null);
+        if(complaintInfo.getParentInfo()!=null){
+        	complaint.setParentId(complaintInfo.getParentInfo().getId());
+        }
         complaint.setComplaintTime(complaintInfo.getComplaintTime());
         complaint.setComplaintText(complaintInfo.getComplaintText());
-        complaint.setSupportUserId(complaintInfo.getSupportUserInfo().getId());
+        complaint.setSupportUserId(null);
+        if(complaintInfo.getSupportUserInfo()!=null){
+        	complaint.setSupportUserId(complaintInfo.getSupportUserInfo().getId());
+        }
         complaint.setResponseTime(complaintInfo.getResponseTime());
         complaint.setResponseText(complaintInfo.getResponseText());
-        complaint.setChildId(complaintInfo.getChildInfo().getId());
+        complaint.setChildId(null);
+        if(complaintInfo.getChildInfo()!=null){
+        	complaint.setChildId(complaintInfo.getChildInfo().getId());
+        }
         if (isNew) {
             Session session = this.sessionFactory.getCurrentSession();
             session.persist(complaint);
@@ -106,6 +121,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		newComplaintInfo.setComplainantUserInfo(userDAOImpl.findUserInfo(supportUserId));
 		newComplaintInfo.setComplaintText(newComplaintText);
 		newComplaintInfo.setComplaintTime(new Date());
+		
 		saveComplaint(newComplaintInfo);
 		complaint.setChildId(findChild(id).getId());
 	}

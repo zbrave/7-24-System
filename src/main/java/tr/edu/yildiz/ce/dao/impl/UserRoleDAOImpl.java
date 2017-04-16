@@ -47,7 +47,10 @@ public class UserRoleDAOImpl implements UserRoleDAO {
             userRole = new UserRole();
         }
         userRole.setId(userRoleInfo.getId());
-        userRole.setUserId(userRoleInfo.getUserInfo().getId());
+        userRole.setUserId(null);
+        if(userRoleInfo.getUserInfo()!=null){
+        	userRole.setUserId(userRoleInfo.getUserInfo().getId());
+        }
         userRole.setRole(userRoleInfo.getRole());
  
         if (isNew) {
@@ -72,7 +75,6 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         if (userRole != null) {
         	this.sessionFactory.getCurrentSession().delete(userRole);
         }
-
 	}
 
 	@SuppressWarnings("unchecked")
