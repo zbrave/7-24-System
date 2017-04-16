@@ -39,14 +39,11 @@ public class LocationDAOImpl implements LocationDAO {
 	     }
 	     location.setId(locationInfo.getId());
 	     location.setDescription(locationInfo.getDescription());
-<<<<<<< HEAD
 	     location.setParentId(locationInfo.getParent().getId());
-=======
 	     location.setParentId(null);
 	     if(locationInfo.getParent()!=null){
 	    	 location.setParentId(locationInfo.getParent().getId());
 	     }
->>>>>>> origin/master
 	 
 	     if (isNew) {
 	         Session session = this.sessionFactory.getCurrentSession();
