@@ -1,5 +1,6 @@
 package tr.edu.yildiz.ce.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -77,7 +78,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
 	@Override
 	public List<String> getUserRoles(Integer userId) {
-		List<String> userRoles = null; 
+		List<String> userRoles = new ArrayList<String>();
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(UserRole.class);
         crit.add(Restrictions.eq("user_id", userId));
