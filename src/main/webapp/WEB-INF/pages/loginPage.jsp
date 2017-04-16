@@ -17,7 +17,7 @@
 	<link href="${bootstrapCSS}" rel="stylesheet" />
 	<script src="${bootstrapJS}"></script>
 	<link href="${styleCSS}" rel="stylesheet" />
-	<script src="${loginJS}"></script>
+	
 	<link rel="icon" href="${ico}">
 	<title>7/24 Servisi | Login</title>	
 </head>
@@ -110,6 +110,6 @@
 				</div><!-- tab-content -->
 			</div> <!-- /form -->
 		</div>
-	
+	<script src="${loginJS}"></script>
 </body>
 </html>
