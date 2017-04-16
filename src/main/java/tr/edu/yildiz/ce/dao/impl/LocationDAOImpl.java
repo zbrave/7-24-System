@@ -40,6 +40,10 @@ public class LocationDAOImpl implements LocationDAO {
 	     location.setId(locationInfo.getId());
 	     location.setDescription(locationInfo.getDescription());
 	     location.setParentId(locationInfo.getParent().getId());
+	     location.setParentId(null);
+	     if(locationInfo.getParent()!=null){
+	    	 location.setParentId(locationInfo.getParent().getId());
+	     }
 	 
 	     if (isNew) {
 	         Session session = this.sessionFactory.getCurrentSession();
@@ -71,6 +75,7 @@ public class LocationDAOImpl implements LocationDAO {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(LocationInfo.class);
         crit.add(Restrictions.eq("parent_id", null));
+        crit.add(Restrictions.eq("parentId", null));
         return (List<LocationInfo>) crit.list();
 	}
 
@@ -79,6 +84,7 @@ public class LocationDAOImpl implements LocationDAO {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(LocationInfo.class);
         crit.add(Restrictions.eq("parent_id", id));
+        crit.add(Restrictions.eq("parentId", id));
         return (List<LocationInfo>) crit.list();
 	}
 

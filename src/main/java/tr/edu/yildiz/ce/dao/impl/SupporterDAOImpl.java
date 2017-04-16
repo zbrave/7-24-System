@@ -86,7 +86,7 @@ public class SupporterDAOImpl implements SupporterDAO {
 	public List<SupportType> getSupportTypes(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(SupportType.class);
-        crit.add(Restrictions.eq("user_id", userId));
+        crit.add(Restrictions.eq("userId", userId));
         return (List<SupportType>) crit.list();
 		
 	}
