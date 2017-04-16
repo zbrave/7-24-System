@@ -126,7 +126,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	public Complaint findChild(Integer parentId){
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
-        crit.add(Restrictions.eq("parent_id", parentId));
+        crit.add(Restrictions.eq("parentId", parentId));
         return (Complaint) crit.uniqueResult();
 	}
 }
