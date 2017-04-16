@@ -18,8 +18,10 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
+import tr.edu.yildiz.ce.dao.impl.LocationDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.UserDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.UserRoleDAOImpl;
 
@@ -54,6 +56,11 @@ public class ApplicationContextConfig {
   @Bean(name = "userRoleDAO")
   public UserRoleDAO getUserRoleDAO() {
       return new UserRoleDAOImpl();
+  }
+  
+  @Bean(name = "locationDAO")
+  public LocationDAO getLocationDAO() {
+      return new LocationDAOImpl();
   }
  
   @Bean(name = "viewResolver")

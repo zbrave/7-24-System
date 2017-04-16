@@ -100,6 +100,7 @@ $(document).ready(function(){
 				
 				<c:if test="${role.authority == 'ROLE_ADMIN'}">
 					<ul class="nav navbar-nav">
+						<li><a href="${pageContext.request.contextPath}/admin" >Admin page</a></li>
 				        <li><a href="#newComplaint" data-toggle="collapse">Şikayet Oluştur</a></li>
 						<li><a href="#tableInfo" data-toggle="collapse">Takip</a></li>
 						<li><a href="#">Raporlar</a></li>
