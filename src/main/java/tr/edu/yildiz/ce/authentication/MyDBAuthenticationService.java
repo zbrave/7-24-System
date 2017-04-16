@@ -13,17 +13,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import tr.edu.yildiz.ce.dao.UserDAO;
+import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.model.UserInfo;
  
 @Service
 public class MyDBAuthenticationService implements UserDetailsService {
  
     @Autowired
-    private UserDAO userInfoDAO;
+    private UserDAO userDAO;
+    
+    @Autowired
+    private UserRoleDAO userRoleDAO;
  
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserInfo userInfo = userInfoDAO.findUserInfo(username);
+        UserInfo userInfo = userDAO.findLoginUserInfo(username);
         System.out.println("UserInfo= " + userInfo);
         
         if (userInfo == null) {
@@ -31,7 +35,7 @@ public class MyDBAuthenticationService implements UserDetailsService {
         }
          
         // [USER,ADMIN,..]
-        List<String> roles= userInfoDAO.getUserRoles(username);
+        List<String> roles= userRoleDAO.getUserRoles(userInfo.getId());
          
         List<GrantedAuthority> grantList= new ArrayList<GrantedAuthority>();
         if(roles!= null)  {

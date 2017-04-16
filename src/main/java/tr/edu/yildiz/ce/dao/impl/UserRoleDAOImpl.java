@@ -6,15 +6,22 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.loader.criteria.CriteriaQueryTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.entity.UserRole;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
 
+@Service
+@Transactional
 public class UserRoleDAOImpl implements UserRoleDAO {
+	
 	@Autowired
-	private UserDAOImpl userDAOImpl;
+	private UserDAO userDAO;
 	
 	@Autowired
     private SessionFactory sessionFactory;
@@ -56,7 +63,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         if (userRole == null) {
             return null;
         }
-		return new UserRoleInfo(userRole.getId(),userDAOImpl.findUserInfo(userRole.getUserId()),userRole.getRole());
+		return new UserRoleInfo(userRole.getId(),userDAO.findUserInfo(userRole.getUserId()),userRole.getRole());
 	}
 
 	@Override
@@ -74,7 +81,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(UserRole.class);
         crit.add(Restrictions.eq("user_id", userId));
-        List<UserRole> roles = (List<UserRole>) crit.list();;
+        List<UserRole> roles = (List<UserRole>) crit.list();
         for(UserRole r : roles){
         	userRoles.add(r.getRole());
         }

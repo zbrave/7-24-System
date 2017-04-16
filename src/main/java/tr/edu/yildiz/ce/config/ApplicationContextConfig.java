@@ -5,12 +5,10 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
-//import org.o7planning.springmvcsecurity.dao.UserInfoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-//import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
@@ -19,7 +17,12 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
- 
+
+import tr.edu.yildiz.ce.dao.UserDAO;
+import tr.edu.yildiz.ce.dao.UserRoleDAO;
+import tr.edu.yildiz.ce.dao.impl.UserDAOImpl;
+import tr.edu.yildiz.ce.dao.impl.UserRoleDAOImpl;
+
 @Configuration
 @ComponentScan("tr.edu.yildiz.ce.*")
 @EnableTransactionManagement
@@ -42,6 +45,16 @@ public class ApplicationContextConfig {
       rb.setBasenames(new String[] { "messages/validator" });
       return rb;
   }*/
+  
+  @Bean(name = "userDAO")
+  public UserDAO getUserDAO() {
+      return new UserDAOImpl();
+  }
+  
+  @Bean(name = "userRoleDAO")
+  public UserRoleDAO getUserRoleDAO() {
+      return new UserRoleDAOImpl();
+  }
  
   @Bean(name = "viewResolver")
   public InternalResourceViewResolver getViewResolver() {

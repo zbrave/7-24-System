@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 	
 	private Integer id;
