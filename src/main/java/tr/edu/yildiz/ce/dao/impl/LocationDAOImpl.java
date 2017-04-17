@@ -74,7 +74,7 @@ public class LocationDAOImpl implements LocationDAO {
 	@Override
 	public List<LocationInfo> findParents() {
         Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(LocationInfo.class);
+        Criteria crit = session.createCriteria(Location.class);
         crit.add(Restrictions.eq("parentId", null));
 		List<Location> locations =(List<Location>) crit.list();
         List<LocationInfo> locationInfos= new ArrayList<LocationInfo>();
