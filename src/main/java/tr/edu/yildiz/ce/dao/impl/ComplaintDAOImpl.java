@@ -109,7 +109,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@Override
 	public void transferComplaint(Integer id, Integer supportUserId, String responseText, Integer newLocationId,
-			Integer newSupportTypeId, String newComplaintText) {
+		Integer newSupportTypeId, String newComplaintText) {
 		Complaint complaint = this.findComplaint(id);
 		ComplaintInfo newComplaintInfo = new ComplaintInfo();
 		complaint.setSupportUserId(supportUserId);

@@ -1,5 +1,6 @@
 package tr.edu.yildiz.ce.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -7,7 +8,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import tr.edu.yildiz.ce.dao.SupporterDAO;
+import tr.edu.yildiz.ce.model.SupportTypeInfo;
 import tr.edu.yildiz.ce.entity.SupportType;
 import tr.edu.yildiz.ce.entity.Supporter;
 import tr.edu.yildiz.ce.model.SupporterInfo;
@@ -82,12 +85,18 @@ public class SupporterDAOImpl implements SupporterDAO {
         }
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<SupportType> getSupportTypes(Integer userId) {
+	public List<SupportTypeInfo> getSupportTypes(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(SupportType.class);
         crit.add(Restrictions.eq("userId", userId));
-        return (List<SupportType>) crit.list();
+        List<SupportType> supportTypes=(List<SupportType>) crit.list();
+        List<SupportTypeInfo> supportTypeInfos= new ArrayList<SupportTypeInfo>();
+        for(SupportType s:supportTypes){
+        	supportTypeInfos.add(supportTypeDAOImpl.findSupportTypeInfo(s.getId()));
+        }
+        return supportTypeInfos;
 		
 	}
 

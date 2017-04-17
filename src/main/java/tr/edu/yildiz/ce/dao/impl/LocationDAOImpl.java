@@ -1,5 +1,6 @@
 package tr.edu.yildiz.ce.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -69,20 +70,32 @@ public class LocationDAOImpl implements LocationDAO {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<LocationInfo> findParents() {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(LocationInfo.class);
         crit.add(Restrictions.eq("parentId", null));
-        return (List<LocationInfo>) crit.list();
+		List<Location> locations =(List<Location>) crit.list();
+        List<LocationInfo> locationInfos= new ArrayList<LocationInfo>();
+        for(Location l :locations ){
+        	locationInfos.add(findLocationInfo(l.getId()));
+        }
+        return locationInfos;
 	}
-
+    
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<LocationInfo> findChilds(Integer id) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(LocationInfo.class);
+        Criteria crit = session.createCriteria(Location.class);
         crit.add(Restrictions.eq("parentId", id));
-        return (List<LocationInfo>) crit.list();
+		List<Location> locations =(List<Location>) crit.list();
+        List<LocationInfo> locationInfos= new ArrayList<LocationInfo>();
+        for(Location l :locations ){
+        	locationInfos.add(findLocationInfo(l.getId()));
+        }
+        return locationInfos;
 	}
 
 }
