@@ -1,13 +1,18 @@
 package tr.edu.yildiz.ce.controller;
 
 import java.security.Principal;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import tr.edu.yildiz.ce.dao.LocationDAO;
+import tr.edu.yildiz.ce.model.LocationInfo;
 
 @Controller
 //Enable Hibernate Transaction.
@@ -18,6 +23,9 @@ public class MainController {
 
 	/*	@Autowired
 	private UniValidator uniValidator;*/
+	
+	@Autowired
+	private LocationDAO locationDAO;
 
 	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
 	public String welcomePage(Model model) {
@@ -27,6 +35,8 @@ public class MainController {
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String adminPage(Model model) {
+		List<LocationInfo> list = locationDAO.findChilds(2);
+		model.addAttribute("locationInfos", list);
 		return "adminPage";
 	}
 

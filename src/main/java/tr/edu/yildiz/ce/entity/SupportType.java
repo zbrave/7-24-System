@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "support_types")
+@Table(name = "support_type")
 public class SupportType {
 	private Integer id;
 	private String type;

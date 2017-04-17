@@ -22,6 +22,7 @@
  
     <h2>Admin Page</h2>
  
+ 	<!-- Location -->
  	<form:form action="saveLocation" method="POST" modelAttribute="locationForm">
 	<div class="form-group">
 		<input id="id" name="id" type="hidden" value=""/>
@@ -44,6 +45,53 @@
 		</c:if> 
        </div>
       </form:form>
+      <table>
+      	<tr>
+      		<th>ID</th>
+      		<th>Tanım</th>
+      		<th>Parent</th>
+      	</tr>
+      <c:forEach items="${locationInfos }" var="data">
+      	<tr>
+      		<td>${data.id }</td>
+      		<td>${data.description }</td>
+      		<td>${data.parent.id }</td>
+      	</tr>
+      </c:forEach>
+      </table>
+      
+      <!-- SupportType -->
+      <form:form action="saveSupportType" method="POST" modelAttribute="supportTypeForm">
+	<div class="form-group">
+		<input id="id" name="id" type="hidden" value=""/>
+		
+		<label class="control-label">Tip</label>
+					 			
+   		<input id="type" type="text" class="form-control" name="type" />
+          
+        
+        
+        <button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
+			        
+        <c:if test="${not empty message5}">
+		   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${message5}
+		   </div>
+		</c:if> 
+       </div>
+      </form:form>
+      <table>
+      	<tr>
+      		<th>ID</th>
+      		<th>Tip</th>
+      	</tr>
+      <c:forEach items="${supportTypeInfos }" var="data">
+      	<tr>
+      		<td>${data.id }</td>
+      		<td>${data.type }</td>
+      	</tr>
+      </c:forEach>
+      </table>
+            
     <h3>Welcome : ${pageContext.request.userPrincipal.name}</h3>
  
     <b>This is protected page! Just admins can reach this page.</b>  
