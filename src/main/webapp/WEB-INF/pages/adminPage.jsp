@@ -17,6 +17,12 @@
 	<script src="${amsJS}"></script>	
 	<title>${title}</title>
 </head>
+<script type="text/javascript">
+$(document).ready(function(){
+	$.get("${pageContext.request.contextPath}/getLocationList", null, function (data) {
+	        $("#parentId").html(data);
+	    });
+});</script>
 <body>
     <%@include file="navbar2.jsp" %>	
  
@@ -33,7 +39,7 @@
     
     	<label class="control-label">Parent</label>
                        
-        <select id="parent" class="form-control" name="parent" ></select>
+        <select id="parentId" class="form-control" name="parentId" ></select>
           
         
         

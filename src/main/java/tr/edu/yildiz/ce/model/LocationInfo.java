@@ -4,6 +4,7 @@ public class LocationInfo {
 	
 	private Integer id;
 	private String description;
+	private Integer parentId;
 	private LocationInfo parent;
 	
 	public LocationInfo(){
@@ -32,8 +33,14 @@ public class LocationInfo {
 	public LocationInfo getParent() {
 		return parent;
 	}
-	public void setParrent(LocationInfo parent) {
+	public void setParent(LocationInfo parent) {
 		this.parent = parent;
+	}
+	public Integer getParentId() {
+		return parentId;
+	}
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 	
 }

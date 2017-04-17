@@ -45,12 +45,11 @@ public class LocationController {
 			@ModelAttribute("locationForm") @Validated LocationInfo locationInfo, //
 			BindingResult result, //
 			final RedirectAttributes redirectAttributes) {
-
+			
 
 		if (result.hasErrors()) {
 			return this.formLocation(model, locationInfo);
 		}
-		
 		String decodedToUTF8;
 		try {
 			decodedToUTF8 = new String(locationInfo.getDescription().getBytes("ISO-8859-1"), "UTF-8");
@@ -59,7 +58,7 @@ public class LocationController {
 			System.out.println("Dept name cannot converted.");
 			e.printStackTrace();
 		}
-
+		locationInfo.setParent(locationDAO.findLocationInfo( locationInfo.getParentId()));
 		this.locationDAO.saveLocation(locationInfo);
 
 		// Important!!: Need @EnableWebMvc

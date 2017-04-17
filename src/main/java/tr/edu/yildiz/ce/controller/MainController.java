@@ -9,10 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import tr.edu.yildiz.ce.dao.LocationDAO;
+import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.model.LocationInfo;
+import tr.edu.yildiz.ce.model.SupportTypeInfo;
 
 @Controller
 //Enable Hibernate Transaction.
@@ -26,6 +30,9 @@ public class MainController {
 	
 	@Autowired
 	private LocationDAO locationDAO;
+	
+	@Autowired
+	private SupportTypeDAO supportTypeDAO;
 
 	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
 	public String welcomePage(Model model) {
@@ -35,9 +42,22 @@ public class MainController {
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public String adminPage(Model model) {
-		List<LocationInfo> list = locationDAO.findChilds(2);
+		List<LocationInfo> list = locationDAO.listLocationInfos();
 		model.addAttribute("locationInfos", list);
+		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
+		model.addAttribute("supportTypeInfos", list2);
 		return "adminPage";
+	}
+	
+	@RequestMapping(value="/getLocationList",method = RequestMethod.GET, produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String getLocationList() {
+		String res = "<option id= value=>Üst konum seçin.</option>";
+		List<LocationInfo> list = locationDAO.listLocationInfos();
+		for (LocationInfo tmp : list) {
+			res = res.concat("<option "+"id="+tmp.getId()+" value="+tmp.getId()+">"+tmp.getDescription()+"</option>");
+		}
+		return res;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
