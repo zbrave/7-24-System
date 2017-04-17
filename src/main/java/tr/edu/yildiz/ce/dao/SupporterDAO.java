@@ -13,4 +13,5 @@ public interface SupporterDAO {
     public void deleteSupporter (Integer id);
     
     public List<SupportTypeInfo> getSupportTypes(Integer userId);
+    public List<SupporterInfo> listSupporterInfos();
 }

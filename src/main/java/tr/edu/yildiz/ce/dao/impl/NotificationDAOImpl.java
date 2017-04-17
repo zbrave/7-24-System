@@ -1,5 +1,8 @@
 package tr.edu.yildiz.ce.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import tr.edu.yildiz.ce.dao.NotificationDAO;
 import tr.edu.yildiz.ce.entity.Notification;
-import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.NotificationInfo;
-import tr.edu.yildiz.ce.model.UserInfo;
 
 public class NotificationDAOImpl implements NotificationDAO {
 
@@ -65,7 +66,20 @@ public class NotificationDAOImpl implements NotificationDAO {
 		if(notification!=null){
 			this.sessionFactory.getCurrentSession().delete(notification);
 		}
+	
+	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<NotificationInfo> listNotificationInfos() {
+		Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Notification.class);
+        List<Notification> notifications =(List<Notification>)crit.list();
+        List<NotificationInfo> notificationInfos =new ArrayList<NotificationInfo>();
+        for(Notification n:notifications){
+        	notificationInfos.add((NotificationInfo)findNotificationInfo(n.getId()));
+        }
+        return notificationInfos;
 	}
 
 }

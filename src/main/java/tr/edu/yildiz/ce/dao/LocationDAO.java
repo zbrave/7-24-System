@@ -13,4 +13,5 @@ public interface LocationDAO {
     
     public List<LocationInfo> findParents();
     public List<LocationInfo> findChilds(Integer id);
+    public List<LocationInfo> listLocationInfos();
 }

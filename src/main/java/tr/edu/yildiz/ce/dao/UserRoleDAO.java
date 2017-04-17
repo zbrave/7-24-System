@@ -13,4 +13,5 @@ public interface UserRoleDAO {
 	public void deleteUserRole(Integer id);
 	
 	public List<String> getUserRoles(Integer userId);
+	public List<UserRoleInfo> listUserInfos();
 }

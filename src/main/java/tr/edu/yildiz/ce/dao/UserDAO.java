@@ -1,5 +1,7 @@
 package tr.edu.yildiz.ce.dao;
 
+import java.util.List;
+
 import tr.edu.yildiz.ce.entity.User;
 import tr.edu.yildiz.ce.model.UserInfo;
  
@@ -12,5 +14,5 @@ public interface UserDAO {
     
     public User findLoginUser(String username);
     public UserInfo findLoginUserInfo(String username);
-    
+    public List<UserInfo> listUserInfos();
 }

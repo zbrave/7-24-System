@@ -42,7 +42,9 @@ public class LocationDAOImpl implements LocationDAO {
 	     location.setDescription(locationInfo.getDescription());
 	     location.setParentId(null);
 	     if(locationInfo.getParent()!=null){
-	    	 location.setParentId(locationInfo.getParent().getId());
+	    	 if(locationInfo.getParent().getId()!=locationInfo.getId()){
+		    	 location.setParentId(locationInfo.getParent().getId());
+	    	 }
 	     }
 	 
 	     if (isNew) {
@@ -97,5 +99,19 @@ public class LocationDAOImpl implements LocationDAO {
         }
         return locationInfos;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<LocationInfo> listLocationInfos() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Location.class);
+		List<Location> locations =(List<Location>) crit.list();
+        List<LocationInfo> locationInfos= new ArrayList<LocationInfo>();
+        for(Location l :locations ){
+        	locationInfos.add((LocationInfo) findLocationInfo(l.getId()));
+        }
+        return locationInfos;
+	}
+	
 
 }

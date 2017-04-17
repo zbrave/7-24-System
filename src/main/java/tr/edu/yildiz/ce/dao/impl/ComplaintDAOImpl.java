@@ -1,6 +1,8 @@
 package tr.edu.yildiz.ce.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -19,8 +21,6 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	private LocationDAOImpl locationDAOImpl;
 	@Autowired
 	private SupportTypeDAOImpl supportTypeDAOImpl;
-	@Autowired
-	private SupporterDAOImpl supporterDAOImpl;
 	@Autowired
 	private UserDAOImpl userDAOImpl;	
 	@Override
@@ -144,5 +144,18 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         Criteria crit = session.createCriteria(Complaint.class);
         crit.add(Restrictions.eq("parentId", parentId));
         return (Complaint) crit.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listComplaintInfos() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        List<Complaint> complaints = crit.list();
+        List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
+        for(Complaint c:complaints){
+        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        }
+        return complaintInfos;
 	}
 }

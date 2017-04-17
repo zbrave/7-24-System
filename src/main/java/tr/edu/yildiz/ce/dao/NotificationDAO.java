@@ -1,5 +1,7 @@
 package tr.edu.yildiz.ce.dao;
 
+import java.util.List;
+
 import tr.edu.yildiz.ce.entity.Notification;
 import tr.edu.yildiz.ce.model.NotificationInfo;
 
@@ -8,4 +10,5 @@ public interface NotificationDAO {
 	public void saveNotification (NotificationInfo notificationInfo);
     public NotificationInfo findNotificationInfo (Integer id);  
     public void deleteNotification (Integer id);
+    public List<NotificationInfo> listNotificationInfos ();
 }

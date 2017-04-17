@@ -1,5 +1,8 @@
 package tr.edu.yildiz.ce.dao.impl;
  
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -83,6 +86,19 @@ public class UserDAOImpl implements UserDAO {
             return null;
         }
         return new UserInfo(user.getId(),user.getEmail(),user.getUsername(),user.getPassword(),user.isEnabled());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UserInfo> listUserInfos() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(User.class);
+        List<User> users =(List<User>) crit.list();
+        List<UserInfo> userInfos=new ArrayList<UserInfo>();
+        for(User u : users){
+        	userInfos.add((UserInfo)findUserInfo(u.getId()));
+        }
+        return userInfos;
 	}
 
 }

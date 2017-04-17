@@ -1,5 +1,8 @@
 package tr.edu.yildiz.ce.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -61,6 +64,19 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
             this.sessionFactory.getCurrentSession().delete(supportType);
         }
 
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SupportTypeInfo> listSupportTypeInfos() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(SupportType.class);
+        List<SupportType> supportTypes=(List<SupportType>)crit.list();
+        List<SupportTypeInfo> supportTypeInfos=new ArrayList<SupportTypeInfo>();
+        for(SupportType s:supportTypes){
+        	supportTypeInfos.add((SupportTypeInfo)findSupportTypeInfo(s.getId()));
+        }
+        return supportTypeInfos;
 	}
 
 }

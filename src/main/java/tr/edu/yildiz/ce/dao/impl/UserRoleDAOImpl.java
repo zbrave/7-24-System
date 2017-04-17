@@ -91,4 +91,17 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         return userRoles;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UserRoleInfo> listUserInfos() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(UserRole.class);
+        List<UserRole> userRoles =(List<UserRole>) crit.list();
+        List<UserRoleInfo> userRoleInfos=new ArrayList<UserRoleInfo>();
+        for(UserRole u : userRoles){
+        	userRoleInfos.add((UserRoleInfo)findUserRoleInfo(u.getId()));
+        }
+        return userRoleInfos;
+	}
+
 }
