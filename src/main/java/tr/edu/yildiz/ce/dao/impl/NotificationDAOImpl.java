@@ -9,7 +9,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.NotificationDAO;
+import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Notification;
 import tr.edu.yildiz.ce.model.NotificationInfo;
 
@@ -18,9 +20,9 @@ public class NotificationDAOImpl implements NotificationDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	@Autowired
-	private ComplaintDAOImpl complaintDAOImpl;
+	private ComplaintDAO complaintDAO;
 	@Autowired
-	private UserDAOImpl userDAOImpl;
+	private UserDAO userDAO;
 	
 	@Override
 	public Notification findNotification(Integer id) {
@@ -57,7 +59,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 		if(notification==null){
 			 return null;
 		}
-		return new NotificationInfo(notification.getId() ,userDAOImpl.findUserInfo(notification.getUserId()),complaintDAOImpl.findComplaintInfo(notification.getComplaintId()));
+		return new NotificationInfo(notification.getId() ,userDAO.findUserInfo(notification.getUserId()),complaintDAO.findComplaintInfo(notification.getComplaintId()));
 	}
 
 	@Override

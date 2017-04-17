@@ -8,8 +8,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+import tr.edu.yildiz.ce.dao.LocationDAO;
+import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
+import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
 import tr.edu.yildiz.ce.entity.SupportType;
 import tr.edu.yildiz.ce.entity.Supporter;
@@ -23,13 +25,13 @@ import tr.edu.yildiz.ce.model.SupporterInfo;
 public class SupporterDAOImpl implements SupporterDAO {
 	
 	@Autowired
-	private LocationDAOImpl locationDAOImpl;
+	private LocationDAO locationDAO;
 	
 	@Autowired
-	private SupportTypeDAOImpl supportTypeDAOImpl;
+	private SupportTypeDAO supportTypeDAO;
 	
 	@Autowired
-	private UserDAOImpl userInfoDAOImpl;
+	private UserDAO userDAO;
 	
     @Autowired
     private SessionFactory sessionFactory;
@@ -71,9 +73,9 @@ public class SupporterDAOImpl implements SupporterDAO {
         if (supporter == null) {
             return null;
         }
-        return new SupporterInfo(supporter.getId(),userInfoDAOImpl.findUserInfo(supporter.getUserId()),
-        		supportTypeDAOImpl.findSupportTypeInfo(supporter.getSupportTypeId()),
-        		locationDAOImpl.findLocationInfo(supporter.getLocationId()));
+        return new SupporterInfo(supporter.getId(),userDAO.findUserInfo(supporter.getUserId()),
+        		supportTypeDAO.findSupportTypeInfo(supporter.getSupportTypeId()),
+        		locationDAO.findLocationInfo(supporter.getLocationId()));
 
 	}
 
@@ -94,7 +96,7 @@ public class SupporterDAOImpl implements SupporterDAO {
         List<SupportType> supportTypes=(List<SupportType>) crit.list();
         List<SupportTypeInfo> supportTypeInfos= new ArrayList<SupportTypeInfo>();
         for(SupportType s:supportTypes){
-        	supportTypeInfos.add(supportTypeDAOImpl.findSupportTypeInfo(s.getId()));
+        	supportTypeInfos.add(supportTypeDAO.findSupportTypeInfo(s.getId()));
         }
         return supportTypeInfos;
 		

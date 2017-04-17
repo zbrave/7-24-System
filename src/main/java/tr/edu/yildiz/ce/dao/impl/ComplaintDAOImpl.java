@@ -11,6 +11,9 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
+import tr.edu.yildiz.ce.dao.LocationDAO;
+import tr.edu.yildiz.ce.dao.SupportTypeDAO;
+import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Complaint;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
 
@@ -18,11 +21,11 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	@Autowired
-	private LocationDAOImpl locationDAOImpl;
+	private LocationDAO locationDAO;
 	@Autowired
-	private SupportTypeDAOImpl supportTypeDAOImpl;
+	private SupportTypeDAO supportTypeDAO;
 	@Autowired
-	private UserDAOImpl userDAOImpl;	
+	private UserDAO userDAO;	
 	@Override
 	public Complaint findComplaint(Integer id) {
         Session session = sessionFactory.getCurrentSession();
@@ -80,10 +83,10 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         if (complaint == null) {
             return null;
         }
-        return new ComplaintInfo(complaint.getId(), locationDAOImpl.findLocationInfo(complaint.getLocationId()) ,
-        		supportTypeDAOImpl.findSupportTypeInfo(complaint.getSupportTypeId()) , findComplaintInfo(complaint.getParentId()),
-        		userDAOImpl.findUserInfo(complaint.getComplainantUserId()),complaint.getComplaintTime(), complaint.getComplaintText(),
-        		userDAOImpl.findUserInfo(complaint.getSupportUserId()),complaint.getResponseTime(),complaint.getResponseText(),
+        return new ComplaintInfo(complaint.getId(), locationDAO.findLocationInfo(complaint.getLocationId()) ,
+        		supportTypeDAO.findSupportTypeInfo(complaint.getSupportTypeId()) , findComplaintInfo(complaint.getParentId()),
+        		userDAO.findUserInfo(complaint.getComplainantUserId()),complaint.getComplaintTime(), complaint.getComplaintText(),
+        		userDAO.findUserInfo(complaint.getSupportUserId()),complaint.getResponseTime(),complaint.getResponseText(),
         		findComplaintInfo( complaint.getChildId() ) );
 	}
 
@@ -99,9 +102,9 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	public void recordComplaint(Integer locationId, Integer supportTypeId, Integer complainantUserId,
 			String complaintText) {
 		ComplaintInfo complaintInfo = new ComplaintInfo();
-		complaintInfo.setLocationInfo(locationDAOImpl.findLocationInfo(locationId));
-		complaintInfo.setSupportTypeInfo(supportTypeDAOImpl.findSupportTypeInfo(supportTypeId));
-		complaintInfo.setComplainantUserInfo(userDAOImpl.findUserInfo(complainantUserId));
+		complaintInfo.setLocationInfo(locationDAO.findLocationInfo(locationId));
+		complaintInfo.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(supportTypeId));
+		complaintInfo.setComplainantUserInfo(userDAO.findUserInfo(complainantUserId));
 		complaintInfo.setComplaintText(complaintText);
 		complaintInfo.setComplaintTime(new Date());
 		saveComplaint(complaintInfo);
@@ -116,9 +119,9 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		complaint.setResponseText(responseText);
 		complaint.setResponseTime(new Date());
 		newComplaintInfo.setParentInfo(findComplaintInfo(id));
-		newComplaintInfo.setLocationInfo(locationDAOImpl.findLocationInfo(newLocationId));
-		newComplaintInfo.setSupportTypeInfo(supportTypeDAOImpl.findSupportTypeInfo(newSupportTypeId));
-		newComplaintInfo.setComplainantUserInfo(userDAOImpl.findUserInfo(supportUserId));
+		newComplaintInfo.setLocationInfo(locationDAO.findLocationInfo(newLocationId));
+		newComplaintInfo.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(newSupportTypeId));
+		newComplaintInfo.setComplainantUserInfo(userDAO.findUserInfo(supportUserId));
 		newComplaintInfo.setComplaintText(newComplaintText);
 		newComplaintInfo.setComplaintTime(new Date());
 		
