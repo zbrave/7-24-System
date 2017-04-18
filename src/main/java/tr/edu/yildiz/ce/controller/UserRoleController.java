@@ -1,7 +1,6 @@
 package tr.edu.yildiz.ce.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,23 +14,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import tr.edu.yildiz.ce.dao.LocationDAO;
-import tr.edu.yildiz.ce.model.LocationInfo;
+import tr.edu.yildiz.ce.dao.UserDAO;
+import tr.edu.yildiz.ce.dao.UserRoleDAO;
+import tr.edu.yildiz.ce.model.UserRoleInfo;
 
 @Controller
 //Enable Hibernate Transaction.
 @Transactional
 //Need To use RedirectAttributes
 @EnableWebMvc
-public class LocationController {
+public class UserRoleController {
 	
 	@Autowired
-	private LocationDAO locationDAO;
+	private UserDAO userDAO;
 	
-	private String formLocation(Model model, LocationInfo locationInfo) {
-		model.addAttribute("locationForm", locationInfo);
+	@Autowired
+	private UserRoleDAO userRoleDAO;
+	
+	private String formUserRole(Model model, UserRoleInfo userRoleInfo) {
+		model.addAttribute("userRoleForm", userRoleInfo);
 
-		if (locationInfo.getId() == null) {
+		if (userRoleInfo.getId() == null) {
 			model.addAttribute("formTitle", "Create Dept");
 		} else {
 			model.addAttribute("formTitle", "Edit Dept");
@@ -40,27 +43,27 @@ public class LocationController {
 		return "adminPage";
 	}
 	
-	@RequestMapping(value = "/saveLocation", method = RequestMethod.POST)
-	public String saveLocation(Model model, //
-			@ModelAttribute("locationForm") @Validated LocationInfo locationInfo, //
+	@RequestMapping(value = "/saveUserRole", method = RequestMethod.POST)
+	public String saveUserRole(Model model, //
+			@ModelAttribute("userRoleForm") @Validated UserRoleInfo userRoleInfo, //
 			BindingResult result, //
 			final RedirectAttributes redirectAttributes) {
 			
 
 		if (result.hasErrors()) {
-			return this.formLocation(model, locationInfo);
+			return this.formUserRole(model, userRoleInfo);
 		}
-		System.out.println(locationInfo.getParent().getId());
+		System.out.println(userRoleInfo.getRole());
 		String decodedToUTF8;
 		try {
-			decodedToUTF8 = new String(locationInfo.getDescription().getBytes("ISO-8859-1"), "UTF-8");
-			locationInfo.setDescription(decodedToUTF8);
+			decodedToUTF8 = new String(userRoleInfo.getRole().getBytes("ISO-8859-1"), "UTF-8");
+			userRoleInfo.setRole(decodedToUTF8);
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("Dept name cannot converted.");
 			e.printStackTrace();
 		}
-		locationInfo.setParent(locationDAO.findLocationInfo( locationInfo.getParentId()));
-		this.locationDAO.saveLocation(locationInfo);
+		userRoleInfo.setUserInfo(userDAO.findUserInfo( userRoleInfo.getUserId()));
+		this.userRoleDAO.saveUserRole(userRoleInfo);
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope

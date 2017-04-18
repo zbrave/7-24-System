@@ -93,7 +93,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserRoleInfo> listUserInfos() {
+	public List<UserRoleInfo> listUserRoleInfos() {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(UserRole.class);
         List<UserRole> userRoles =(List<UserRole>) crit.list();

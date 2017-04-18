@@ -13,10 +13,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
+import tr.edu.yildiz.ce.dao.UserDAO;
+import tr.edu.yildiz.ce.dao.UserRoleDAO;
+import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
+import tr.edu.yildiz.ce.model.UserInfo;
+import tr.edu.yildiz.ce.model.UserRoleInfo;
 
 @Controller
 //Enable Hibernate Transaction.
@@ -33,7 +39,16 @@ public class MainController {
 	
 	@Autowired
 	private SupportTypeDAO supportTypeDAO;
+	
+	@Autowired
+	private UserDAO userDAO;
 
+	@Autowired
+	private UserRoleDAO userRoleDAO;
+	
+	@Autowired
+	private ComplaintDAO complaintDAO;
+	
 	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
 	public String welcomePage(Model model) {
 		model.addAttribute("title", "İntibak Yönetim Sistemi");
@@ -46,6 +61,10 @@ public class MainController {
 		model.addAttribute("locationInfos", list);
 		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
 		model.addAttribute("supportTypeInfos", list2);
+		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfos();
+		model.addAttribute("userRoleInfos", list3);
+		LocationInfo mod = new LocationInfo();
+		model.addAttribute("locationForm", mod);
 		return "adminPage";
 	}
 	
@@ -59,6 +78,28 @@ public class MainController {
 		}
 		return res;
 	}
+	
+	@RequestMapping(value="/getUserList",method = RequestMethod.GET, produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String getUserList() {
+		String res = "<option id= value=>Kullanıcı seçin.</option>";
+		List<UserInfo> list = userDAO.listUserInfos();
+		for (UserInfo tmp : list) {
+			res = res.concat("<option "+"id="+tmp.getId()+" value="+tmp.getId()+">"+tmp.getUsername()+"</option>");
+		}
+		return res;
+	}
+	
+	@RequestMapping(value="/getUserRoleList",method = RequestMethod.GET, produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String getUserRoleList() {
+		String res = "<option id= value=>Rol seçin.</option>";
+		List<UserRoleInfo> list = userRoleDAO.listUserRoleInfos();
+		for (UserRoleInfo tmp : list) {
+			res = res.concat("<option "+"id="+tmp.getId()+" value="+tmp.getId()+">"+tmp.getRole()+"</option>");
+		}
+		return res;
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginPage(Model model ) {
@@ -67,6 +108,9 @@ public class MainController {
 	
 	@RequestMapping(value = "/supporter", method = RequestMethod.GET)
 	public String supporterPage(Model model ) {
+		
+		List<ComplaintInfo> list = complaintDAO.listComplaintInfos();
+		model.addAttribute("complaintInfos", list);
 		return "supporter";
 	}
 	
@@ -85,9 +129,13 @@ public class MainController {
 	public String userInfo(Model model, Principal principal) {
 
 		// After user login successfully.
-		String userName = principal.getName();
-
-		model.addAttribute("message", userName);
+		UserInfo user = userDAO.findLoginUserInfo(principal.getName());
+		model.addAttribute("userInfo", user);
+		List<LocationInfo> list = locationDAO.listLocationInfos();
+		model.addAttribute("locationInfos", list);
+		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
+		model.addAttribute("supportTypeInfos", list2);
+		//		model.addAttribute("message", userName);
 		return "userInfoPage";
 	}
 

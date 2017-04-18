@@ -4,6 +4,7 @@ package tr.edu.yildiz.ce.model;
 
 public class UserRoleInfo {
 	private Integer id;
+	private Integer userId;
 	private UserInfo userInfo;
 	private String role;
 	
@@ -33,6 +34,12 @@ public class UserRoleInfo {
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 	
 }

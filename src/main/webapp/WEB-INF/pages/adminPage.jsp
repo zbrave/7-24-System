@@ -22,13 +22,16 @@ $(document).ready(function(){
 	$.get("${pageContext.request.contextPath}/getLocationList", null, function (data) {
 	        $("#parentId").html(data);
 	    });
+	$.get("${pageContext.request.contextPath}/getUserList", null, function (data) {
+        $("#userId").html(data);
+    });
 });</script>
 <body>
     <%@include file="navbar2.jsp" %>	
  
     <h2>Admin Page</h2>
  
- 	<!-- Location -->
+ 	<!-- Location 
  	<form:form action="saveLocation" method="POST" modelAttribute="locationForm">
 	<div class="form-group">
 		<input id="id" name="id" type="hidden" value=""/>
@@ -50,7 +53,36 @@ $(document).ready(function(){
 		   </div>
 		</c:if> 
        </div>
-      </form:form>
+      </form:form>-->
+      
+      <form:form action="saveLocation" method="POST"
+       modelAttribute="locationForm">
+ 
+       <form:hidden path="id" />
+ 
+       <table>
+           <tr>
+               <td>description</td>
+               <td><form:input path="description" /></td>
+               <td><form:errors path="description"
+                       class="error-message" /></td>      
+           </tr>
+           <tr>
+               <td>Gender</td>
+               <c:set var="parent" scope="page" value="${locationForm.parent.id }" />
+               <td><form:select path="parent">
+                       
+                   </form:select></td>
+               <td><form:errors path="parent" class="error-message" /></td>
+           </tr>
+           <tr>
+               <td>&nbsp;</td>
+               <td><input type="submit" value="Submit" />
+               </td>
+               <td>&nbsp;</td>
+           </tr>
+       </table>
+   </form:form>
       <table>
       	<tr>
       		<th>ID</th>
@@ -97,7 +129,49 @@ $(document).ready(function(){
       	</tr>
       </c:forEach>
       </table>
-            
+      
+      <!-- UserRole set -->
+      <form:form action="saveUserRole" method="POST" modelAttribute="userRoleForm">
+	<div class="form-group">
+		<input id="id" name="id" type="hidden" value=""/>
+		
+		<label class="control-label">User</label>
+					 			
+   		<select id="userId" class="form-control" name="userId" ></select>
+    
+    	<label class="control-label">Role</label>
+                       
+        <select id="role" class="form-control" name="role" >
+        	<option value="ADMIN">ADMIN</option>
+        	<option value="USER">USER</option>
+        	<option value="MANAGER">MANAGER</option>
+        	<option value="SUPPORT">SUPPORT</option>
+        </select>
+          
+        
+        
+        <button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
+			        
+        <c:if test="${not empty message5}">
+		   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${message5}
+		   </div>
+		</c:if> 
+       </div>
+      </form:form>
+     <table>
+      	<tr>
+      		<th>ID</th>
+      		<th>UserId</th>
+      		<th>Role</th>
+      	</tr>
+      <c:forEach items="${userRoleInfos }" var="data">
+      	<tr>
+      		<td>${data.id }</td>
+      		<td>${data.userInfo.id }</td>
+      		<td>${data.role }</td>
+      	</tr>
+      </c:forEach>
+      </table>
     <h3>Welcome : ${pageContext.request.userPrincipal.name}</h3>
  
     <b>This is protected page! Just admins can reach this page.</b>  
