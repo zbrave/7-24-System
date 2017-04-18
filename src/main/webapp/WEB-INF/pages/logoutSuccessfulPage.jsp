@@ -5,26 +5,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<spring:url value="/resources/css/bootstrap.css" var="bootstrapCSS" />
-	<spring:url value="/resources/js/bootstrap.js" var="bootstrapJS" />
-	<spring:url value="/resources/others/ams.css" var="amsCSS" />
+	<meta http-equiv="refresh" content="2;url=${pageContext.request.contextPath}" />
+	<spring:url value="/resources/css/bootstrap.min.css" var="bootstrapCSS" />
+	<spring:url value="/resources/css/bootstrap-theme.min.css" var="bootstrapThemeCSS" />
+	<spring:url value="/resources/css/style.css" var="styleCSS" />
+	<spring:url value="/resources/ico724.png" var="ico" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 	<link href="${bootstrapCSS}" rel="stylesheet" />
-	<script src="${bootstrapJS}"></script>
-	<link href="${amsCSS}" rel="stylesheet" />
-	<title>Logout</title>
+	<link href="${bootstrapThemeCSS}" rel="stylesheet" />
+	<link href="${styleCSS}" rel="stylesheet" />	
+	<title>${title}</title>
 </head>
 <body>
-    <nav class="navbar">
-	<div class="menu">
-	    <div class="container-fluid">
-			<div class="navbar-header">
-				<a href="${pageContext.request.contextPath}">IYS</a>
-			</div>
-		</div>
-	</div>
-	</nav>
- 
     <h1>Çıkış yapıldı!</h1>
+    <h1>Giriş sayfasına yönlendiriliyorsunuz...</h1>
+	<p align="center"><a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}" role="button">Giriş sayfa</a></p>
 </body>
 </html>
