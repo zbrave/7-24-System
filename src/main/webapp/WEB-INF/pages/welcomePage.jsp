@@ -28,6 +28,7 @@ $.get("http://freegeoip.net/json/", function (response) {
 </script>
 <body>
 	<%@include file="navbar2.jsp" %>
+	<p>Deneme</p>
 	<div id="country"></div>
 	<div class="text-center">
         <div class="media">
