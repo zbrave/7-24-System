@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="refresh" content="2;url=${pageContext.request.contextPath}" />
+	<meta http-equiv="refresh" content="2;url=${pageContext.request.contextPath}/login" />
 	<spring:url value="/resources/css/bootstrap.min.css" var="bootstrapCSS" />
 	<spring:url value="/resources/css/bootstrap-theme.min.css" var="bootstrapThemeCSS" />
 	<spring:url value="/resources/css/style.css" var="styleCSS" />
