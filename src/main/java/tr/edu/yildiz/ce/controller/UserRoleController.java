@@ -31,18 +31,6 @@ public class UserRoleController {
 	@Autowired
 	private UserRoleDAO userRoleDAO;
 	
-	private String formUserRole(Model model, UserRoleInfo userRoleInfo) {
-		model.addAttribute("userRoleForm", userRoleInfo);
-
-		if (userRoleInfo.getId() == null) {
-			model.addAttribute("formTitle", "Create Dept");
-		} else {
-			model.addAttribute("formTitle", "Edit Dept");
-		}
-
-		return "adminPage";
-	}
-	
 	@RequestMapping(value = "/saveUserRole", method = RequestMethod.POST)
 	public String saveUserRole(Model model, //
 			@ModelAttribute("userRoleForm") @Validated UserRoleInfo userRoleInfo, //
@@ -51,7 +39,8 @@ public class UserRoleController {
 			
 
 		if (result.hasErrors()) {
-			return this.formUserRole(model, userRoleInfo);
+			model.addAttribute("userRoleMsg", "Eklenemedi.");
+			return "adminPage";
 		}
 		System.out.println(userRoleInfo.getRole());
 		String decodedToUTF8;
@@ -59,7 +48,7 @@ public class UserRoleController {
 			decodedToUTF8 = new String(userRoleInfo.getRole().getBytes("ISO-8859-1"), "UTF-8");
 			userRoleInfo.setRole(decodedToUTF8);
 		} catch (UnsupportedEncodingException e) {
-			System.out.println("Dept name cannot converted.");
+			System.out.println("UserRole cannot converted.");
 			e.printStackTrace();
 		}
 		userRoleInfo.setUserInfo(userDAO.findUserInfo( userRoleInfo.getUserId()));
@@ -67,7 +56,7 @@ public class UserRoleController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("message", "Bölüm eklendi.");
+		redirectAttributes.addFlashAttribute("userRoleMsg", "Başarıyla eklendi.");
 
 //		return "redirect:/deptList";
 		return "redirect:/admin";

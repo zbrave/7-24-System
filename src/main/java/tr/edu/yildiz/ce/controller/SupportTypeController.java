@@ -27,18 +27,6 @@ public class SupportTypeController {
 	@Autowired
 	private SupportTypeDAO supportTypeDAO;
 	
-	private String formSupportType(Model model, SupportTypeInfo supportTypeInfo) {
-		model.addAttribute("supportTypeForm", supportTypeInfo);
-
-		if (supportTypeInfo.getId() == null) {
-			model.addAttribute("formTitle", "Create Dept");
-		} else {
-			model.addAttribute("formTitle", "Edit Dept");
-		}
-
-		return "formDept";
-	}
-	
 	@RequestMapping(value = "/saveSupportType", method = RequestMethod.POST)
 	public String saveSupportType(Model model, //
 			@ModelAttribute("supportTypeForm") @Validated SupportTypeInfo supportTypeInfo, //
@@ -47,7 +35,8 @@ public class SupportTypeController {
 
 
 		if (result.hasErrors()) {
-			return this.formSupportType(model, supportTypeInfo);
+			model.addAttribute("supTypeMsg", "Eklenemedi.");
+			return "adminPage";
 		}
 		
 		String decodedToUTF8;
@@ -55,7 +44,7 @@ public class SupportTypeController {
 			decodedToUTF8 = new String(supportTypeInfo.getType().getBytes("ISO-8859-1"), "UTF-8");
 			supportTypeInfo.setType(decodedToUTF8);
 		} catch (UnsupportedEncodingException e) {
-			System.out.println("Dept name cannot converted.");
+			System.out.println("SupportType name cannot converted.");
 			e.printStackTrace();
 		}
 
@@ -63,7 +52,7 @@ public class SupportTypeController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("message", "Bölüm eklendi.");
+		redirectAttributes.addFlashAttribute("supTypeMsg", "Başarıyla eklendi.");
 
 //		return "redirect:/deptList";
 		return "redirect:/admin";

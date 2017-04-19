@@ -25,6 +25,9 @@
       		<th>ID</th>
       		<th>locinfo</th>
       		<th>Suptype</th>
+      		<th>Comp user</th>
+      		<th>Date</th>
+      		<th>Text</th>
       		<th>Action</th>
       	</tr>
       <c:forEach items="${complaintInfos }" var="data">
@@ -32,6 +35,8 @@
       		<td>${data.id }</td>
       		<td>${data.locationInfo.description }</td>
       		<td>${data.supportTypeInfo.type }</td>
+      		<td>${data.complaintTime }</td>
+      		<td>${data.complaintText }</td>
       		<td>Yönlendir Çöz</td>
       	</tr>
       </c:forEach>

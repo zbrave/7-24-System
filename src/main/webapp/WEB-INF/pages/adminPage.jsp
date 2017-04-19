@@ -17,12 +17,6 @@
 	<!--<link href="${styleCSS}" rel="stylesheet" />	-->
 	<title>${title}</title>
 </head>
-<script type="text/javascript">
-$(document).ready(function(){
-	$.get("${pageContext.request.contextPath}/getUserList", null, function (data) {
-        $("#userId").html(data);
-    });
-});</script>
 <body>
     <%@include file="navbar2.jsp" %>	
  
@@ -82,7 +76,6 @@ $(document).ready(function(){
       </div>
       
       <!-- SupportType -->
-      
       <div class="container">
       	<div class="row justify-content-center">
       		<div class="col-md-6 offset-md-3">
@@ -126,7 +119,12 @@ $(document).ready(function(){
 		
 		<label class="control-label">User</label>
 					 			
-   		<select id="userId" class="form-control" name="userId" ></select>
+   		<select id="userId" class="form-control" name="userId" >
+   		<option id="" value="">Kullanıcı seçin.</option>
+   		<c:forEach items="${userInfos }" var="data">
+        	<option id="${data.id }" value="${data.id }">${data.username }</option>
+        </c:forEach>
+        </select>
     
     	<label class="control-label">Role</label>
                        
@@ -141,8 +139,8 @@ $(document).ready(function(){
         
         <button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
 			        
-        <c:if test="${not empty message5}">
-		   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${message5}
+        <c:if test="${not empty userRoleMsg}">
+		   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${userRoleMsg}
 		   </div>
 		</c:if> 
        </div>
@@ -161,6 +159,64 @@ $(document).ready(function(){
       	</tr>
       </c:forEach>
       </table>
+      
+      <!-- Supporter set -->
+      <form:form action="saveSupporter" method="POST" modelAttribute="supporterForm">
+	<div class="form-group">
+		<input id="id" name="id" type="hidden" value=""/>
+		
+		<label class="control-label">User</label>
+					 			
+   		<select id="userId" class="form-control" name="userId" >
+   		<option id="" value="">Kullanıcı seçin.</option>
+   		<c:forEach items="${userInfos }" var="data">
+        	<option id="${data.id }" value="${data.id }">${data.username }</option>
+        </c:forEach>
+        </select>
+    
+    	<label class="control-label">SupType</label>
+                       
+        <select id="supportTypeId" class="form-control" name="supportTypeId" >
+        <option id="" value="">Destek tipi seçin.</option>
+   		<c:forEach items="${supportTypeInfos }" var="data">
+        	<option id="${data.id }" value="${data.id }">${data.type }</option>
+        </c:forEach>
+        </select>
+          
+        <label class="control-label">Loc</label>
+                       
+        <select id="locationId" class="form-control" name="locationId" ><option id="" value="">Alt konum seçin.</option>
+   		<c:forEach items="${locationInfos }" var="data">
+        	<option id="${data.id }" value="${data.id }">${data.description }</option>
+        </c:forEach>
+        </select>
+        
+        <button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
+			        
+        <c:if test="${not empty supMsg}">
+		   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${supMsg}
+		   </div>
+		</c:if> 
+       </div>
+      </form:form>
+     <table>
+      	<tr>
+      		<th>ID</th>
+      		<th>User</th>
+      		<th>SupType</th>
+      		<th>Loc</th>
+      	</tr>
+      <c:forEach items="${supporterInfos }" var="data">
+      	<tr>
+      		<td>${data.id }</td>
+      		<td>${data.userInfo.username }</td>
+      		<td>${data.supportTypeInfo.type }</td>
+      		<td>${data.locationInfo.description }</td>
+      	</tr>
+      </c:forEach>
+      </table>
+      
+      
     <h3>Welcome : ${pageContext.request.userPrincipal.name}</h3>
  
     <b>This is protected page! Just admins can reach this page.</b>  

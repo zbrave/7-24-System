@@ -48,6 +48,11 @@
 						                Reason :  ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</a>
 								</div>
 						    </c:if>
+						    <c:if test="${not empty signupMsg}">
+							   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${signupMsg}
+							   </div>
+							</c:if>
+						    
 							<div class="field-wrap">
 								<label>
 									Eposta Adresi<span class="req">*</span>
@@ -76,6 +81,10 @@
 						                Reason :  ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</a>
 								</div>
 						    </c:if>
+						    <c:if test="${not empty signupMsg}">
+							   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${signupMsg}
+							   </div>
+							</c:if> 
 							
 							<div class="field-wrap">
 								<label>
@@ -89,20 +98,20 @@
 								<label>
 									Eposta Adresi<span class="req">*</span>
 								</label>
-								<input id="email" name='email' type='text' />
+								<input id="email" name='email' type='text' required />
 							</div>
 							
 							<div class="field-wrap">
 								<label>
 								Yeni şifre<span class="req">*</span>
 								</label>
-								<input type="password" id="password" name='password'/>
+								<input type="password" id="password" name='password' required/>
 							</div>
 							<div class="field-wrap">
 								<label>
 								Yeni şifre tekrar<span class="req">*</span>
 								</label>
-								<input id="passwordConf" name='passwordConf' type="password"/>
+								<input id="passwordConf" name='passwordConf' type="password" required/>
 							</div>
 							<button type="submit" name="go" class="button button-block">Kaydol</button>
 
