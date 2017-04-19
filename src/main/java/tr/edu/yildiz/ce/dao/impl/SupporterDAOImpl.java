@@ -57,9 +57,22 @@ public class SupporterDAOImpl implements SupporterDAO {
             supporter = new Supporter();
         }
         supporter.setId(supporterInfo.getId());
-        supporter.setUserId(supporterInfo.getUserInfo().getId());
-        supporter.setSupportTypeId(supporterInfo.getSupportTypeInfo().getId());
-        supporter.setLocationId(supporterInfo.getLocationInfo().getId());
+        if(supporterInfo.getUserInfo()!=null){
+        	supporter.setUserId(supporterInfo.getUserInfo().getId());
+        }else{
+        	supporter.setUserId(supporterInfo.getUserId());
+        }
+        if(supporterInfo.getSupportTypeInfo()!=null){
+        	supporter.setSupportTypeId(supporterInfo.getSupportTypeInfo().getId());
+        }else{
+        	supporter.setSupportTypeId(supporterInfo.getSupportTypeId());
+        }
+        
+        if(supporterInfo.getLocationInfo()!=null){
+        	supporter.setLocationId(supporterInfo.getLocationInfo().getId());
+        }else{
+        	supporter.setLocationId(supporterInfo.getLocationId());
+        }
  
         if (isNew) {
             Session session = this.sessionFactory.getCurrentSession();

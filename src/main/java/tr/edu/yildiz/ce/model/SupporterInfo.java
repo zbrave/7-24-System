@@ -5,6 +5,9 @@ public class SupporterInfo {
 	private UserInfo userInfo;
 	private SupportTypeInfo supportTypeInfo;
 	private LocationInfo locationInfo;
+	private Integer userId;
+	private Integer supportTypeId;
+	private Integer locationId;
 	
 	public SupporterInfo(){
 		
@@ -42,5 +45,23 @@ public class SupporterInfo {
 	}
 	public void setLocationInfo(LocationInfo locationInfo) {
 		this.locationInfo = locationInfo;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	public Integer getSupportTypeId() {
+		return supportTypeId;
+	}
+	public void setSupportTypeId(Integer supportTypeId) {
+		this.supportTypeId = supportTypeId;
+	}
+	public Integer getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Integer locationId) {
+		this.locationId = locationId;
 	}
 }

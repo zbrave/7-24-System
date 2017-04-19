@@ -4,6 +4,8 @@ public class NotificationInfo {
 	private Integer id;
 	private UserInfo userInfo;
 	private ComplaintInfo complaintInfo;
+	private Integer userId;
+	private Integer ComplaintId;
 	public NotificationInfo(){
 		
 	}
@@ -30,5 +32,17 @@ public class NotificationInfo {
 	}
 	public void setComplaintInfo(ComplaintInfo complaintInfo) {
 		this.complaintInfo = complaintInfo;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	public Integer getComplaintId() {
+		return ComplaintId;
+	}
+	public void setComplaintId(Integer complaintId) {
+		ComplaintId = complaintId;
 	}
 }

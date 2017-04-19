@@ -50,6 +50,8 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         userRole.setUserId(null);
         if(userRoleInfo.getUserInfo()!=null){
         	userRole.setUserId(userRoleInfo.getUserInfo().getId());
+        }else{
+        	userRole.setUserId(userRoleInfo.getUserId());
         }
         userRole.setRole(userRoleInfo.getRole());
  

@@ -19,12 +19,20 @@ public class ComplaintInfo{
 	private Date responseTime;
 	private String responseText;
 	private ComplaintInfo childInfo;
+	private boolean ended;
+	
+	private Integer locationId;
+	private Integer supportTypeId;
+	private Integer parentId;
+	private Integer complainantUserId;
+	private Integer supportUserId;
+	private Integer childId;
 	
 	public ComplaintInfo(){
 		
 	}
 	public ComplaintInfo(Integer id,LocationInfo locationInfo,SupportTypeInfo supportTypeInfo,ComplaintInfo parentInfo,UserInfo complainantUserInfo,Date complaintTime,
-			String complaintText,UserInfo supportUserInfo,Date responseTime,String responseText,ComplaintInfo childInfo){
+			String complaintText,UserInfo supportUserInfo,Date responseTime,String responseText,ComplaintInfo childInfo,boolean ended){
 		this.id=id;
 		this.locationInfo=locationInfo;
 		this.supportTypeInfo=supportTypeInfo;
@@ -36,6 +44,7 @@ public class ComplaintInfo{
 		this.responseTime=responseTime;
 		this.responseText=responseText;
 		this.childInfo=childInfo;
+		this.ended=ended;
 	}
 	
 	public Integer getId() {
@@ -114,4 +123,48 @@ public class ComplaintInfo{
 	public void setChildInfo(ComplaintInfo childInfo) {
 		this.childInfo = childInfo;
 	}
+	
+	public boolean isEnded() {
+		return ended;
+	}
+	public void setEnded(boolean ended) {
+		this.ended = ended;
+	}
+	public Integer getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Integer locationId) {
+		this.locationId = locationId;
+	}
+	public Integer getSupportTypeId() {
+		return supportTypeId;
+	}
+	public void setSupportTypeId(Integer supportTypeId) {
+		this.supportTypeId = supportTypeId;
+	}
+	public Integer getParentId() {
+		return parentId;
+	}
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+	public Integer getComplainantUserId() {
+		return complainantUserId;
+	}
+	public void setComplainantUserId(Integer complainantUserId) {
+		this.complainantUserId = complainantUserId;
+	}
+	public Integer getChildId() {
+		return childId;
+	}
+	public void setChildId(Integer childId) {
+		this.childId = childId;
+	}
+	public Integer getSupportUserId() {
+		return supportUserId;
+	}
+	public void setSupportUserId(Integer supportUserId) {
+		this.supportUserId = supportUserId;
+	}
+
 }

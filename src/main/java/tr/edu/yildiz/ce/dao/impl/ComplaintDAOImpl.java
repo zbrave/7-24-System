@@ -50,27 +50,38 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         complaint.setLocationId(null);
         if(complaintInfo.getLocationInfo()!=null){
         	complaint.setLocationId(complaintInfo.getLocationInfo().getId());
+        }else{
+        	complaint.setLocationId(complaintInfo.getLocationId());
         }
         complaint.setSupportTypeId(null);
         if(complaintInfo.getSupportTypeInfo()!=null){
         	complaint.setSupportTypeId(complaintInfo.getSupportTypeInfo().getId());
+        }else{
+        	complaint.setSupportTypeId(complaintInfo.getSupportTypeId());
         }
         complaint.setParentId(null);
         if(complaintInfo.getParentInfo()!=null){
         	complaint.setParentId(complaintInfo.getParentInfo().getId());
+        }else{
+        	complaint.setParentId(complaintInfo.getParentId());
         }
         complaint.setComplaintTime(complaintInfo.getComplaintTime());
         complaint.setComplaintText(complaintInfo.getComplaintText());
         complaint.setSupportUserId(null);
         if(complaintInfo.getSupportUserInfo()!=null){
         	complaint.setSupportUserId(complaintInfo.getSupportUserInfo().getId());
+        }else{
+        	complaint.setSupportUserId(complaintInfo.getSupportUserId());
         }
         complaint.setResponseTime(complaintInfo.getResponseTime());
         complaint.setResponseText(complaintInfo.getResponseText());
         complaint.setChildId(null);
         if(complaintInfo.getChildInfo()!=null){
         	complaint.setChildId(complaintInfo.getChildInfo().getId());
+        }else{
+        	complaint.setChildId(complaintInfo.getChildId());
         }
+        complaint.setEnded(complaintInfo.isEnded());
         if (isNew) {
             Session session = this.sessionFactory.getCurrentSession();
             session.persist(complaint);
@@ -87,7 +98,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         		supportTypeDAO.findSupportTypeInfo(complaint.getSupportTypeId()) , findComplaintInfo(complaint.getParentId()),
         		userDAO.findUserInfo(complaint.getComplainantUserId()),complaint.getComplaintTime(), complaint.getComplaintText(),
         		userDAO.findUserInfo(complaint.getSupportUserId()),complaint.getResponseTime(),complaint.getResponseText(),
-        		findComplaintInfo( complaint.getChildId() ) );
+        		findComplaintInfo( complaint.getChildId() ),complaint.isEnded() );
 	}
 
 	@Override
@@ -101,23 +112,27 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	@Override
 	public void recordComplaint(Integer locationId, Integer supportTypeId, Integer complainantUserId,
 			String complaintText) {
+		//notifications
 		ComplaintInfo complaintInfo = new ComplaintInfo();
 		complaintInfo.setLocationInfo(locationDAO.findLocationInfo(locationId));
 		complaintInfo.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(supportTypeId));
 		complaintInfo.setComplainantUserInfo(userDAO.findUserInfo(complainantUserId));
 		complaintInfo.setComplaintText(complaintText);
 		complaintInfo.setComplaintTime(new Date());
+		complaintInfo.setEnded(false);
 		saveComplaint(complaintInfo);
 	}
 
 	@Override
 	public void transferComplaint(Integer id, Integer supportUserId, String responseText, Integer newLocationId,
-		Integer newSupportTypeId, String newComplaintText) {
+		Integer newSupportTypeId, String newComplaintText,boolean ended) {
+		//notifications
 		Complaint complaint = this.findComplaint(id);
 		ComplaintInfo newComplaintInfo = new ComplaintInfo();
 		complaint.setSupportUserId(supportUserId);
 		complaint.setResponseText(responseText);
 		complaint.setResponseTime(new Date());
+		complaint.setEnded(ended);
 		newComplaintInfo.setParentInfo(findComplaintInfo(id));
 		newComplaintInfo.setLocationInfo(locationDAO.findLocationInfo(newLocationId));
 		newComplaintInfo.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(newSupportTypeId));
@@ -131,10 +146,24 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@Override
 	public void endComplaint(Integer id, Integer supportUserId, String responseText) {
+		//notifications
 		Complaint complaint = this.findComplaint(id);
 		complaint.setSupportUserId(supportUserId);
 		complaint.setResponseText(responseText);
 		complaint.setResponseTime(new Date());
+		complaint.setEnded(true);
+		if(complaint.getParentId()!=null){
+			ComplaintInfo notComplete = findComplaintInfo(complaint.getParentId());
+			while( notComplete.getParentInfo()!=null && notComplete.isEnded()==true ){
+				notComplete = notComplete.getParentInfo();
+			}
+			if(notComplete.isEnded()==false){
+				transferComplaint(id, supportUserId, responseText,notComplete.getLocationInfo().getId(),
+						notComplete.getSupportTypeInfo().getId(), notComplete.getComplaintText(),true);
+			}
+				
+		}
+				
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public interface ComplaintDAO {
     public void deleteComplaint (Integer id);
     
     public void recordComplaint (Integer locationId,Integer supportTypeId,Integer complainantUserId,String complaintText);
-    public void transferComplaint (Integer id,Integer supportUserId,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText);
+    public void transferComplaint (Integer id,Integer supportUserId,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended);
     public void endComplaint(Integer id,Integer supportUserId,String responseText);
     public void uniteComplaints(Integer id1,Integer id2);
     public List<ComplaintInfo> listComplaintInfos (); 

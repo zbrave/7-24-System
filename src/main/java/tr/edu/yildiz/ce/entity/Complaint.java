@@ -27,7 +27,7 @@ public class Complaint {
 	private Date responseTime;
 	private String responseText;
 	private Integer childId;
-	
+	private boolean ended;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -119,6 +119,13 @@ public class Complaint {
 	}
 	public void setChildId(Integer childId) {
 		this.childId = childId;
+	}
+	@Column(name = "ended")
+	public boolean isEnded() {
+		return ended;
+	}
+	public void setEnded(boolean ended) {
+		this.ended = ended;
 	}
 	
 }

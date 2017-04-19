@@ -45,6 +45,10 @@ public class LocationDAOImpl implements LocationDAO {
 	    	 if(locationInfo.getParent().getId()!=locationInfo.getId()){
 		    	 location.setParentId(locationInfo.getParent().getId());
 	    	 }
+	     }else{
+	    	 if(locationInfo.getParentId()!=locationInfo.getId()){
+	    		 location.setParentId(locationInfo.getParentId());
+	    	 }
 	     }
 	 
 	     if (isNew) {

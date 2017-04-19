@@ -45,8 +45,16 @@ public class NotificationDAOImpl implements NotificationDAO {
 			notification = new Notification();
 		}
 		notification.setId(notificationInfo.getId());
-		notification.setUserId(notificationInfo.getUserInfo().getId());
-		notification.setComplaintId(notificationInfo.getComplaintInfo().getId());
+		if(notificationInfo.getUserInfo()!=null){
+			notification.setUserId(notificationInfo.getUserInfo().getId());
+		}else{
+			notification.setUserId(notificationInfo.getUserId());
+		}
+		if(notificationInfo.getComplaintInfo()!=null){
+			notification.setComplaintId(notificationInfo.getComplaintInfo().getId());
+		}else{
+			notification.setComplaintId(notificationInfo.getComplaintId());
+		}
         if (isNew) {
             Session session = this.sessionFactory.getCurrentSession();
             session.persist(notification);
