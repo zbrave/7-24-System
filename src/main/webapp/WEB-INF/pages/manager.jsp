@@ -30,8 +30,8 @@
       <c:forEach items="${complaintInfos }" var="data">
       	<tr>
       		<td>${data.id }</td>
-      		<td>${data.locationInfo }</td>
-      		<td>${data.supportTypeInfo }</td>
+      		<td>${data.locationInfo.description }</td>
+      		<td>${data.supportTypeInfo.type }</td>
       		<td>Yönlendir Çöz</td>
       	</tr>
       </c:forEach>
