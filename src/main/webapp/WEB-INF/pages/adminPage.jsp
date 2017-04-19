@@ -19,9 +19,6 @@
 </head>
 <script type="text/javascript">
 $(document).ready(function(){
-	$.get("${pageContext.request.contextPath}/getLocationList", null, function (data) {
-	        $("#parentId").html(data);
-	    });
 	$.get("${pageContext.request.contextPath}/getUserList", null, function (data) {
         $("#userId").html(data);
     });
@@ -31,7 +28,7 @@ $(document).ready(function(){
  
     <h2>Admin Page</h2>
  
- 	<!-- Location 
+ 	<!-- Location -->
  	<form:form action="saveLocation" method="POST" modelAttribute="locationForm">
 	<div class="form-group">
 		<input id="id" name="id" type="hidden" value=""/>
@@ -42,7 +39,12 @@ $(document).ready(function(){
     
     	<label class="control-label">Parent</label>
                        
-        <select id="parentId" class="form-control" name="parentId" ></select>
+        <select id="parentId" class="form-control" name="parentId" >
+        <option id="" value="">Alt konum seçin.</option>
+   		<c:forEach items="${locationInfos }" var="data">
+        	<option id="${data.id }" value="${data.id }">${data.description }</option>
+        </c:forEach>
+        </select>
           
         
         
@@ -53,36 +55,9 @@ $(document).ready(function(){
 		   </div>
 		</c:if> 
        </div>
-      </form:form>-->
+      </form:form>
       
-      <form:form action="saveLocation" method="POST"
-       modelAttribute="locationForm">
- 
-       <form:hidden path="id" />
- 
-       <table>
-           <tr>
-               <td>description</td>
-               <td><form:input path="description" /></td>
-               <td><form:errors path="description"
-                       class="error-message" /></td>      
-           </tr>
-           <tr>
-               <td>Gender</td>
-               <c:set var="parent" scope="page" value="${locationForm.parent.id }" />
-               <td><form:select path="parent">
-                       
-                   </form:select></td>
-               <td><form:errors path="parent" class="error-message" /></td>
-           </tr>
-           <tr>
-               <td>&nbsp;</td>
-               <td><input type="submit" value="Submit" />
-               </td>
-               <td>&nbsp;</td>
-           </tr>
-       </table>
-   </form:form>
+      
       <table>
       	<tr>
       		<th>ID</th>

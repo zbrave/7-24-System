@@ -32,7 +32,7 @@
 					 			
    		<select id="locationId" class="form-control" name="locationId" >
    		<c:forEach items="${locationInfos }" var="data">
-        	<option id="${data.id }">${data.description }</option>
+        	<option id="${data.id }" value="${data.id }">${data.description }</option>
         </c:forEach>
         </select>
     
@@ -40,7 +40,7 @@
                        
         <select id="supportTypeId" class="form-control" name="supportTypeId" >
         <c:forEach items="${supportTypeInfos }" var="data">
-        	<option id="${data.id }">${data.type }</option>
+        	<option id="${data.id }" value="${data.id }">${data.type }</option>
         </c:forEach>
         </select>
         

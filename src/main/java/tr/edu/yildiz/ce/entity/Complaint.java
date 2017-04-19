@@ -12,7 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "complaints")
+@Table(name = "complaint")
 public class Complaint {
 	private Integer id;
 	private Integer locationId;

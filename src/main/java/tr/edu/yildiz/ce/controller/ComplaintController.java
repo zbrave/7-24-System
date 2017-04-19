@@ -15,56 +15,45 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import tr.edu.yildiz.ce.dao.LocationDAO;
-import tr.edu.yildiz.ce.model.LocationInfo;
+import tr.edu.yildiz.ce.dao.ComplaintDAO;
+import tr.edu.yildiz.ce.model.ComplaintInfo;
 
 @Controller
 //Enable Hibernate Transaction.
 @Transactional
 //Need To use RedirectAttributes
 @EnableWebMvc
-public class LocationController {
-	
+public class ComplaintController {
+
 	@Autowired
-	private LocationDAO locationDAO;
+	private ComplaintDAO complaintDAO;
 	
-	private String formLocation(Model model, LocationInfo locationInfo) {
-		model.addAttribute("locationForm", locationInfo);
-
-		if (locationInfo.getId() == null) {
-			model.addAttribute("formTitle", "Create Dept");
-		} else {
-			model.addAttribute("formTitle", "Edit Dept");
-		}
-
-		return "adminPage";
-	}
-	
-	@RequestMapping(value = "/saveLocation", method = RequestMethod.POST)
-	public String saveLocation(Model model, //
-			@ModelAttribute("locationForm") @Validated LocationInfo locationInfo, //
+	@RequestMapping(value = "/saveComplaint", method = RequestMethod.POST)
+	public String saveComplaint(Model model, //
+			@ModelAttribute("complaintForm") @Validated ComplaintInfo complaintInfo, //
 			BindingResult result, //
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			return this.formLocation(model, locationInfo);
+			model.addAttribute("message", "Error");
+			System.out.println("Hata!");
 		}
 		String decodedToUTF8;
 		try {
-			decodedToUTF8 = new String(locationInfo.getDescription().getBytes("ISO-8859-1"), "UTF-8");
-			locationInfo.setDescription(decodedToUTF8);
+			decodedToUTF8 = new String(complaintInfo.getComplaintText().getBytes("ISO-8859-1"), "UTF-8");
+			complaintInfo.setComplaintText(decodedToUTF8);
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("Dept name cannot converted.");
 			e.printStackTrace();
 		}
-		
-		this.locationDAO.saveLocation(locationInfo);
+		System.out.println(complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getComplainantUserId()+" "+complaintInfo.getComplaintText());
+		this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText());
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
 		redirectAttributes.addFlashAttribute("message", "Bölüm eklendi.");
 
 //		return "redirect:/deptList";
-		return "redirect:/admin";
+		return "redirect:/userInfo";
 	}
 }
