@@ -35,7 +35,7 @@ public class ComplaintController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("message", "Error");
+			model.addAttribute("compMsg", "Hatalı giriş.");
 			System.out.println("Hata!");
 		}
 		String decodedToUTF8;
@@ -51,7 +51,7 @@ public class ComplaintController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("message", "Bölüm eklendi.");
+		redirectAttributes.addFlashAttribute("compMsg", "Şikayet gönderildi.");
 
 //		return "redirect:/deptList";
 		return "redirect:/userInfo";

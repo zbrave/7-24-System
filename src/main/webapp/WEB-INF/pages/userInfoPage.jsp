@@ -56,8 +56,8 @@
         
         <button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
 			        
-        <c:if test="${not empty message5}">
-		   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${message5}
+        <c:if test="${not empty compMsg}">
+		   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsg}
 		   </div>
 		</c:if> 
        </div>

@@ -40,7 +40,7 @@ public class UserController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("message", "Error");
+			model.addAttribute("signupMsg", "Hatalı giriş!");
 			System.out.println("Hata!");
 		}
 		String decodedToUTF8;
@@ -48,18 +48,18 @@ public class UserController {
 			decodedToUTF8 = new String(userInfo.getUsername().getBytes("ISO-8859-1"), "UTF-8");
 			userInfo.setUsername(decodedToUTF8);
 		} catch (UnsupportedEncodingException e) {
-			System.out.println("Dept name cannot converted.");
+			System.out.println("Username cannot converted.");
 			e.printStackTrace();
 		}
 		if (!userInfo.getPassword().equals(userInfo.getPasswordConf())) {
-			model.addAttribute("message", "Parola eşleşmedi.");
+			model.addAttribute("signupMsg", "Parola eşleşmedi.");
 			System.out.println("Parola eşleşmedi.");
-			return "redirect:/login";
+			return "loginPage";
 		}
 		if (this.userDAO.findLoginUser(userInfo.getUsername()) != null) {
-			model.addAttribute("message", "Kullanıcı mevcut.");
+			model.addAttribute("signupMsg", "Kullanıcı mevcut.");
 			System.out.println("Kullanıcı mevcut.");
-			return "redirect:/login";
+			return "loginPage";
 		}
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		userInfo.setPassword(encoder.encode(userInfo.getPassword()));
@@ -68,7 +68,7 @@ public class UserController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("message", "Bölüm eklendi.");
+		redirectAttributes.addFlashAttribute("signupMsg", "Kullanıcı eklendi.");
 
 //		return "redirect:/deptList";
 		return "redirect:/login";

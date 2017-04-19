@@ -16,11 +16,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
+import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
+import tr.edu.yildiz.ce.model.SupporterInfo;
 import tr.edu.yildiz.ce.model.UserInfo;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
 
@@ -39,6 +41,9 @@ public class MainController {
 	
 	@Autowired
 	private SupportTypeDAO supportTypeDAO;
+	
+	@Autowired
+	private SupporterDAO supporterDAO;
 	
 	@Autowired
 	private UserDAO userDAO;
@@ -63,6 +68,11 @@ public class MainController {
 		model.addAttribute("supportTypeInfos", list2);
 		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfos();
 		model.addAttribute("userRoleInfos", list3);
+		List<SupporterInfo> list4 = supporterDAO.listSupporterInfos();
+		model.addAttribute("supporterInfos", list4);
+		List<UserInfo> list5 = userDAO.listUserInfos();
+		model.addAttribute("userInfos", list5);
+		System.out.println(list.size()+"x"+list2.size()+"x"+list3.size()+"x"+list4.size());
 		LocationInfo mod = new LocationInfo();
 		model.addAttribute("locationForm", mod);
 		return "adminPage";

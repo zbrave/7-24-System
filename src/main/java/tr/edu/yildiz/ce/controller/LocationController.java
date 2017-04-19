@@ -28,18 +28,6 @@ public class LocationController {
 	@Autowired
 	private LocationDAO locationDAO;
 	
-	private String formLocation(Model model, LocationInfo locationInfo) {
-		model.addAttribute("locationForm", locationInfo);
-
-		if (locationInfo.getId() == null) {
-			model.addAttribute("formTitle", "Create Dept");
-		} else {
-			model.addAttribute("formTitle", "Edit Dept");
-		}
-
-		return "adminPage";
-	}
-	
 	@RequestMapping(value = "/saveLocation", method = RequestMethod.POST)
 	public String saveLocation(Model model, //
 			@ModelAttribute("locationForm") @Validated LocationInfo locationInfo, //
@@ -47,14 +35,15 @@ public class LocationController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			return this.formLocation(model, locationInfo);
+			model.addAttribute("locMsg", "Eklenemedi.");
+			return "adminPage";
 		}
 		String decodedToUTF8;
 		try {
 			decodedToUTF8 = new String(locationInfo.getDescription().getBytes("ISO-8859-1"), "UTF-8");
 			locationInfo.setDescription(decodedToUTF8);
 		} catch (UnsupportedEncodingException e) {
-			System.out.println("Dept name cannot converted.");
+			System.out.println("Location name cannot converted.");
 			e.printStackTrace();
 		}
 		
@@ -62,7 +51,7 @@ public class LocationController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("message", "Bölüm eklendi.");
+		redirectAttributes.addFlashAttribute("locMsg", "Başarıyla eklendi.");
 
 //		return "redirect:/deptList";
 		return "redirect:/admin";
