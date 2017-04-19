@@ -12,8 +12,6 @@ import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
-import tr.edu.yildiz.ce.model.SupportTypeInfo;
-import tr.edu.yildiz.ce.entity.SupportType;
 import tr.edu.yildiz.ce.entity.Supporter;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 
@@ -102,24 +100,23 @@ public class SupporterDAOImpl implements SupporterDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SupportTypeInfo> getSupportTypes(Integer userId) {
+	public List<SupporterInfo> listSupporterInfos() {
         Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(SupportType.class);
-        crit.add(Restrictions.eq("userId", userId));
-        List<SupportType> supportTypes=(List<SupportType>) crit.list();
-        List<SupportTypeInfo> supportTypeInfos= new ArrayList<SupportTypeInfo>();
-        for(SupportType s:supportTypes){
-        	supportTypeInfos.add(supportTypeDAO.findSupportTypeInfo(s.getId()));
+        Criteria crit = session.createCriteria(Supporter.class);
+        List<Supporter> supporters=(List<Supporter>) crit.list();
+        List<SupporterInfo> supporterInfos= new ArrayList<SupporterInfo>();
+        for(Supporter s: supporters){
+        	supporterInfos.add((SupporterInfo)findSupporterInfo(s.getId()));
         }
-        return supportTypeInfos;
-		
+        return supporterInfos;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SupporterInfo> listSupporterInfos() {
+	public List<SupporterInfo> listSupporterInfosById(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Supporter.class);
+        crit.add(Restrictions.eq("userId", userId));
         List<Supporter> supporters=(List<Supporter>) crit.list();
         List<SupporterInfo> supporterInfos= new ArrayList<SupporterInfo>();
         for(Supporter s: supporters){

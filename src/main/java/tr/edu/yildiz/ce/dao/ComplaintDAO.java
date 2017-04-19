@@ -16,4 +16,5 @@ public interface ComplaintDAO {
     public void endComplaint(Integer id,Integer supportUserId,String responseText);
     public void uniteComplaints(Integer id1,Integer id2);
     public List<ComplaintInfo> listComplaintInfos (); 
+    public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId);
 }

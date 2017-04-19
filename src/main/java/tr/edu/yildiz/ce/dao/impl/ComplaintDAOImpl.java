@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
+import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Complaint;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
+import tr.edu.yildiz.ce.model.SupporterInfo;
 
 public class ComplaintDAOImpl implements ComplaintDAO {
 	@Autowired
@@ -26,6 +28,8 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	private SupportTypeDAO supportTypeDAO;
 	@Autowired
 	private UserDAO userDAO;	
+	@Autowired
+	private SupporterDAO supporterDAO;
 	@Override
 	public Complaint findComplaint(Integer id) {
         Session session = sessionFactory.getCurrentSession();
@@ -198,4 +202,24 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
         return complaintInfos;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId) {
+        Session session = sessionFactory.getCurrentSession();
+		List<SupporterInfo> supporterInfos = supporterDAO.listSupporterInfosById(userId);
+		List<Complaint> complaints = new ArrayList<Complaint>(); 
+		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
+		for(SupporterInfo s:supporterInfos){
+	        Criteria crit = session.createCriteria(Complaint.class);
+	        crit.add(Restrictions.eq("supportTypeId",s.getSupportTypeInfo().getId()));
+	        crit.add(Restrictions.eq("locationId",s.getLocationInfo().getId()));
+	        complaints.addAll((List<Complaint>)crit.list());
+		}
+        for(Complaint c:complaints){
+        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        }
+        return complaintInfos;
+	}
+	
 }
