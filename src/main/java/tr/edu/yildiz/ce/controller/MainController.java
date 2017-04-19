@@ -51,7 +51,7 @@ public class MainController {
 	
 	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
 	public String welcomePage(Model model) {
-		model.addAttribute("title", "İntibak Yönetim Sistemi");
+		model.addAttribute("title", "7-24 Servisi Sistemi");
 		return "welcomePage";
 	}
 
@@ -71,7 +71,7 @@ public class MainController {
 	@RequestMapping(value="/getLocationList",method = RequestMethod.GET, produces = "text/plain; charset=UTF-8")
 	@ResponseBody
 	public String getLocationList() {
-		String res = "<option id= value=>Üst konum seçin.</option>";
+		String res = "<option id= value=>Alt konum seçin.</option>";
 		List<LocationInfo> list = locationDAO.listLocationInfos();
 		for (LocationInfo tmp : list) {
 			res = res.concat("<option "+"id="+tmp.getId()+" value="+tmp.getId()+">"+tmp.getDescription()+"</option>");
