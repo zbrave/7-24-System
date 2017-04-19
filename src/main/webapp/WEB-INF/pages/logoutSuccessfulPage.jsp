@@ -20,6 +20,6 @@
 <body>
     <h1>Çıkış yapıldı!</h1>
     <h1>Giriş sayfasına yönlendiriliyorsunuz...</h1>
-	<p align="center"><a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/login" role="button">Giriş sayfa</a></p>
+	<p align="center"><a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}" role="button">Giriş sayfa</a></p>
 </body>
 </html>
