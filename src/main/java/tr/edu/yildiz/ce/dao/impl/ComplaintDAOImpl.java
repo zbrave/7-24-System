@@ -75,6 +75,14 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
         complaint.setResponseTime(complaintInfo.getResponseTime());
         complaint.setResponseText(complaintInfo.getResponseText());
+        
+        complaint.setComplainantUserId(null);
+        if(complaintInfo.getComplainantUserInfo()!=null){
+        	complaint.setComplainantUserId(complaintInfo.getComplainantUserInfo().getId());
+        }else{
+        	complaint.setComplainantUserId( complaintInfo.getComplainantUserId() );
+        }
+
         complaint.setChildId(null);
         if(complaintInfo.getChildInfo()!=null){
         	complaint.setChildId(complaintInfo.getChildInfo().getId());
