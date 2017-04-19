@@ -2,6 +2,7 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,7 +68,7 @@
 					
 					<div id="signup">   
 						<h1>Kullanıcı Kayıt</h1>
-				  		<form method="post" action="${pageContext.request.contextPath}/j_spring_security_check" role="signup" method='POST'>
+				  		<form method="post" action="${pageContext.request.contextPath}/saveUser" role="signup" method='POST'>
 								  <!-- /signup?error=true -->
 						     <c:if test="${param.error == 'true'}">
 						        <div class="alert alert-danger" role="alert">
@@ -75,26 +76,20 @@
 						                Reason :  ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</a>
 								</div>
 						    </c:if>
-							 <div class="top-row">
-								<div class="field-wrap">
-									<label>
-										İsim<span class="req">*</span>
-									</label>
-									<input type="text" errorContainer="İsminizi Yaziniz" required autocomplete="off" />
-								</div>
-								<div class="field-wrap">
-									<label>
-										Soyisim<span class="req">*</span>
-									</label>
-									<input type="text"required autocomplete="off"/>
-								</div>
+							
+							<div class="field-wrap">
+								<label>
+									İsim<span class="req">*</span>
+								</label>
+								<input id="username" name='username' type="text" errorContainer="İsminizi Yaziniz" required autocomplete="off" />
 							</div>
+							
 
 							<div class="field-wrap">
 								<label>
 									Eposta Adresi<span class="req">*</span>
 								</label>
-								<input type='text' id="username" name='username'/>
+								<input id="email" name='email' type='text' />
 							</div>
 							
 							<div class="field-wrap">
@@ -102,6 +97,12 @@
 								Yeni şifre<span class="req">*</span>
 								</label>
 								<input type="password" id="password" name='password'/>
+							</div>
+							<div class="field-wrap">
+								<label>
+								Yeni şifre tekrar<span class="req">*</span>
+								</label>
+								<input id="passwordConf" name='passwordConf' type="password"/>
 							</div>
 							<button type="submit" name="go" class="button button-block">Kaydol</button>
 

@@ -6,6 +6,7 @@ public class UserInfo {
 	private String email;
     private String username;
     private String password;
+    private String passwordConf;
     private boolean enabled;
 	
     public UserInfo() {
@@ -58,6 +59,14 @@ public class UserInfo {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getPasswordConf() {
+		return passwordConf;
+	}
+
+	public void setPasswordConf(String passwordConf) {
+		this.passwordConf = passwordConf;
 	}
      
     

@@ -105,16 +105,6 @@ public class MainController {
 	public String loginPage(Model model ) {
 		return "loginPage";
 	}
-	
-	@RequestMapping(value = "/supporter", method = RequestMethod.GET)
-	public String supporterPage(Model model ) {
-		
-		List<ComplaintInfo> list = complaintDAO.listComplaintInfos();
-		model.addAttribute("complaintInfos", list);
-		return "supporter";
-	}
-	
-	
 
 	@RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
 	public String logoutSuccessfulPage(Model model) {
