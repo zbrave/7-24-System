@@ -69,6 +69,7 @@
 							
 							
 							</br>
+					        <button type="submit" class="button button-block" value="Ekle" > Çöz</button>
 			        		</br>
 				        	<c:if test="${not empty compMsg}">
 						   		<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsg}
