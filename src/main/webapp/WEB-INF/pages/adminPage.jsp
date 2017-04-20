@@ -25,6 +25,9 @@
     <%@include file="navbar2.jsp" %>	
  	<link href="${tabStyleCSS}" rel="stylesheet" />
     <h2>Admin Page</h2>
+    
+  <div style="padding:50px;">
+    
  	<ul class="nav nav-tabs">
  		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').show(); $('#supporterSetTab').hide()">Kullanıcı Rolü Yönetimi</a></li>
   		<li role="presentation"><a href="#" onclick="$('#locationTab').show(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').hide()">Mekan Yönetimi</a></li>
@@ -294,6 +297,7 @@
     <h3>Welcome : ${pageContext.request.userPrincipal.name}</h3>
  
     <b>This is protected page! Just admins can reach this page.</b>  -->
+  </div>
 <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>
   	

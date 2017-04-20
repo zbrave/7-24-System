@@ -22,28 +22,36 @@
 </head>
 <body>
 	<%@include file="navbar2.jsp" %>	
-    
-    <table>
-      	<tr>
-      		<th>ID</th>
-      		<th>locinfo</th>
-      		<th>Suptype</th>
-      		<th>Comp user</th>
-      		<th>Date</th>
-      		<th>Text</th>
-      		<th>Action</th>
-      	</tr>
-      <c:forEach items="${complaintInfos }" var="data">
-      	<tr>
-      		<td>${data.id }</td>
-      		<td>${data.locationInfo.description }</td>
-      		<td>${data.supportTypeInfo.type }</td>
-      		<td>${data.complaintTime }</td>
-      		<td>${data.complaintText }</td>
-      		<td>Yönlendir Çöz</td>
-      	</tr>
-      </c:forEach>
-      </table>
+    <h2>Supporter Page</h2>
+    <div style="padding: 50px;">
+    <div class="panel panel-default">
+      	<div class="panel-heading">Şikayetler</div>
+      	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
+	      	<tr>
+		      	<th style="width: 8%;">ID</th>
+		      	<th style="width: 12%;">Konum</th>
+		      	<th style="width: 12%;">Şikayet türü</th>
+		      	<th style="width: 12%;">Şikayet eden</th>
+		      	<th style="width: 8%;">Tarih</th>
+		      	<th style="width: 35%;">Açıklama</th>
+		      	<th style="width: 10%;">Eylem</th>
+		    </tr>
+      		<c:forEach items="${complaintInfos }" var="data">
+      			<tr>
+      				<td>${data.id }</td>
+			      	<td>${data.locationInfo.description }</td>
+			      	<td>${data.supportTypeInfo.type }</td>
+			      	<td>${data.complaintTime }</td>
+			      	<td>${data.complaintText }</td>
+			      	<td>
+						<a class="btn btn-primary btn-xs" href="#" role="button">Çöz</a>
+						<a class="btn btn-danger btn-xs" href="#" role="button">Yönlendir</a>
+					</td>
+			    </tr>
+			</c:forEach>
+      	</table>
+   </div>
+   </div>
 <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>
 	
