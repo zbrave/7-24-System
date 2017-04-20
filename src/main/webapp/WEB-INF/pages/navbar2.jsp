@@ -13,29 +13,27 @@ $(document).ready(function(){
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="${pageContext.request.contextPath}/welcome">
       		<span class="glyphicon glyphicon-home"></span>
       		Ana Sayfa</a>
     </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <ul class="nav navbar-nav">
     	<li><a href="${pageContext.request.contextPath}/admin" >Admin page</a></li>
 		<li><a href="${pageContext.request.contextPath}/manager" >Manager page</a></li>
 		<li><a href="${pageContext.request.contextPath}/supporter" >Supporter page</a></li>
 		<li><a href="${pageContext.request.contextPath}/userInfo" >UserInfo page</a></li>
     </ul>
-	<c:if test="${pageContext.request.userPrincipal.name != null}">
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	 <c:if test="${pageContext.request.userPrincipal.name != null}">
 			<c:forEach var="role" items="${pageContext['request'].userPrincipal.principal.authorities}">
 	    		
 	    		<c:if test="${role.authority == 'ROLE_USER'}">
 					<ul class="nav navbar-nav">
-						<li><a href="#tableInfo" data-toggle="collapse">İşlem geçmişim</a></li>
+						<li><a href="#" data-toggle="collapse">İşlem geçmişim</a></li>
 					</ul>
 	      			<ul class="nav navbar-nav">
-	        			<li><a href="#newComplaint" data-toggle="collapse">Şikayet Oluştur</a></li>
+	        			<li><a href="#" data-toggle="collapse">Şikayet Oluştur</a></li>
 	      			</ul>
 				</c:if>
 				
@@ -80,7 +78,8 @@ $(document).ready(function(){
 				</c:if>
 				
 			</c:forEach>
-			
+	</c:if>
+		
 	      	<ul class="nav navbar-nav navbar-right">
 	        	<li class="dropdown">
 	          		<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -100,8 +99,7 @@ $(document).ready(function(){
 	          		</ul>
 	        	</li>
 	      	</ul>
-	     </div>
-	    </c:if>	 
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+	     
+	    </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
 </nav>

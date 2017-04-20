@@ -9,9 +9,8 @@
 	<spring:url value="/resources/css/bootstrap-theme.min.css" var="bootstrapThemeCSS" />
 	<spring:url value="/resources/css/style.css" var="styleCSS" />
 	<spring:url value="/resources/js/bootstrap.min.js" var="bootstrapJS" />
-	<spring:url value="/resources/js/jquery.js" var="jqueryJS" />
+	<spring:url value="/resources/js/jquery.min.js" var="jqueryJS" />
 	<spring:url value="/resources/ico724.png" var="ico" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 	<link href="${bootstrapCSS}" rel="stylesheet" />
 	<link href="${bootstrapThemeCSS}" rel="stylesheet" />

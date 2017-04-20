@@ -187,18 +187,17 @@ header{
 			clear: left;
 			text-align: center;
 		}
-	footer {
+footer {
     position: fixed;
-    padding: 1em;
 	color: black;
-	bottom: -10px;
+	bottom: -1px;
     width: 100%;
 	background: rgba(255, 255, 255, 0.5);
 	clear: left;
 	text-align: center;
 }
 		
-		h1.headerText {
+h1.headerText {
 			font-size: 50px;
 			color: red;
 			-webkit-animation-name: animate; /* Safari 4.0 - 8.0 */
