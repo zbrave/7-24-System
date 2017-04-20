@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Notification {
 	private Integer id;
 	private Integer userId;
-	private Integer ComplaintId;
+	private Integer complaintId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +34,10 @@ public class Notification {
 	
 	@Column(name = "complaint_id")
 	public Integer getComplaintId() {
-		return ComplaintId;
+		return complaintId;
 	}
 	public void setComplaintId(Integer complaintId) {
-		ComplaintId = complaintId;
+		this.complaintId = complaintId;
 	}
 	
 	

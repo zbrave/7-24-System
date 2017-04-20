@@ -5,7 +5,7 @@ public class NotificationInfo {
 	private UserInfo userInfo;
 	private ComplaintInfo complaintInfo;
 	private Integer userId;
-	private Integer ComplaintId;
+	private Integer complaintId;
 	public NotificationInfo(){
 		
 	}
@@ -40,9 +40,9 @@ public class NotificationInfo {
 		this.userId = userId;
 	}
 	public Integer getComplaintId() {
-		return ComplaintId;
+		return complaintId;
 	}
 	public void setComplaintId(Integer complaintId) {
-		ComplaintId = complaintId;
+		this.complaintId = complaintId;
 	}
 }

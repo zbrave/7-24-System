@@ -11,4 +11,5 @@ public interface NotificationDAO {
     public NotificationInfo findNotificationInfo (Integer id);  
     public void deleteNotification (Integer id);
     public List<NotificationInfo> listNotificationInfos ();
+    public List<NotificationInfo> listNotificationInfosForComplaint (Integer complaintId);
 }

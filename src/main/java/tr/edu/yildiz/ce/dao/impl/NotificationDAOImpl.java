@@ -92,4 +92,18 @@ public class NotificationDAOImpl implements NotificationDAO {
         return notificationInfos;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<NotificationInfo> listNotificationInfosForComplaint(Integer complaintId) {
+		Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Notification.class);
+        crit.add(Restrictions.eq("complaintId",complaintId));
+        List<Notification> notifications =(List<Notification>)crit.list();
+        List<NotificationInfo> notificationInfos =new ArrayList<NotificationInfo>();
+        for(Notification n:notifications){
+        	notificationInfos.add((NotificationInfo)findNotificationInfo(n.getId()));
+        }
+        return notificationInfos;
+	}
+
 }
