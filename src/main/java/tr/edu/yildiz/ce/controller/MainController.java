@@ -64,8 +64,6 @@ public class MainController {
 	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
 	public String welcomePage(Model model) {
 		model.addAttribute("title", "7-24 Servisi Sistemi");
-		System.out.println("mail goes");
-		mailSend.sendSimpleMessage("mertaydar@outlook.com", "konu", "hello world");
 		return "welcomePage";
 	}
 

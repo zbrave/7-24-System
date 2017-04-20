@@ -23,6 +23,10 @@
 <body>
 	<%@include file="navbar2.jsp" %>	
     <h2>Supporter Page</h2>
+    <c:if test="${not empty compMsg}">
+   		<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsg}
+   		</div>
+	</c:if>
     <div style="padding: 50px;">
     <div class="panel panel-default">
       	<div class="panel-heading">Şikayetler</div>
@@ -30,7 +34,7 @@
 	      	<tr>
 		      	<th style="width: 8%;">ID</th>
 		      	<th style="width: 12%;">Konum</th>
-		      	<th style="width: 12%;">Şikayet türü</th>
+		      	<th style="width: 12%;">Şikayet tipi</th>
 		      	<th style="width: 12%;">Şikayet eden</th>
 		      	<th style="width: 8%;">Tarih</th>
 		      	<th style="width: 35%;">Açıklama</th>
@@ -41,11 +45,12 @@
       				<td>${data.id }</td>
 			      	<td>${data.locationInfo.description }</td>
 			      	<td>${data.supportTypeInfo.type }</td>
+			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
 			      	<td>
-						<a class="btn btn-primary btn-xs" href="#" role="button">Çöz</a>
-						<a class="btn btn-danger btn-xs" href="#" role="button">Yönlendir</a>
+						<a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/endComplaint?id=${data.id }" role="button">Çöz</a>
+						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/transferComplaint?id=${data.id }" role="button">Yönlendir</a>
 					</td>
 			    </tr>
 			</c:forEach>
