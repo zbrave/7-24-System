@@ -22,7 +22,7 @@ public class UserDAOImpl implements UserDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
+	
 	public User findUser(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(User.class);
@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
         return (User) crit.uniqueResult();
 	}
 
-	@Override
+	
 	public void saveUser(UserInfo userInfo) {
 		Integer id = userInfo.getId();
 		User user = null;
@@ -53,7 +53,7 @@ public class UserDAOImpl implements UserDAO {
 	    }
 	}
 
-	@Override
+	
 	public UserInfo findUserInfo(Integer id) {
 		User user = this.findUser(id);
 		if(user==null){
@@ -62,7 +62,7 @@ public class UserDAOImpl implements UserDAO {
 		return new UserInfo(user.getId(),user.getEmail(),user.getUsername(),user.getPassword(),user.isEnabled());
 	}
 
-	@Override
+	
 	public void deleteUser(Integer id) {
 		User user = this.findUser(id);
 		if(user!=null){
@@ -71,7 +71,7 @@ public class UserDAOImpl implements UserDAO {
 		
 	}
 
-	@Override
+	
 	public User findLoginUser(String username) {
     	Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(User.class);
@@ -79,7 +79,7 @@ public class UserDAOImpl implements UserDAO {
         return (User) crit.uniqueResult();
 	}
 
-	@Override
+	
 	public UserInfo findLoginUserInfo(String username) {
 		User user = this.findLoginUser(username);
         if (user == null) {
@@ -89,7 +89,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	
 	public List<UserInfo> listUserInfos() {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(User.class);

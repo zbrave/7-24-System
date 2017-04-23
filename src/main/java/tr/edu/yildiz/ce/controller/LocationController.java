@@ -35,8 +35,8 @@ public class LocationController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("locMsg", "Eklenemedi.");
-			return "adminPage";
+			model.addAttribute("locMsgError", "Eklenemedi.");
+			return "location";
 		}
 		String decodedToUTF8;
 		try {
@@ -51,9 +51,8 @@ public class LocationController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("locMsg", "Başarıyla eklendi.");
+		redirectAttributes.addFlashAttribute("locMsgSuccess", "Başarıyla eklendi.");
 
-//		return "redirect:/deptList";
-		return "redirect:/admin";
+		return "redirect:/locationEdit";
 	}
 }
