@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.entity.UserRole;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
@@ -20,8 +19,7 @@ import tr.edu.yildiz.ce.model.UserRoleInfo;
 @Transactional
 public class UserRoleDAOImpl implements UserRoleDAO {
 	
-	@Autowired
-	private UserDAO userDAO;
+
 	
 	@Autowired
     private SessionFactory sessionFactory;
@@ -47,12 +45,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
             userRole = new UserRole();
         }
         userRole.setId(userRoleInfo.getId());
-        userRole.setUserId(null);
-        if(userRoleInfo.getUserInfo()!=null){
-        	userRole.setUserId(userRoleInfo.getUserInfo().getId());
-        }else{
-        	userRole.setUserId(userRoleInfo.getUserId());
-        }
+        userRole.setUserId(userRoleInfo.getUserId());
         userRole.setRole(userRoleInfo.getRole());
  
         if (isNew) {
@@ -68,7 +61,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         if (userRole == null) {
             return null;
         }
-		return new UserRoleInfo(userRole.getId(),userDAO.findUserInfo(userRole.getUserId()),userRole.getRole());
+		return new UserRoleInfo(userRole.getId(),userRole.getUserId(),userRole.getRole());
 	}
 
 	@Override

@@ -6,44 +6,40 @@ import java.util.Date;
 
 public class ComplaintInfo{
 	private Integer id;
-	private LocationInfo locationInfo;
-	private SupportTypeInfo supportTypeInfo;
-	private ComplaintInfo parentInfo;
-	private UserInfo complainantUserInfo;
-
-	
-	private Date complaintTime;
-	private String complaintText;
-	
-	private UserInfo supportUserInfo;
-	private Date responseTime;
-	private String responseText;
-	private ComplaintInfo childInfo;
-	private boolean ended;
 	
 	private Integer locationId;
 	private Integer supportTypeId;
 	private Integer parentId;
 	private Integer complainantUserId;
+	
+	private Date complaintTime;
+	private String complaintText;
+	
 	private Integer supportUserId;
+	
+	private Date responseTime;
+	private String responseText;
+	
 	private Integer childId;
+	
+	private boolean ended;
 	
 	public ComplaintInfo(){
 		
 	}
-	public ComplaintInfo(Integer id,LocationInfo locationInfo,SupportTypeInfo supportTypeInfo,ComplaintInfo parentInfo,UserInfo complainantUserInfo,Date complaintTime,
-			String complaintText,UserInfo supportUserInfo,Date responseTime,String responseText,ComplaintInfo childInfo,boolean ended){
+	public ComplaintInfo(Integer id,Integer locationId,Integer supportTypeId,Integer parentId,Integer complainantUserId,Date complaintTime,
+			String complaintText,Integer supportUserId,Date responseTime,String responseText,Integer childId,boolean ended){
 		this.id=id;
-		this.locationInfo=locationInfo;
-		this.supportTypeInfo=supportTypeInfo;
-		this.parentInfo=parentInfo;
-		this.complainantUserInfo=complainantUserInfo;
+		this.locationId=locationId;
+		this.supportTypeId=supportTypeId;
+		this.parentId=parentId;
+		this.complainantUserId=complainantUserId;
 		this.complaintTime=complaintTime;
 		this.complaintText=complaintText;
-		this.supportUserInfo=supportUserInfo;
+		this.supportUserId=supportUserId;
 		this.responseTime=responseTime;
 		this.responseText=responseText;
-		this.childInfo=childInfo;
+		this.childId=childId;
 		this.ended=ended;
 	}
 	
@@ -54,32 +50,32 @@ public class ComplaintInfo{
 		this.id = id;
 	}
 	
-	public LocationInfo getLocationInfo() {
-		return locationInfo;
+	public Integer getLocationId() {
+		return locationId;
 	}
-	public void setLocationInfo(LocationInfo locationInfo) {
-		this.locationInfo = locationInfo;
-	}
-	
-	public SupportTypeInfo getSupportTypeInfo() {
-		return supportTypeInfo;
-	}
-	public void setSupportTypeInfo(SupportTypeInfo supportTypeInfo) {
-		this.supportTypeInfo = supportTypeInfo;
+	public void setLocationId(Integer locationId) {
+		this.locationId = locationId;
 	}
 	
-	public ComplaintInfo getParentInfo() {
-		return parentInfo;
+	public Integer getSupportTypeId() {
+		return supportTypeId;
 	}
-	public void setParentInfo(ComplaintInfo parentInfo) {
-		this.parentInfo = parentInfo;
+	public void setSupportTypeId(Integer supportTypeId) {
+		this.supportTypeId = supportTypeId;
 	}
 	
-	public UserInfo  getComplainantUserInfo() {
-		return complainantUserInfo;
+	public Integer getParentId() {
+		return parentId;
 	}
-	public void setComplainantUserInfo(UserInfo complainantUserInfo) {
-		this.complainantUserInfo = complainantUserInfo;
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+	
+	public Integer getComplainantUserId() {
+		return complainantUserId;
+	}
+	public void setComplainantUserId(Integer complainantUserId) {
+		this.complainantUserId = complainantUserId;
 	}
 	
 	public Date getComplaintTime() {
@@ -96,11 +92,12 @@ public class ComplaintInfo{
 		this.complaintText = complaintText;
 	}
 	
-	public UserInfo  getSupportUserInfo() {
-		return supportUserInfo;
+
+	public Integer getSupportUserId() {
+		return supportUserId;
 	}
-	public void setSupportUserInfo(UserInfo supportUserInfo) {
-		this.supportUserInfo = supportUserInfo;
+	public void setSupportUserId(Integer supportUserId) {
+		this.supportUserId = supportUserId;
 	}
 	
 	public Date getResponseTime() {
@@ -117,11 +114,11 @@ public class ComplaintInfo{
 		this.responseText = responseText;
 	}
 	
-	public ComplaintInfo getChildInfo() {
-		return childInfo;
+	public Integer getChildId() {
+		return childId;
 	}
-	public void setChildInfo(ComplaintInfo childInfo) {
-		this.childInfo = childInfo;
+	public void setChildId(Integer childId) {
+		this.childId = childId;
 	}
 	
 	public boolean isEnded() {
@@ -130,41 +127,10 @@ public class ComplaintInfo{
 	public void setEnded(boolean ended) {
 		this.ended = ended;
 	}
-	public Integer getLocationId() {
-		return locationId;
-	}
-	public void setLocationId(Integer locationId) {
-		this.locationId = locationId;
-	}
-	public Integer getSupportTypeId() {
-		return supportTypeId;
-	}
-	public void setSupportTypeId(Integer supportTypeId) {
-		this.supportTypeId = supportTypeId;
-	}
-	public Integer getParentId() {
-		return parentId;
-	}
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
-	}
-	public Integer getComplainantUserId() {
-		return complainantUserId;
-	}
-	public void setComplainantUserId(Integer complainantUserId) {
-		this.complainantUserId = complainantUserId;
-	}
-	public Integer getChildId() {
-		return childId;
-	}
-	public void setChildId(Integer childId) {
-		this.childId = childId;
-	}
-	public Integer getSupportUserId() {
-		return supportUserId;
-	}
-	public void setSupportUserId(Integer supportUserId) {
-		this.supportUserId = supportUserId;
-	}
+
+
+
+
+
 
 }

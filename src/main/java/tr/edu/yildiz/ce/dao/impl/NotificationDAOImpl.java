@@ -9,9 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.NotificationDAO;
-import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Notification;
 import tr.edu.yildiz.ce.model.NotificationInfo;
 
@@ -19,10 +17,6 @@ public class NotificationDAOImpl implements NotificationDAO {
 
 	@Autowired
 	private SessionFactory sessionFactory;
-	@Autowired
-	private ComplaintDAO complaintDAO;
-	@Autowired
-	private UserDAO userDAO;
 	
 	@Override
 	public Notification findNotification(Integer id) {
@@ -45,16 +39,9 @@ public class NotificationDAOImpl implements NotificationDAO {
 			notification = new Notification();
 		}
 		notification.setId(notificationInfo.getId());
-		if(notificationInfo.getUserInfo()!=null){
-			notification.setUserId(notificationInfo.getUserInfo().getId());
-		}else{
-			notification.setUserId(notificationInfo.getUserId());
-		}
-		if(notificationInfo.getComplaintInfo()!=null){
-			notification.setComplaintId(notificationInfo.getComplaintInfo().getId());
-		}else{
-			notification.setComplaintId(notificationInfo.getComplaintId());
-		}
+		notification.setUserId(notificationInfo.getUserId());
+		notification.setComplaintId(notificationInfo.getComplaintId());
+
         if (isNew) {
             Session session = this.sessionFactory.getCurrentSession();
             session.persist(notification);
@@ -67,7 +54,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 		if(notification==null){
 			 return null;
 		}
-		return new NotificationInfo(notification.getId() ,userDAO.findUserInfo(notification.getUserId()),complaintDAO.findComplaintInfo(notification.getComplaintId()));
+		return new NotificationInfo(notification.getId() ,notification.getUserId(),notification.getComplaintId());
 	}
 
 	@Override
