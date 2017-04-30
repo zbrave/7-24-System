@@ -86,7 +86,7 @@ public class LocationDAOImpl implements LocationDAO {
     
 	@SuppressWarnings("unchecked")
 	
-	public List<LocationInfo> findChilds(Integer id) {
+	public List<LocationInfo> findChildInfos(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Location.class);
         crit.add(Restrictions.eq("parentId", id));
@@ -109,6 +109,19 @@ public class LocationDAOImpl implements LocationDAO {
         	locationInfos.add((LocationInfo) findLocationInfo(l.getId()));
         }
         return locationInfos;
+	}
+
+
+	@Override
+	public List<LocationInfo> findLocationInfoTree(Integer id) {
+		List<LocationInfo> locationInfos= new ArrayList<LocationInfo>();
+		locationInfos.add(findLocationInfo(id));
+		int lenght=locationInfos.size();
+		for(int i=0;i<lenght;i++){
+			locationInfos.addAll( findChildInfos( locationInfos.get(i).getId() ) );
+			lenght=locationInfos.size();
+		}
+		return locationInfos;
 	}
 	
 

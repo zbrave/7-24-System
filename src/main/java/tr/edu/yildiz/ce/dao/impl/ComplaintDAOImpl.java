@@ -19,6 +19,7 @@ import tr.edu.yildiz.ce.dao.NotificationDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Complaint;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
+import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.NotificationInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 
@@ -241,15 +242,18 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         Session session = sessionFactory.getCurrentSession();
 		List<SupporterInfo> supporterInfos = supporterDAO.listSupporterInfosById(userId);
 		List<Complaint> complaints = new ArrayList<Complaint>(); 
-		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
+		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
 		for(SupporterInfo s:supporterInfos){
-	        Criteria crit = session.createCriteria(Complaint.class);
-	        crit.add(Restrictions.eq("supportTypeId", s.getSupportTypeId()));
-	        crit.add(Restrictions.eq("locationId", s.getLocationId()));
-	        crit.add(Restrictions.eq("ended",false));
-	        crit.add(Restrictions.isNull("childId"));
-	        
-	        complaints.addAll((List<Complaint>)crit.list());
+			List<LocationInfo> locationInfos =new ArrayList<LocationInfo>();
+			locationInfos.addAll(locationDAO.findLocationInfoTree(s.getLocationId()));
+			for(LocationInfo l:locationInfos){
+		        Criteria crit = session.createCriteria(Complaint.class);
+		        crit.add(Restrictions.eq("supportTypeId", s.getSupportTypeId()));
+		        crit.add(Restrictions.eq("locationId", l.getId()));
+		        crit.add(Restrictions.eq("ended",false));
+		        crit.add(Restrictions.isNull("childId"));
+		        complaints.addAll((List<Complaint>)crit.list());
+			}
 		}
         for(Complaint c:complaints){
         	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
