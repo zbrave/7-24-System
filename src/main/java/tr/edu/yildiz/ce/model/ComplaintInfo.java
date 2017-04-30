@@ -19,6 +19,7 @@ public class ComplaintInfo{
 	
 	private Date responseTime;
 	private String responseText;
+
 	
 	private Integer childId;
 	
@@ -27,6 +28,7 @@ public class ComplaintInfo{
 	public ComplaintInfo(){
 		
 	}
+
 	public ComplaintInfo(Integer id,Integer locationId,Integer supportTypeId,Integer parentId,Integer complainantUserId,Date complaintTime,
 			String complaintText,Integer supportUserId,Date responseTime,String responseText,Integer childId,boolean ended){
 		this.id=id;
@@ -120,7 +122,7 @@ public class ComplaintInfo{
 	public void setChildId(Integer childId) {
 		this.childId = childId;
 	}
-	
+
 	public boolean isEnded() {
 		return ended;
 	}

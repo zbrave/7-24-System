@@ -41,6 +41,7 @@
       				<td>${data.id }</td>
 			      	<td>${data.locationInfo.description }</td>
 			      	<td>${data.supportTypeInfo.type }</td>
+			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
 			      	<td>

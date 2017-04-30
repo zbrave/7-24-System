@@ -27,6 +27,11 @@
 	<h2>Erişim Hatası!</h2>
 	<h3>Bu işlemi yapmaya izniniz yok!</h3>
  	</br></br></br>
+ 	<p align="center">
+ 		<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/logout" role="button">
+ 			<span><i class="glyphicon glyphicon-log-out"></i> Çıkış yap</span>
+ 		</a>
+ 	</p>
     <h3 style="color:red;">${message}</h3>
 </body>
 </html>

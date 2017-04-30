@@ -18,7 +18,7 @@ public class LocationDAOImpl implements LocationDAO {
     @Autowired
     private SessionFactory sessionFactory;
     
-	@Override
+	
 	public Location findLocation(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Location.class);
@@ -26,7 +26,7 @@ public class LocationDAOImpl implements LocationDAO {
         return (Location) crit.uniqueResult();
 	}
 
-	@Override
+	
 	public void saveLocation(LocationInfo locationInfo) {
 		 Integer id = locationInfo.getId();
 	     Location location = null;
@@ -52,7 +52,7 @@ public class LocationDAOImpl implements LocationDAO {
 
 	}
 
-	@Override
+	
 	public LocationInfo findLocationInfo(Integer id) {
 		Location location = this.findLocation(id);
         if (location == null) {
@@ -61,7 +61,7 @@ public class LocationDAOImpl implements LocationDAO {
         return new LocationInfo(location.getId(), location.getDescription(),location.getParentId());
 	}
 
-	@Override
+	
 	public void deleteLocation(Integer id) {
 		Location location = this.findLocation(id);
         if (location != null) {
@@ -71,7 +71,7 @@ public class LocationDAOImpl implements LocationDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	
 	public List<LocationInfo> findParents() {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Location.class);
@@ -85,7 +85,7 @@ public class LocationDAOImpl implements LocationDAO {
 	}
     
 	@SuppressWarnings("unchecked")
-	@Override
+	
 	public List<LocationInfo> findChilds(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Location.class);
@@ -99,7 +99,7 @@ public class LocationDAOImpl implements LocationDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	
 	public List<LocationInfo> listLocationInfos() {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Location.class);

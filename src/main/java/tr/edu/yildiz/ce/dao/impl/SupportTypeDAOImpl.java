@@ -18,7 +18,7 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
 	@Autowired
     private SessionFactory sessionFactory;
 	
-	@Override
+	
 	public SupportType findSupportType(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(SupportType.class);
@@ -26,7 +26,7 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
         return (SupportType) crit.uniqueResult();
 	}
 
-	@Override
+	
 	public void saveSupportType(SupportTypeInfo supportTypeInfo) {
         Integer id = supportTypeInfo.getId();
         SupportType supportType = null;
@@ -48,7 +48,7 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
 
 	}
 
-	@Override
+	
 	public SupportTypeInfo findSupportTypeInfo(Integer id) {
 		SupportType supportType = this.findSupportType(id);
         if (supportType == null) {
@@ -57,7 +57,7 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
         return new SupportTypeInfo(supportType.getId(), supportType.getType() );
 	}
 
-	@Override
+	
 	public void deleteSupportType(Integer id) {
 		SupportType supportType = this.findSupportType(id);
         if (supportType != null) {
@@ -67,7 +67,7 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	
 	public List<SupportTypeInfo> listSupportTypeInfos() {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(SupportType.class);
