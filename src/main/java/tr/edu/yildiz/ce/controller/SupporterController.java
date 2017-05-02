@@ -53,17 +53,18 @@ public class SupporterController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("supMsg", "Hatalı giriş.");
+			model.addAttribute("supMsgError", "Hatalı giriş.");
 			System.out.println("Hata!");
+			return "supporterEditor";
 		}
 		
 		this.supporterDAO.saveSupporter(supporterInfo);
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("supMsg", "Destek birimi eklendi.");
+		redirectAttributes.addFlashAttribute("supMsgSuccess", "Destek birimi eklendi.");
 
 //		return "redirect:/deptList";
-		return "redirect:/admin";
+		return "redirect:/supporterEdit";
 	}
 }

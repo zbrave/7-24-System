@@ -53,7 +53,7 @@ public class ComplaintController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("compMsg", "Hatalı giriş.");
+			model.addAttribute("compMsgError", "Hatalı giriş.");
 			System.out.println("Hata!");
 		}
 		String decodedToUTF8;
@@ -69,10 +69,10 @@ public class ComplaintController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("compMsg", "Şikayet gönderildi.");
+		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet gönderildi.");
 
 //		return "redirect:/deptList";
-		return "redirect:/userInfo";
+		return "redirect:/complaint";
 	}
 	
 	@RequestMapping(value = "/endComplaint", method = RequestMethod.GET)

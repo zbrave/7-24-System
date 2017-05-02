@@ -85,6 +85,70 @@ public class MainController {
 		return "adminPage";
 	}
 	
+	@RequestMapping(value = "/supporterEdit", method = RequestMethod.GET)
+	public String supporterEditPage(Model model) {
+		
+		List<LocationInfo> listLoc = locationDAO.listLocationInfos();
+		model.addAttribute("locationInfos", listLoc);
+		
+		List<SupporterInfo> list = supporterDAO.listSupporterInfos();
+		model.addAttribute("supporterInfos", list);
+		
+		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
+		model.addAttribute("supportTypeInfos", list2);
+		
+		List<UserInfo> list3 = userDAO.listUserInfos();
+		model.addAttribute("userInfos", list3);
+		
+		return "supporterEditor";
+	}
+	
+	@RequestMapping(value = "/supporterTypeEdit", method = RequestMethod.GET)
+	public String supporterTypeEditPage(Model model) {
+		
+		
+		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
+		model.addAttribute("supportTypeInfos", list2);
+		
+		return "supportTypeEditor";
+	}
+	
+	@RequestMapping(value = "/locationEdit", method = RequestMethod.GET)
+	public String locationEditPage(Model model) {
+		
+		List<LocationInfo> listLoc = locationDAO.listLocationInfos();
+		model.addAttribute("locationInfos", listLoc);
+		
+		return "location";
+	}
+	
+	@RequestMapping(value = "/userRoleEdit", method = RequestMethod.GET)
+	public String userRoleEditPage(Model model) {
+		
+		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfos();
+		model.addAttribute("userRoleInfos", list3);
+		
+		List<UserInfo> list5 = userDAO.listUserInfos();
+		model.addAttribute("userInfos", list5);
+		
+		return "userRoleEditPage";
+	}
+	
+	@RequestMapping(value = "/complaint", method = RequestMethod.GET)
+	public String complaintPage(Model model,Principal principal) {
+		
+		UserInfo user = userDAO.findLoginUserInfo(principal.getName());
+		model.addAttribute("userInfo", user);
+		
+		List<LocationInfo> list = locationDAO.listLocationInfos();
+		model.addAttribute("locationInfos", list);
+		
+		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
+		model.addAttribute("supportTypeInfos", list2);
+		
+		return "complaintPage";
+	}
+	
 	@RequestMapping(value="/getLocationList",method = RequestMethod.GET, produces = "text/plain; charset=UTF-8")
 	@ResponseBody
 	public String getLocationList() {

@@ -39,8 +39,8 @@ public class UserRoleController {
 			
 
 		if (result.hasErrors()) {
-			model.addAttribute("userRoleMsg", "Eklenemedi.");
-			return "adminPage";
+			model.addAttribute("userRoleMsgError", "Eklenemedi.");
+			return "userRoleEditPage";
 		}
 		System.out.println(userRoleInfo.getRole());
 		String decodedToUTF8;
@@ -56,9 +56,9 @@ public class UserRoleController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("userRoleMsg", "Başarıyla eklendi.");
+		redirectAttributes.addFlashAttribute("userRoleMsgSuccess", "Başarıyla eklendi.");
 
 //		return "redirect:/deptList";
-		return "redirect:/admin";
+		return "redirect:/userRoleEdit";
 	}
 }
