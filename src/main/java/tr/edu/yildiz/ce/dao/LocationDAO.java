@@ -12,7 +12,6 @@ public interface LocationDAO {
     public void deleteLocation (Integer id);
     
     public List<LocationInfo> findParents();
-    public List<LocationInfo> findChildInfos(Integer id);
+    public List<LocationInfo> findChilds(Integer id);
     public List<LocationInfo> listLocationInfos();
-	public List<LocationInfo> findLocationInfoTree(Integer id);
 }
