@@ -41,8 +41,14 @@ public class LocationDAOImpl implements LocationDAO {
 	     location.setId(locationInfo.getId());
 	     location.setDescription(locationInfo.getDescription());
 	     location.setParentId(null);
-	     if(locationInfo.getParentId()!=locationInfo.getId()){
-	    	 location.setParentId(locationInfo.getParentId());
+	     if(locationInfo.getParent()!=null){
+	    	 if(locationInfo.getParent().getId()!=locationInfo.getId()){
+		    	 location.setParentId(locationInfo.getParent().getId());
+	    	 }
+	     }else{
+	    	 if(locationInfo.getParentId()!=locationInfo.getId()){
+	    		 location.setParentId(locationInfo.getParentId());
+	    	 }
 	     }
 	 
 	     if (isNew) {
@@ -58,7 +64,7 @@ public class LocationDAOImpl implements LocationDAO {
         if (location == null) {
             return null;
         }
-        return new LocationInfo(location.getId(), location.getDescription(),location.getParentId());
+        return new LocationInfo(location.getId(), location.getDescription(), findLocationInfo( location.getParentId() ) );
 	}
 
 	

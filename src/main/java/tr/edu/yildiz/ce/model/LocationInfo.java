@@ -5,14 +5,15 @@ public class LocationInfo {
 	private Integer id;
 	private String description;
 	private Integer parentId;
+	private LocationInfo parent;
 	
 	public LocationInfo(){
 		
 	}
-	public LocationInfo(Integer id,String description,Integer parentId){
+	public LocationInfo(Integer id,String description,LocationInfo parent){
 		this.id=id;
 		this.description=description;
-		this.parentId=parentId;
+		this.parent=parent;
 	}	
 	
 	public Integer getId() {
@@ -28,7 +29,13 @@ public class LocationInfo {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
+	public LocationInfo getParent() {
+		return parent;
+	}
+	public void setParent(LocationInfo parent) {
+		this.parent = parent;
+	}
 	public Integer getParentId() {
 		return parentId;
 	}

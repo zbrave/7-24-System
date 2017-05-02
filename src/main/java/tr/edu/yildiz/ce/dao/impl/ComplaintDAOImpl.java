@@ -59,17 +59,48 @@ public class ComplaintDAOImpl implements ComplaintDAO {
             complaint = new Complaint();
         }
         complaint.setId(complaintInfo.getId());
-        complaint.setLocationId(complaintInfo.getLocationId());
-        complaint.setSupportTypeId(complaintInfo.getSupportTypeId());
-        complaint.setParentId(complaintInfo.getParentId());
-        complaint.setComplainantUserId( complaintInfo.getComplainantUserId() );
+        complaint.setLocationId(null);
+        if(complaintInfo.getLocationInfo()!=null){
+        	complaint.setLocationId(complaintInfo.getLocationInfo().getId());
+        }else{
+        	complaint.setLocationId(complaintInfo.getLocationId());
+        }
+        complaint.setSupportTypeId(null);
+        if(complaintInfo.getSupportTypeInfo()!=null){
+        	complaint.setSupportTypeId(complaintInfo.getSupportTypeInfo().getId());
+        }else{
+        	complaint.setSupportTypeId(complaintInfo.getSupportTypeId());
+        }
+        complaint.setParentId(null);
+        if(complaintInfo.getParentInfo()!=null){
+        	complaint.setParentId(complaintInfo.getParentInfo().getId());
+        }else{
+        	complaint.setParentId(complaintInfo.getParentId());
+        }
         complaint.setComplaintTime(complaintInfo.getComplaintTime());
         complaint.setComplaintText(complaintInfo.getComplaintText());
-        complaint.setSupportUserId(complaintInfo.getSupportUserId());
+        complaint.setSupportUserId(null);
+        if(complaintInfo.getSupportUserInfo()!=null){
+        	complaint.setSupportUserId(complaintInfo.getSupportUserInfo().getId());
+        }else{
+        	complaint.setSupportUserId(complaintInfo.getSupportUserId());
+        }
         complaint.setResponseTime(complaintInfo.getResponseTime());
         complaint.setResponseText(complaintInfo.getResponseText());
-        complaint.setChildId(complaintInfo.getChildId());
+        
+        complaint.setComplainantUserId(null);
+        if(complaintInfo.getComplainantUserInfo()!=null){
+        	complaint.setComplainantUserId(complaintInfo.getComplainantUserInfo().getId());
+        }else{
+        	complaint.setComplainantUserId( complaintInfo.getComplainantUserId() );
+        }
 
+        complaint.setChildId(null);
+        if(complaintInfo.getChildInfo()!=null){
+        	complaint.setChildId(complaintInfo.getChildInfo().getId());
+        }else{
+        	complaint.setChildId(complaintInfo.getChildId());
+        }
         complaint.setEnded(complaintInfo.isEnded());
         if (isNew){
             Session session = this.sessionFactory.getCurrentSession();
@@ -83,9 +114,11 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         if (complaint == null) {
             return null;
         }
-        return new ComplaintInfo(complaint.getId(), complaint.getLocationId() ,complaint.getSupportTypeId() ,complaint.getParentId(),
-        		complaint.getComplainantUserId(),complaint.getComplaintTime(), complaint.getComplaintText(),complaint.getSupportUserId(),
-        		complaint.getResponseTime(),complaint.getResponseText(),complaint.getChildId() ,complaint.isEnded() );
+        return new ComplaintInfo(complaint.getId(), locationDAO.findLocationInfo(complaint.getLocationId()) ,
+        		supportTypeDAO.findSupportTypeInfo(complaint.getSupportTypeId()) , findComplaintInfo(complaint.getParentId()),
+        		userDAO.findUserInfo(complaint.getComplainantUserId()),complaint.getComplaintTime(), complaint.getComplaintText(),
+        		userDAO.findUserInfo(complaint.getSupportUserId()),complaint.getResponseTime(),complaint.getResponseText(),
+        		findComplaintInfo( complaint.getChildId() ),complaint.isEnded() );
 	}
 
 	
@@ -101,15 +134,14 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 			String complaintText) {
 		//notifications
 		ComplaintInfo complaintInfo = new ComplaintInfo();
-		complaintInfo.setLocationId(locationId);
-		complaintInfo.setSupportTypeId(supportTypeId);
-		complaintInfo.setComplainantUserId(complainantUserId);
+		complaintInfo.setLocationInfo(locationDAO.findLocationInfo(locationId));
+		complaintInfo.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(supportTypeId));
+		complaintInfo.setComplainantUserInfo(userDAO.findUserInfo(complainantUserId));
 		complaintInfo.setComplaintText(complaintText);
 		Date dateNow =new Date();
 		complaintInfo.setComplaintTime(dateNow);
 		complaintInfo.setEnded(false);
 		saveComplaint(complaintInfo);
-		
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
         crit.add(Restrictions.eq("locationId", locationId));
@@ -124,12 +156,12 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		notificationDAO.saveNotification(notificationInfo);
 		complaintInfo=findComplaintInfo(complaint.getId());
 		
-		String to=userDAO.findUserInfo(complainantUserId).getEmail();
+		String to=complaintInfo.getComplainantUserInfo().getEmail();
 		String subject="Complaint Recorded";
-		String text="  Merhaba "+userDAO.findUserInfo(complainantUserId).getUsername()+",\n"+
-		"Location : "+locationDAO.findLocationInfo(locationId).getDescription()+",\n"+
-		"Support Type : "+supportTypeDAO.findSupportTypeInfo( supportTypeId).getType() + ",\n"+
-		"Complaint Text : "+complaintText+ ",\n"+
+		String text="  Merhaba "+complaintInfo.getComplainantUserInfo().getUsername()+",\n"+
+		"Location : "+complaintInfo.getLocationInfo().getDescription()+",\n"+
+		"Support Type : "+complaintInfo.getSupportTypeInfo().getType() + ",\n"+
+		"Complaint Text : "+complaintInfo.getComplaintText()+ ",\n"+
 		"Complaint Time : "+dateNow.toString()+ ",\n";
 		mailSend.sendSimpleMessage(to, subject, text);
 	}
@@ -146,18 +178,19 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		complaint.setResponseText(responseText);
 		complaint.setResponseTime(new Date());
 		complaint.setEnded(ended);
-		newComplaintInfo.setParentId(id);
-		newComplaintInfo.setLocationId(newLocationId);
-		newComplaintInfo.setSupportTypeId(newSupportTypeId);
-		newComplaintInfo.setComplainantUserId(supportUserId);
+		newComplaintInfo.setParentInfo(findComplaintInfo(id));
+		newComplaintInfo.setLocationInfo(locationDAO.findLocationInfo(newLocationId));
+		newComplaintInfo.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(newSupportTypeId));
+		newComplaintInfo.setComplainantUserInfo(userDAO.findUserInfo(supportUserId));
 		newComplaintInfo.setComplaintText(newComplaintText);
 		newComplaintInfo.setComplaintTime(new Date());
 		
 		saveComplaint(newComplaintInfo);
-		complaint.setChildId(findChildInfo(id).getId());
-		childComplaintId=findChildInfo(id).getId();
+		complaint.setChildId(findChild(id).getId());
+		childComplaintId=findChild(id).getId();
 		List<NotificationInfo> notificationInfos = notificationDAO.listNotificationInfosForComplaint(parentComplaintId);
 		for(NotificationInfo n : notificationInfos){
+			n.setComplaintInfo(null);
 			n.setComplaintId(childComplaintId);
 			notificationDAO.saveNotification(n);
 		}
@@ -175,8 +208,8 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		complaint.setEnded(true);
 		if(complaint.getParentId()!=null){
 			ComplaintInfo notComplete = findComplaintInfo(complaint.getParentId());
-			while( notComplete.getParentId()!=null && notComplete.isEnded()==true ){
-				notComplete =findComplaintInfo(notComplete.getParentId());
+			while( notComplete.getParentInfo()!=null && notComplete.isEnded()==true ){
+				notComplete = notComplete.getParentInfo();
 			}
 			if(notComplete.isEnded()==false){
 				notComplete.setEnded(true);
@@ -215,12 +248,11 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		}
 		deleteComplaint(delete);
 	}
-	public ComplaintInfo findChildInfo(Integer parentId){
+	public Complaint findChild(Integer parentId){
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
         crit.add(Restrictions.eq("parentId", parentId));
-        Complaint c=(Complaint)crit.uniqueResult();
-        return findComplaintInfo(c.getId());
+        return (Complaint) crit.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
