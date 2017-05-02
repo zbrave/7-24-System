@@ -24,11 +24,14 @@
   </repositories>
  
   <dependencies>
- 		<dependency>
-    <groupId>javax.validation</groupId>
-    <artifactId>validation-api</artifactId>
-    <version>1.0.0.GA</version>
-</dependency>
+		
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4.7</version>
+		</dependency>
+
+ 		
  		
       <!-- Spring framework START -->
       <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
@@ -51,6 +54,12 @@
           <artifactId>spring-webmvc</artifactId>
           <version>4.2.5.RELEASE</version>
       </dependency>
+      
+      <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>4.0.1.RELEASE</version>
+        </dependency>
      
       <!-- Spring framework END -->
  

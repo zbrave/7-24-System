@@ -91,17 +91,8 @@ public class LocationDAOImpl implements LocationDAO {
 	}
     
 	@SuppressWarnings("unchecked")
-<<<<<<< HEAD
-	
-<<<<<<< HEAD
-	public List<LocationInfo> findChildInfos(Integer id) {
-=======
 	@Override
 	public List<LocationInfo> findChilds(Integer id) {
->>>>>>> parent of 0050ef9... .
-=======
-	public List<LocationInfo> findChilds(Integer id) {
->>>>>>> parent of e993aa6... .
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Location.class);
         crit.add(Restrictions.eq("parentId", id));
