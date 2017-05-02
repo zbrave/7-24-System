@@ -4,8 +4,6 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -17,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
-import tr.edu.yildiz.ce.dao.MailSend;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
@@ -56,10 +53,6 @@ public class MainController {
 	
 	@Autowired
 	private ComplaintDAO complaintDAO;
-	
-	@Autowired
-	private MailSend mailSend;
-    
 	
 	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
 	public String welcomePage(Model model) {

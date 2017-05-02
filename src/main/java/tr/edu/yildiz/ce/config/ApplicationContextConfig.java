@@ -13,8 +13,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
-import tr.edu.yildiz.ce.dao.MailSend;
 import tr.edu.yildiz.ce.dao.NotificationDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
@@ -30,7 +27,6 @@ import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.dao.impl.ComplaintDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.LocationDAOImpl;
-import tr.edu.yildiz.ce.dao.impl.MailSendImpl;
 import tr.edu.yildiz.ce.dao.impl.NotificationDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.SupportTypeDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.SupporterDAOImpl;
@@ -93,34 +89,6 @@ public class ApplicationContextConfig {
   @Bean(name = "supportTypeDAO")
   public SupportTypeDAO getSupportTypeDAO() {
       return new SupportTypeDAOImpl();
-  }
-  
-  @Bean(name = "mailSend")
-  public MailSend getMailSend() {
-      return new MailSendImpl();
-  }
-  
-  @Bean
-  public JavaMailSender javaMailService() {
-      JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-
-      javaMailSender.setHost("smtp.gmail.com");
-      javaMailSender.setPort(587);
-      javaMailSender.setUsername("724system@gmail.com");
-      javaMailSender.setPassword("sysprog724");
-      
-      javaMailSender.setJavaMailProperties(getMailProperties());
-
-      return javaMailSender;
-  }
-  
-  private Properties getMailProperties() {
-      Properties properties = new Properties();
-      properties.setProperty("mail.transport.protocol", "smtp");
-      properties.setProperty("mail.smtp.auth", "false");
-      properties.setProperty("mail.smtp.starttls.enable", "true");
-      properties.setProperty("mail.debug", "false");
-      return properties;
   }
  
   @Bean(name = "viewResolver")
