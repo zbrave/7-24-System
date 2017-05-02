@@ -31,23 +31,13 @@
 	
 	<div class="signin-signup-form">
 			<div class="form">
+			  
 				<ul class="tab-group">
-					<li class="tab"><a href="#signup" onclick="$('#signup').show();$('#login').hide();">Kullanıcı Kayıt</a></li>
-					<li class="tab active"><a href="#login" onclick="$('#login').show();$('#signup').hide();">Kullanıcı Giriş</a></li>
+					<li class="tab"><a href="#signup" onclick="$('#signup').show(); $('#login').hide()">Kullanıcı Kayıt</a></li>
+					<li class="tab active"><a href="#login" onclick="$('#login').show(); $('#signup').hide()">Kullanıcı Giriş</a></li>
 				</ul>
 				<div class="tab-content">
 				
-							<c:if test="${not empty signupMsgSuccess}">
-
-							   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${signupMsgSuccess}
-							   </div>
-							</c:if>
-							<c:if test="${not empty signupMsgError}">
-
-							   <div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${signupMsgError}
-							   </div>
-							</c:if>
-							
 					<div id="login">   
 						<h1>Kullanıcı Giriş</h1>
 						<form method="post" action="${pageContext.request.contextPath}/j_spring_security_check" role="login" method='POST'>
@@ -58,6 +48,10 @@
 						                Reason :  ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</a>
 								</div>
 						    </c:if>
+						    <c:if test="${not empty signupMsg}">
+							   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${signupMsg}
+							   </div>
+							</c:if>
 						    
 							<div class="field-wrap">
 								<label>
@@ -82,12 +76,15 @@
 				  		<form method="post" action="${pageContext.request.contextPath}/saveUser" role="signup" method='POST'>
 								  <!-- /signup?error=true -->
 						     <c:if test="${param.error == 'true'}">
-						        <div class="alert alert-danger alert-dismissible" role="alert">
+						        <div class="alert alert-danger" role="alert">
 						  			<a href="#" class="alert-link">SignUp Failed!!!<br />
 						                Reason :  ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</a>
 								</div>
 						    </c:if>
-							
+						    <c:if test="${not empty signupMsg}">
+							   <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${signupMsg}
+							   </div>
+							</c:if> 
 							
 							<div class="field-wrap">
 								<label>
@@ -117,12 +114,9 @@
 								<input id="passwordConf" name='passwordConf' type="password" required/>
 							</div>
 							<button type="submit" name="go" class="button button-block">Kaydol</button>
-							
+
 						</form>
 					</div>
-					
-							 
-					
 				</div><!-- tab-content -->
 			</div> <!-- /form -->
 		</div>

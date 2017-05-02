@@ -18,8 +18,11 @@ public class ComplaintInfo{
 	private UserInfo supportUserInfo;
 	private Date responseTime;
 	private String responseText;
+<<<<<<< HEAD
 	private ComplaintInfo childInfo;
 	private boolean ended;
+=======
+>>>>>>> parent of 0050ef9... .
 	
 	private Integer locationId;
 	private Integer supportTypeId;
@@ -31,9 +34,14 @@ public class ComplaintInfo{
 	public ComplaintInfo(){
 		
 	}
+<<<<<<< HEAD
 	public ComplaintInfo(Integer id,LocationInfo locationInfo,SupportTypeInfo supportTypeInfo,ComplaintInfo parentInfo,UserInfo complainantUserInfo,Date complaintTime,
 			String complaintText,UserInfo supportUserInfo,Date responseTime,String responseText,ComplaintInfo childInfo,boolean ended){
 
+=======
+	public ComplaintInfo(Integer id,Integer locationId,Integer supportTypeId,Integer parentId,Integer complainantUserId,Date complaintTime,
+			String complaintText,Integer supportUserId,Date responseTime,String responseText,Integer childId,boolean ended){
+>>>>>>> parent of 0050ef9... .
 		this.id=id;
 		this.locationInfo=locationInfo;
 		this.supportTypeInfo=supportTypeInfo;
@@ -124,7 +132,7 @@ public class ComplaintInfo{
 	public void setChildInfo(ComplaintInfo childInfo) {
 		this.childInfo = childInfo;
 	}
-
+	
 	public boolean isEnded() {
 		return ended;
 	}

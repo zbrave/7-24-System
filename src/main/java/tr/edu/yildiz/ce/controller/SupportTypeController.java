@@ -35,8 +35,8 @@ public class SupportTypeController {
 
 
 		if (result.hasErrors()) {
-			model.addAttribute("supTypeMsgError", "Eklenemedi.");
-			return "supportTypeEditor";
+			model.addAttribute("supTypeMsg", "Eklenemedi.");
+			return "adminPage";
 		}
 		
 		String decodedToUTF8;
@@ -52,8 +52,9 @@ public class SupportTypeController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("supTypeMsgSuccess", "Başarıyla eklendi.");
+		redirectAttributes.addFlashAttribute("supTypeMsg", "Başarıyla eklendi.");
 
-		return "redirect:/supporterTypeEdit";
+//		return "redirect:/deptList";
+		return "redirect:/admin";
 	}
 }

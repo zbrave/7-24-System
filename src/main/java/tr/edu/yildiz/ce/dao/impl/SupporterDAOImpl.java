@@ -34,7 +34,7 @@ public class SupporterDAOImpl implements SupporterDAO {
     @Autowired
     private SessionFactory sessionFactory;
     
-	
+	@Override
 	public Supporter findSupporter(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Supporter.class);
@@ -42,7 +42,7 @@ public class SupporterDAOImpl implements SupporterDAO {
         return (Supporter) crit.uniqueResult();
 	}
 
-	
+	@Override
 	public void saveSupporter(SupporterInfo supporterInfo) {
        	Integer id = supporterInfo.getId();
        	Supporter supporter = null;
@@ -78,7 +78,7 @@ public class SupporterDAOImpl implements SupporterDAO {
         }
 	}
 
-	
+	@Override
 	public SupporterInfo findSupporterInfo(Integer id) {
 		Supporter supporter = this.findSupporter(id);
         if (supporter == null) {
@@ -90,7 +90,7 @@ public class SupporterDAOImpl implements SupporterDAO {
 
 	}
 
-	
+	@Override
 	public void deleteSupporter(Integer id) {
 		Supporter supporter = this.findSupporter(id);
         if (supporter != null) {
@@ -99,7 +99,7 @@ public class SupporterDAOImpl implements SupporterDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	
+	@Override
 	public List<SupporterInfo> listSupporterInfos() {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Supporter.class);
@@ -112,7 +112,7 @@ public class SupporterDAOImpl implements SupporterDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	
+	@Override
 	public List<SupporterInfo> listSupporterInfosById(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Supporter.class);

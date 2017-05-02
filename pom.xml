@@ -30,7 +30,6 @@
     <version>1.0.0.GA</version>
 </dependency>
  		
- 		
       <!-- Spring framework START -->
       <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
       <dependency>

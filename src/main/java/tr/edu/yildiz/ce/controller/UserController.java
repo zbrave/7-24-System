@@ -40,7 +40,7 @@ public class UserController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("signupMsgError", "Hatalı giriş!");
+			model.addAttribute("signupMsg", "Hatalı giriş!");
 			System.out.println("Hata!");
 		}
 		String decodedToUTF8;
@@ -52,12 +52,12 @@ public class UserController {
 			e.printStackTrace();
 		}
 		if (!userInfo.getPassword().equals(userInfo.getPasswordConf())) {
-			model.addAttribute("signupMsgError", "Parola eşleşmedi.");
+			model.addAttribute("signupMsg", "Parola eşleşmedi.");
 			System.out.println("Parola eşleşmedi.");
 			return "loginPage";
 		}
 		if (this.userDAO.findLoginUser(userInfo.getUsername()) != null) {
-			model.addAttribute("signupMsgError", "Kullanıcı mevcut.");
+			model.addAttribute("signupMsg", "Kullanıcı mevcut.");
 			System.out.println("Kullanıcı mevcut.");
 			return "loginPage";
 		}
@@ -68,7 +68,7 @@ public class UserController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("signupMsgSuccess", "Kullanıcı eklendi.");
+		redirectAttributes.addFlashAttribute("signupMsg", "Kullanıcı eklendi.");
 
 //		return "redirect:/deptList";
 		return "redirect:/login";
