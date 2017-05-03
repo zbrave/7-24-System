@@ -47,7 +47,7 @@ $(document).ready(function(){
 					<li><a href="${pageContext.request.contextPath}/supporter" >Supporter page</a></li> -->
 					<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath}/admin" >Admin page</a></li>
-				    	<li><a href="${pageContext.request.contextPath}/userRoleEdit">Kullanıcı Yönetimi</a></li>
+				    	<li><a href="${pageContext.request.contextPath}/userRoleEdit">Kullanıcı Yötetimi</a></li>
 						<li class="dropdown">
 				          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 				          	Destek Ekibi <span class="caret"></span>
