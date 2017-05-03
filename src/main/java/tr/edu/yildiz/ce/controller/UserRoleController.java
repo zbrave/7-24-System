@@ -51,7 +51,7 @@ public class UserRoleController {
 			System.out.println("UserRole cannot converted.");
 			e.printStackTrace();
 		}
-		userRoleInfo.setUserInfo(userDAO.findUserInfo( userRoleInfo.getUserId()));
+		userRoleInfo.setUserId(userRoleInfo.getUserId());
 		this.userRoleDAO.saveUserRole(userRoleInfo);
 
 		// Important!!: Need @EnableWebMvc

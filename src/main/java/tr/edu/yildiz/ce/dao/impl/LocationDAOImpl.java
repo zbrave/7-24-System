@@ -123,6 +123,4 @@ public class LocationDAOImpl implements LocationDAO {
 		}
 		return locationInfos;
 	}
-	
-s
 }
