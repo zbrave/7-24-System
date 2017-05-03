@@ -2,21 +2,21 @@ package tr.edu.yildiz.ce.model;
 
 public class SupporterInfo {
 	private Integer id;
-	private UserInfo userInfo;
-	private SupportTypeInfo supportTypeInfo;
-	private LocationInfo locationInfo;
 	private Integer userId;
 	private Integer supportTypeId;
 	private Integer locationId;
+
+
+
 	
 	public SupporterInfo(){
 		
 	}
-	public SupporterInfo(Integer id,UserInfo userInfo,SupportTypeInfo supportTypeInfo,LocationInfo locationInfo){
+	public SupporterInfo(Integer id,Integer userId,Integer supportTypeId,Integer locationId){
 		this.id=id;
-		this.userInfo=userInfo;
-		this.supportTypeInfo=supportTypeInfo;
-		this.locationInfo=locationInfo;
+		this.userId=userId;
+		this.supportTypeId=supportTypeId;
+		this.locationId=locationId;
 	}
 	
 	public Integer getId() {
@@ -26,42 +26,27 @@ public class SupporterInfo {
 		this.id = id;
 	}
 	
-	public UserInfo getUserInfo() {
-		return userInfo;
-	}
-	public void setUserInfo(UserInfo userInfo) {
-		this.userInfo = userInfo;
-	}
-	
-	public SupportTypeInfo getSupportTypeInfo() {
-		return supportTypeInfo;
-	}
-	public void setSupportTypeInfo(SupportTypeInfo supportTypeInfo) {
-		this.supportTypeInfo = supportTypeInfo;
-	}
-	
-	public LocationInfo getLocationInfo() {
-		return locationInfo;
-	}
-	public void setLocationInfo(LocationInfo locationInfo) {
-		this.locationInfo = locationInfo;
-	}
 	public Integer getUserId() {
 		return userId;
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+	
 	public Integer getSupportTypeId() {
 		return supportTypeId;
 	}
 	public void setSupportTypeId(Integer supportTypeId) {
 		this.supportTypeId = supportTypeId;
 	}
+	
 	public Integer getLocationId() {
 		return locationId;
 	}
 	public void setLocationId(Integer locationId) {
 		this.locationId = locationId;
 	}
+
+
+
 }

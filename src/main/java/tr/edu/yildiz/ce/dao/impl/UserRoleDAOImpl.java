@@ -24,7 +24,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 	@Autowired
     private SessionFactory sessionFactory;
 	
-	
+	@Override
 	public UserRole findUserRole(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(UserRole.class);
@@ -32,7 +32,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         return (UserRole) crit.uniqueResult();
 	}
 
-	
+	@Override
 	public void saveUserRole(UserRoleInfo userRoleInfo) {
         Integer id = userRoleInfo.getId();
         UserRole userRole = null;
@@ -55,7 +55,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
 	}
 
-	
+	@Override
 	public UserRoleInfo findUserRoleInfo(Integer id) {
 		UserRole userRole = this.findUserRole(id);
         if (userRole == null) {
@@ -64,7 +64,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 		return new UserRoleInfo(userRole.getId(),userRole.getUserId(),userRole.getRole());
 	}
 
-	
+	@Override
 	public void deleteUserRole(Integer id) {
 		UserRole userRole = this.findUserRole(id);
         if (userRole != null) {
@@ -73,7 +73,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	
+	@Override
 	public List<String> getUserRoles(Integer userId) {
 		List<String> userRoles = new ArrayList<String>(); 
         Session session = sessionFactory.getCurrentSession();
@@ -87,7 +87,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	
+	@Override
 	public List<UserRoleInfo> listUserRoleInfos() {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(UserRole.class);

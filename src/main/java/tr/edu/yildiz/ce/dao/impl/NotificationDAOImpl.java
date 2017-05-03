@@ -18,7 +18,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	
+	@Override
 	public Notification findNotification(Integer id) {
 		Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Notification.class);
@@ -26,7 +26,7 @@ public class NotificationDAOImpl implements NotificationDAO {
         return (Notification) crit.uniqueResult();
 	}
 
-	
+	@Override
 	public void saveNotification(NotificationInfo notificationInfo) {
 		Integer id=notificationInfo.getId();
 		Notification notification = null;
@@ -48,7 +48,7 @@ public class NotificationDAOImpl implements NotificationDAO {
         }
 	}
 
-	
+	@Override
 	public NotificationInfo findNotificationInfo(Integer id) {
 		Notification notification=this.findNotification(id);
 		if(notification==null){
@@ -57,7 +57,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 		return new NotificationInfo(notification.getId() ,notification.getUserId(),notification.getComplaintId());
 	}
 
-	
+	@Override
 	public void deleteNotification(Integer id) {
 		Notification notification=this.findNotification(id);
 		if(notification!=null){
@@ -67,7 +67,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	
+	@Override
 	public List<NotificationInfo> listNotificationInfos() {
 		Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Notification.class);
@@ -80,7 +80,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	
+	@Override
 	public List<NotificationInfo> listNotificationInfosForComplaint(Integer complaintId) {
 		Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Notification.class);

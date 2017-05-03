@@ -38,7 +38,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	private NotificationDAO notificationDAO;
 	@Autowired
 	private MailSend mailSend;
-	
+	@Override
 	public Complaint findComplaint(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
@@ -46,7 +46,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         return (Complaint) crit.uniqueResult();
 	}
 
-	
+	@Override
 	public void saveComplaint(ComplaintInfo complaintInfo) {
         Integer id = complaintInfo.getId();
         Complaint complaint = null;
@@ -77,7 +77,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
 	}
 
-	
+	@Override
 	public ComplaintInfo findComplaintInfo(Integer id) {
 		Complaint complaint = this.findComplaint(id);
         if (complaint == null) {
@@ -88,7 +88,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         		complaint.getResponseTime(),complaint.getResponseText(),complaint.getChildId() ,complaint.isEnded() );
 	}
 
-	
+	@Override
 	public void deleteComplaint(Integer id) {
 		Complaint complaint = this.findComplaint(id);
         if (complaint != null) {
@@ -96,7 +96,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
 	}
 
-	
+	@Override
 	public void recordComplaint(Integer locationId, Integer supportTypeId, Integer complainantUserId,
 			String complaintText) {
 		//notifications
@@ -134,7 +134,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		mailSend.sendSimpleMessage(to, subject, text);
 	}
 
-	
+	@Override
 	public void transferComplaint(Integer id, Integer supportUserId, String responseText, Integer newLocationId,
 		Integer newSupportTypeId, String newComplaintText,boolean ended) {
 		//notifications
@@ -164,7 +164,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		
 	}
 
-	
+	@Override
 	public void endComplaint(Integer id, Integer supportUserId, String responseText) {
 		//notifications
 		boolean sendEmail=false;
@@ -206,7 +206,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		}
 	}
 
-	
+	@Override
 	public void uniteComplaints(Integer uniteTo, Integer delete) {
 		List<NotificationInfo> notificationInfos = notificationDAO.listNotificationInfosForComplaint(delete);
 		for(NotificationInfo n : notificationInfos){
@@ -237,6 +237,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
 		List<SupporterInfo> supporterInfos = supporterDAO.listSupporterInfosById(userId);
