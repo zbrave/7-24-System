@@ -83,7 +83,7 @@
 	      				<c:forEach items="${userRoleInfos }" var="data">
 							<tr>
 						      <td>${data.id }</td>
-						      <td>${data.userInfo.id }</td>
+						      <td>${data.userId }</td>
 						      <td>${data.role }</td>
 						      <td>
 						      	  <a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
