@@ -69,7 +69,6 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         complaint.setResponseTime(complaintInfo.getResponseTime());
         complaint.setResponseText(complaintInfo.getResponseText());
         complaint.setChildId(complaintInfo.getChildId());
-
         complaint.setEnded(complaintInfo.isEnded());
         if (isNew){
             Session session = this.sessionFactory.getCurrentSession();
@@ -109,7 +108,6 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		complaintInfo.setComplaintTime(dateNow);
 		complaintInfo.setEnded(false);
 		saveComplaint(complaintInfo);
-		
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
         crit.add(Restrictions.eq("locationId", locationId));
@@ -192,14 +190,18 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		}
 		if(sendEmail){
 			List<NotificationInfo> notificationInfos = notificationDAO.listNotificationInfosForComplaint(id);
+			List<ComplaintInfo> process = this.listComplaintProcess(id);
+			String past="\n";
+			for(ComplaintInfo c: process ){
+				past=past+"Location : "+ locationDAO.findLocationInfo(c.getLocationId()).getDescription()+",\n"+
+						"Support Type : "+supportTypeDAO.findSupportTypeInfo(c.getSupportTypeId() ).getType() + ",\n"+
+						"Response Text : "+c.getResponseText()+ ",\n"+
+						"Response Time : "+c.getResponseTime()+ ",\n\n";
+			}
 			for(NotificationInfo n : notificationInfos){
 				String to=userDAO.findUserInfo(n.getUserId()).getEmail();
 				String subject="Complaint Resulted";
-				String text="	Dear "+userDAO.findUserInfo(n.getUserId()).getUsername()+",\n"+
-						"Location : "+ locationDAO.findLocationInfo(findComplaintInfo( n.getComplaintId()).getLocationId()).getDescription()+",\n"+
-						"Support Type : "+supportTypeDAO.findSupportTypeInfo( findComplaintInfo( n.getComplaintId() ).getSupportTypeId() ).getType() + ",\n"+
-						"Response Text : "+findComplaintInfo( n.getComplaintId()).getResponseText()+ ",\n"+
-						"Response Time : "+findComplaintInfo( n.getComplaintId()).getResponseTime()+ ",\n";
+				String text="	Merhaba "+userDAO.findUserInfo(n.getUserId()).getUsername()+",\n"+past;
 				mailSend.sendSimpleMessage(to, subject, text);
 				notificationDAO.deleteNotification(n.getId());
 			}
@@ -208,6 +210,11 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@Override
 	public void uniteComplaints(Integer uniteTo, Integer delete) {
+		ComplaintInfo c = this.findComplaintInfo(uniteTo);
+		while(c.getChildId()!=null){
+			c=this.findComplaintInfo(c.getChildId());
+			uniteTo = c.getId();
+		}
 		List<NotificationInfo> notificationInfos = notificationDAO.listNotificationInfosForComplaint(delete);
 		for(NotificationInfo n : notificationInfos){
 			n.setComplaintId(uniteTo);
@@ -259,6 +266,59 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
         }
         return complaintInfos;
+	}
+
+	@Override
+	public List<ComplaintInfo> listComplaintProcess(Integer id) {
+		ComplaintInfo c=this.findComplaintInfo(id);
+		if(c==null){
+			return null;
+		}
+		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
+		while(c.getParentId()!=null){
+			c=this.findComplaintInfo(c.getParentId());
+		}
+		complaintInfos.add(c);
+		while(c.getChildId()!=null){
+			c=this.findComplaintInfo(c.getChildId());
+			complaintInfos.add(c);
+		}
+		return complaintInfos;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listActiveComplaintInfos() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("ended",false));
+        List<Complaint> complaints = crit.list();
+        List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
+        for(Complaint c:complaints){
+        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        }
+        return complaintInfos;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listComplaintInfosForManager(Integer userId) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("ended",false));
+        crit.add(Restrictions.isNull("childId"));
+        List<Complaint> complaints = crit.list();
+        List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
+        List<Integer> userIds= new ArrayList<Integer>();
+        for(Complaint c:complaints){
+        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        	userIds.addAll(supporterDAO.listSupporterUserIdBySupportType(c.getSupportTypeId()));
+        }
+		for(Integer i : userIds){
+			complaintInfos.removeAll(listComplaintInfosForSupport(i));
+		}
+		complaintInfos.addAll(this.listComplaintInfosForSupport(userId));
+		return complaintInfos;
 	}
 	
 }

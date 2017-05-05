@@ -4,6 +4,7 @@ import java.util.List;
 
 import tr.edu.yildiz.ce.entity.Supporter;
 import tr.edu.yildiz.ce.model.SupporterInfo;
+import tr.edu.yildiz.ce.model.UserInfo;
 
 public interface SupporterDAO {
 	public Supporter findSupporter (Integer id); 
@@ -13,4 +14,5 @@ public interface SupporterDAO {
     
     public List<SupporterInfo> listSupporterInfosById(Integer userId);
     public List<SupporterInfo> listSupporterInfos();
+    public List<Integer> listSupporterUserIdBySupportType(Integer supportTypeId);
 }

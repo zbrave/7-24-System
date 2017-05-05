@@ -17,4 +17,7 @@ public interface ComplaintDAO {
     public void uniteComplaints(Integer uniteTo,Integer delete);
     public List<ComplaintInfo> listComplaintInfos (); 
     public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId);
+    public List<ComplaintInfo> listComplaintProcess(Integer id);
+    public List<ComplaintInfo> listActiveComplaintInfos();
+    public List<ComplaintInfo> listComplaintInfosForManager(Integer userId);
 }

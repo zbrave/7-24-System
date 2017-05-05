@@ -46,7 +46,7 @@ public class UserDAOImpl implements UserDAO {
 	    user.setEmail(userInfo.getEmail());
 	    user.setUsername(userInfo.getUsername());
 	    user.setPassword(userInfo.getPassword());
-	    user.setEnabled(false);
+	    user.setEnabled(userInfo.isEnabled());
 	    if(isNew){
 	    	Session session=this.sessionFactory.getCurrentSession();
 	    	session.persist(user);

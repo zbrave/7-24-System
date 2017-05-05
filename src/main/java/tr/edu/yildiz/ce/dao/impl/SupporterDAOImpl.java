@@ -8,8 +8,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
+import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Supporter;
 import tr.edu.yildiz.ce.model.SupporterInfo;
+import tr.edu.yildiz.ce.model.UserInfo;
 
 
 
@@ -21,7 +23,8 @@ public class SupporterDAOImpl implements SupporterDAO {
 	
     @Autowired
     private SessionFactory sessionFactory;
-    
+	@Autowired
+	private UserDAO userDAO;	
     @Override
 	public Supporter findSupporter(Integer id) {
         Session session = sessionFactory.getCurrentSession();
@@ -95,6 +98,21 @@ public class SupporterDAOImpl implements SupporterDAO {
         }
         return supporterInfos;
 	}
-	
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Integer> listSupporterUserIdBySupportType(Integer supportTypeId) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Supporter.class);
+        crit.add(Restrictions.eq("supportTypeId", supportTypeId));
+        List<Supporter> supporters=(List<Supporter>) crit.list();
+        List<Integer> userIds= new ArrayList<Integer>();
+        
+        for(Supporter s: supporters){
+        	if(!userIds.contains(s.getUserId())){
+        		userIds.add(s.getUserId());
+        	}
+        }
+        return userIds;
+	}
 }
