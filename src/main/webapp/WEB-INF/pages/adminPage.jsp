@@ -196,7 +196,7 @@
 	      				<c:forEach items="${userRoleInfos }" var="data">
 							<tr>
 						      <td>${data.id }</td>
-						      <td>${data.userInfo.id }</td>
+						      <td>${data.userId }</td>
 						      <td>${data.role }</td>
 						      <td>
 						      	  <a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
@@ -275,9 +275,9 @@
 				      <c:forEach items="${supporterInfos }" var="data">
 				      	<tr>
 				      		<td>${data.id }</td>
-				      		<td>${data.userInfo.username }</td>
-				      		<td>${data.supportTypeInfo.type }</td>
-				      		<td>${data.locationInfo.description }</td>
+				      		<td>${data.userId }</td>
+				      		<td>${data.supportTypeId }</td>
+				      		<td>${data.locationId }</td>
 				      	</tr>
 				      	<td>
 						    <a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
