@@ -19,6 +19,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 
 import tr.edu.yildiz.ce.dao.ActivationDAO;
 import tr.edu.yildiz.ce.dao.impl.ActivationDAOImpl;
@@ -138,11 +139,20 @@ public class ApplicationContextConfig {
       return properties;
   }
  
+  @Bean(name = "resourceViewResolver")
+	public ResourceBundleViewResolver getResourceViewResolver() {
+	    ResourceBundleViewResolver viewResolver = new ResourceBundleViewResolver();
+		viewResolver.setOrder(1);
+		viewResolver.setBasename("views");
+		return viewResolver;
+	}
+  
   @Bean(name = "viewResolver")
   public InternalResourceViewResolver getViewResolver() {
       InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
       viewResolver.setPrefix("/WEB-INF/pages/");
       viewResolver.setSuffix(".jsp");
+      viewResolver.setOrder(2);
       return viewResolver;
   }
  

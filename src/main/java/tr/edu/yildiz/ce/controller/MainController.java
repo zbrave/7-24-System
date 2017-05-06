@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import tr.edu.yildiz.ce.dao.BanDAO;
@@ -163,6 +164,15 @@ public class MainController {
 		
 		return "report";
 	}
+	
+	@RequestMapping(value = "/reportComplaintsPdf", method = RequestMethod.GET)
+    public ModelAndView downloadExcel() {
+        // create some sample data
+        List<ComplaintInfo> listComplaints= this.complaintDAO.listComplaintInfos();
+ 
+        // return a view which will be resolved by an excel view resolver
+        return new ModelAndView("complaintPdfView", "listComplaints", listComplaints);
+    }
 	
 	@RequestMapping(value = "/userBanForm", method = RequestMethod.GET)
 	public String userBanForm(Model model, UserInfo user) {

@@ -47,7 +47,16 @@ $(document).ready(function(){
 					<li><a href="${pageContext.request.contextPath}/supporter" >Supporter page</a></li> -->
 					<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath}/admin" >Admin page</a></li>
-				    	<li><a href="${pageContext.request.contextPath}/userRoleEdit">Kullanıcı Yönetimi</a></li>
+						<li class="dropdown">
+				          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				          	Kullanıcı Yönetimi <span class="caret"></span>
+				          </a>
+				          	<ul class="dropdown-menu">
+				          		<li><a href="${pageContext.request.contextPath}/userRoleEdit">Kullanıcı Rolü Yönetme</a></li>
+				          		<li role="separator" class="divider"></li>
+				            	<li><a href="${pageContext.request.contextPath}/users">Kullanıcı Bilgileri</a></li>
+				          	</ul>
+				        </li>
 						<li class="dropdown">
 				          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 				          	Destek Ekibi <span class="caret"></span>
@@ -56,12 +65,20 @@ $(document).ready(function(){
 				            	<li><a href="#"></a></li>
 				            	<li><a href="${pageContext.request.contextPath}/supporterTypeEdit">Rol Ekleme</a></li>
 				            	<li><a href="${pageContext.request.contextPath}/supporterEdit">Yönetme</a></li>
-				            	<li role="separator" class="divider"></li>
-				            	<li><a href="#">Raporlama</a></li>
 				          	</ul>
 				        </li>
 				        <li><a href="${pageContext.request.contextPath}/locationEdit">Mekan Yönetimi</a></li>
-						<li><a href="#">Rapor</a></li>
+						<li class="dropdown">
+				          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				          	Raporlama <span class="caret"></span>
+				          </a>
+				          	<ul class="dropdown-menu">
+				            	<li><a href="${pageContext.request.contextPath}/reportComplaintsPdf">Şikayetler Raporu</a></li>
+				            	<li><a href="#">Destek Personeli Raporu</a></li>
+				            	<li role="separator" class="divider"></li>
+				            	<li><a href="#">Kullanıcı Raporlama</a></li>
+				          	</ul>
+				        </li>
 				      </ul>
 				</c:if>
 				
