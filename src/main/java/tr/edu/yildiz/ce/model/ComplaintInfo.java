@@ -6,24 +6,24 @@ import java.util.Date;
 
 public class ComplaintInfo{
 	private Integer id;
-	
 	private Integer locationId;
 	private Integer supportTypeId;
 	private Integer parentId;
 	private Integer complainantUserId;
-	
 	private Date complaintTime;
 	private String complaintText;
-	
 	private Integer supportUserId;
-	
 	private Date responseTime;
 	private String responseText;
-
-	
 	private Integer childId;
-	
 	private boolean ended;
+	
+	private LocationInfo locationInfo;
+	private SupportTypeInfo supportTypeInfo;
+	private ComplaintInfo parentInfo;
+	private UserInfo complainantUserInfo;
+	private UserInfo supportUserInfo;
+	private ComplaintInfo childInfo;
 	
 	public ComplaintInfo(){
 		
@@ -128,6 +128,54 @@ public class ComplaintInfo{
 	}
 	public void setEnded(boolean ended) {
 		this.ended = ended;
+	}
+
+	public LocationInfo getLocationInfo() {
+		return locationInfo;
+	}
+
+	public void setLocationInfo(LocationInfo locationInfo) {
+		this.locationInfo = locationInfo;
+	}
+
+	public SupportTypeInfo getSupportTypeInfo() {
+		return supportTypeInfo;
+	}
+
+	public void setSupportTypeInfo(SupportTypeInfo supportTypeInfo) {
+		this.supportTypeInfo = supportTypeInfo;
+	}
+
+	public ComplaintInfo getParentInfo() {
+		return parentInfo;
+	}
+
+	public void setParentInfo(ComplaintInfo parentInfo) {
+		this.parentInfo = parentInfo;
+	}
+
+	public UserInfo getComplainantUserInfo() {
+		return complainantUserInfo;
+	}
+
+	public void setComplainantUserInfo(UserInfo complainantUserInfo) {
+		this.complainantUserInfo = complainantUserInfo;
+	}
+
+	public UserInfo getSupportUserInfo() {
+		return supportUserInfo;
+	}
+
+	public void setSupportUserInfo(UserInfo supportUserInfo) {
+		this.supportUserInfo = supportUserInfo;
+	}
+
+	public ComplaintInfo getChildInfo() {
+		return childInfo;
+	}
+
+	public void setChildInfo(ComplaintInfo childInfo) {
+		this.childInfo = childInfo;
 	}
 
 

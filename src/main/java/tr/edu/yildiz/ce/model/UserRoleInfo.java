@@ -6,7 +6,7 @@ public class UserRoleInfo {
 	private Integer id;
 	private Integer userId;
 	private String role;
-	
+	private UserInfo userInfo;
 	public UserRoleInfo(){
 		
 	}
@@ -33,6 +33,12 @@ public class UserRoleInfo {
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public UserInfo getUserInfo() {
+		return userInfo;
+	}
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
 	}
 
 	

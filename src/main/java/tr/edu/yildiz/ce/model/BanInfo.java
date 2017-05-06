@@ -9,7 +9,7 @@ public class BanInfo {
 	private Date banTime;
 	private Date endTime;
 	private boolean banned;
-	
+	private UserInfo userInfo;
 	public BanInfo() {
 		
 	}
@@ -57,5 +57,13 @@ public class BanInfo {
 	}
 	public void setBanned(boolean banned) {
 		this.banned = banned;
+	}
+
+	public UserInfo getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(UserInfo userInfo) {
+		this.userInfo = userInfo;
 	}
 }
