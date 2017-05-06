@@ -27,7 +27,7 @@ public class MyDBAuthenticationService implements UserDetailsService {
  
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserInfo userInfo = userDAO.findLoginUserInfo(username);
+        UserInfo userInfo = this.userDAO.findLoginUserInfo(username);
         System.out.println("UserInfo= " + userInfo);
         
         if (userInfo == null) {
@@ -43,13 +43,23 @@ public class MyDBAuthenticationService implements UserDetailsService {
                 // ROLE_USER, ROLE_ADMIN,..
                 GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
                 grantList.add(authority);
+                System.out.println("Yetkiler: "+role);
             }
-        }        
-         
-        UserDetails userDetails = (UserDetails) new User(userInfo.getUsername(), //
-                userInfo.getPassword(),grantList);
+        }
         
+   /*     UserDetails userDetails = (UserDetails) new User(userInfo.getUsername(), //
+                userInfo.getPassword(),grantList);
+        if (!userInfo.isEnabled()) {
+	        System.out.println("Kullanıcı yasaklı!!!");
+	        return null;
+        }*/
+        UserDetails userDetails = buildUserForAuthentication(userInfo, grantList);
         return userDetails;
+    }
+    
+    private User buildUserForAuthentication(UserInfo userInfo,List<GrantedAuthority> authorities) {
+    		return new User(userInfo.getUsername(), userInfo.getPassword(),
+    				userInfo.isEnabled(), true, true, true, authorities);
     }
      
 }

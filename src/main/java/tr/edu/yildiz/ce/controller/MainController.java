@@ -1,6 +1,9 @@
 package tr.edu.yildiz.ce.controller;
 
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import tr.edu.yildiz.ce.dao.BanDAO;
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.MailSend;
@@ -22,6 +26,7 @@ import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
+import tr.edu.yildiz.ce.model.BanInfo;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
@@ -58,6 +63,9 @@ public class MainController {
 	private ComplaintDAO complaintDAO;
 	
 	@Autowired
+	private BanDAO banDAO;
+	
+	@Autowired
 	private MailSend mailSend;
     
 	
@@ -76,10 +84,14 @@ public class MainController {
 		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfos();
 		model.addAttribute("userRoleInfos", list3);
 		List<SupporterInfo> list4 = supporterDAO.listSupporterInfos();
+		for (SupporterInfo l : list4) {
+			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
+			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
+			l.setUserInfo(userDAO.findUserInfo(l.getUserId()));
+		}
 		model.addAttribute("supporterInfos", list4);
 		List<UserInfo> list5 = userDAO.listUserInfos();
 		model.addAttribute("userInfos", list5);
-		System.out.println(list.size()+"x"+list2.size()+"x"+list3.size()+"x"+list4.size());
 		LocationInfo mod = new LocationInfo();
 		model.addAttribute("locationForm", mod);
 		return "adminPage";
@@ -93,7 +105,11 @@ public class MainController {
 		
 		List<SupporterInfo> list = supporterDAO.listSupporterInfos();
 		model.addAttribute("supporterInfos", list);
-		
+		for (SupporterInfo l : list) {
+			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
+			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
+			l.setUserInfo(userDAO.findUserInfo(l.getUserId()));
+		}
 		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
 		model.addAttribute("supportTypeInfos", list2);
 		
@@ -120,6 +136,35 @@ public class MainController {
 		model.addAttribute("locationInfos", listLoc);
 		
 		return "location";
+	}
+	
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	public String ban(Model model) {
+		
+		List<UserInfo> user = userDAO.listUserInfos();
+		for (UserInfo u : user) {
+			u.setBanned(banDAO.isBanned(u.getId()));
+		}
+		model.addAttribute("users", user);
+		
+		return "users";
+	}
+	
+	@RequestMapping(value = "/banUser", method = RequestMethod.GET)
+	public String banUser(Model model, @RequestParam(value = "id") Integer id) {
+		
+		UserInfo user = userDAO.findUserInfo(id);
+		
+		return this.userBanForm(model, user);
+	}
+	
+	@RequestMapping(value = "/userBanForm", method = RequestMethod.GET)
+	public String userBanForm(Model model, UserInfo user) {
+		
+		List<BanInfo> bans = banDAO.banHistory(user.getId());
+		model.addAttribute("bans", bans);
+		model.addAttribute("user", user);
+		return "userBanForm";
 	}
 	
 	@RequestMapping(value = "/userRoleEdit", method = RequestMethod.GET)

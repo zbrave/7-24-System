@@ -95,9 +95,9 @@
 				      <c:forEach items="${supporterInfos }" var="data">
 				      	<tr>
 				      		<td>${data.id }</td>
-				      		<td>${data.userId }</td>
-				      		<td>${data.supportTypeId }</td>
-				      		<td>${data.locationId }</td>
+				      		<td>${data.userInfo.username }</td>
+				      		<td>${data.supportTypeInfo.type }</td>
+				      		<td>${data.locationInfo.description }</td>
 				      		<td>
 						    	<a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
 						    	<a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>

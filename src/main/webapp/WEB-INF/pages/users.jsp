@@ -30,56 +30,27 @@
       <div class="container">
       		<div class="col-md-12">
       			<div class="form"> <!-- for background transparent color -->
-      			<!-- form -->
-      			<form:form action="saveLocation" method="POST" modelAttribute="locationForm">
-					<div class="input-group">
-						<input id="id" name="id" type="hidden" value=""/>
-						<span class="input-group-addon">Konum adı</span>
-						<input id="description" type="text" class="form-control" name="description" placeholder="Mekan giriniz"/>
-    				</div>
-    				<div class="input-group">
-    					<span class="input-group-addon">Üst konum</span>
-        				<select id="parentId" class="form-control" name="parentId" >
-        					<option id="" value="">Alt konum seçin.</option>
-   							<c:forEach items="${locationInfos }" var="data">
-        						<option id="${data.id }" value="${data.id }">${data.description }</option>
-        					</c:forEach>
-        				</select>
-        				<span class="input-group-btn">
-        					<button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
-        				</span>
-          			</div>
-      			</form:form>
-      			
-      			<c:if test="${not empty locMsgSuccess}">
-					<div class="alert alert-success alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						${locMsgSuccess}
-					</div>
-				</c:if>
-				
-				<c:if test="${not empty locMsgError}">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						${locMsgError}
-					</div>
-				</c:if>
 				
       			<!-- TABLE <<< -->
       			<div class="panel panel-default">
-      				<div class="panel-heading">Konumlar:</div>
+      				<div class="panel-heading">Kullanıcılar:</div>
       					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
       						<tr>
 					      		<th style="width: 10%;">ID</th>
-					      		<th style="width: 40%;">Konum adı</th>
-					      		<th style="width: 20%;">Üst konum</th>
+					      		<th style="width: 40%;">Kullanıcı adı</th>
+					      		<th style="width: 20%;">E-mail</th>
+					      		<th>Enabled</th>
+					      		<th>Banlı mı ?</th>
+					      		<th>Eylem</th>
       						</tr>
-						      <c:forEach items="${locationInfos }" var="data">
+						      <c:forEach items="${users }" var="data">
 						      	<tr>
 						      		<td>${data.id }</td>
-						      		<td>${data.description }</td>
-						      		<td><c:forEach items="${locationInfos }" var="data2"><c:if test="${data.parentId == data2.id }">${data2.description }</c:if></c:forEach></td>
-						      		<td><a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
+						      		<td>${data.username }</td>
+						      		<td>${data.email }</td>
+						      		<td>${data.enabled }</td>
+						      		<td>${data.banned }</td>
+						      		<td><a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.id}" role="button">Banla</a>
 						      			<a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
 									</td>
 						      	</tr>

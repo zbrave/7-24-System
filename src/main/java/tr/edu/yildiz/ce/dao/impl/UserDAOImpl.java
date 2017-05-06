@@ -2,6 +2,7 @@ package tr.edu.yildiz.ce.dao.impl;
  
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -11,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tr.edu.yildiz.ce.dao.MailSend;
+import tr.edu.yildiz.ce.dao.UserRoleDAO;
+
+import tr.edu.yildiz.ce.entity.Activation;
+import tr.edu.yildiz.ce.dao.ActivationDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.model.UserInfo;
 import tr.edu.yildiz.ce.entity.User;
@@ -20,7 +26,16 @@ import tr.edu.yildiz.ce.entity.User;
 public class UserDAOImpl implements UserDAO {
  
 	@Autowired
+	private UserRoleDAO userRoleDAO;
+	
+	@Autowired 
+	private ActivationDAO activationDAO;
+	
+	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	private MailSend mailSend;
 
 	@Override
 	public User findUser(Integer id) {
@@ -41,6 +56,14 @@ public class UserDAOImpl implements UserDAO {
 		if( user == null ){
 			isNew = true;
 			user = new User();
+			user.setEnabled(false);
+			Activation act = new Activation();
+			act.setUsername(userInfo.getUsername());
+		    act.setCode(getSaltString());
+		    activationDAO.saveActivation(act);
+		    String text = "IYS hesabını aktif etmek için aşağıdaki linke tıklayın.\n\n";
+		    text = text.concat("http://localhost:8080/sysprog/activate?code="+act.getCode().toString());
+		    mailSend.sendSimpleMessage(userInfo.getEmail(), "IYS Aktivasyon", text);
 		}
 		user.setId(userInfo.getId());
 	    user.setEmail(userInfo.getEmail());
@@ -52,6 +75,19 @@ public class UserDAOImpl implements UserDAO {
 	    	session.persist(user);
 	    }
 	}
+	
+	protected String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
+    }
 
 	@Override
 	public UserInfo findUserInfo(Integer id) {

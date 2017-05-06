@@ -81,7 +81,7 @@
 						      	<tr>
 						      		<td>${data.id }</td>
 						      		<td>${data.description }</td>
-						      		<td>${data.parentId }</td>
+						      		<td><c:forEach items="${locationInfos }" var="data2"><c:if test="${data.parentId == data2.id }">${data2.description }</c:if></c:forEach></td>
 						      		<td><a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
 						      			<a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
 									</td>
@@ -196,7 +196,7 @@
 	      				<c:forEach items="${userRoleInfos }" var="data">
 							<tr>
 						      <td>${data.id }</td>
-						      <td>${data.userId }</td>
+						      <td><c:forEach items="${userInfos }" var="user"><c:if test="${data.userId == user.id }">${user.username }</c:if></c:forEach></td>
 						      <td>${data.role }</td>
 						      <td>
 						      	  <a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
@@ -275,14 +275,14 @@
 				      <c:forEach items="${supporterInfos }" var="data">
 				      	<tr>
 				      		<td>${data.id }</td>
-				      		<td>${data.userId }</td>
-				      		<td>${data.supportTypeId }</td>
-				      		<td>${data.locationId }</td>
-				      	</tr>
+				      		<td>${data.userInfo.username }</td>
+				      		<td>${data.supportTypeInfo.type }</td>
+				      		<td>${data.locationInfo.description }</td>
 				      	<td>
 						    <a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
 						    <a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
 						</td>
+						</tr>
 				      </c:forEach>
 				  	</table>
 				</div>

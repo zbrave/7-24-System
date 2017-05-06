@@ -8,6 +8,7 @@ public class UserInfo {
     private String password;
     private String passwordConf;
     private boolean enabled;
+    private boolean banned;
 	
     public UserInfo() {
     	
@@ -67,6 +68,14 @@ public class UserInfo {
 
 	public void setPasswordConf(String passwordConf) {
 		this.passwordConf = passwordConf;
+	}
+
+	public boolean isBanned() {
+		return banned;
+	}
+
+	public void setBanned(boolean banned) {
+		this.banned = banned;
 	}
      
     

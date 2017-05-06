@@ -83,7 +83,9 @@
 	      				<c:forEach items="${userRoleInfos }" var="data">
 							<tr>
 						      <td>${data.id }</td>
-						      <td>${data.userId }</td>
+						      <td><c:forEach items="${userInfos }" var="data2">
+        							<c:if test="${data2.id == data.userId }">${data2.username }</c:if>
+       							</c:forEach></td>
 						      <td>${data.role }</td>
 						      <td>
 						      	  <a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>

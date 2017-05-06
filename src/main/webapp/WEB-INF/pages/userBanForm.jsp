@@ -30,57 +30,43 @@
       <div class="container">
       		<div class="col-md-12">
       			<div class="form"> <!-- for background transparent color -->
-      			<!-- form -->
-      			<form:form action="saveLocation" method="POST" modelAttribute="locationForm">
+				<!-- form -->
+      			<form:form action="saveBan" method="POST" modelAttribute="banForm">
 					<div class="input-group">
 						<input id="id" name="id" type="hidden" value=""/>
-						<span class="input-group-addon">Konum adı</span>
-						<input id="description" type="text" class="form-control" name="description" placeholder="Mekan giriniz"/>
+						<input id="userId" name="userId" type="hidden" value="${user.id }"/>
+						<span class="input-group-addon">Açıklama</span>
+						<input id="explanation" type="text" class="form-control" name="explanation" placeholder="Açıklama giriniz"/>
     				</div>
     				<div class="input-group">
-    					<span class="input-group-addon">Üst konum</span>
-        				<select id="parentId" class="form-control" name="parentId" >
-        					<option id="" value="">Alt konum seçin.</option>
-   							<c:forEach items="${locationInfos }" var="data">
-        						<option id="${data.id }" value="${data.id }">${data.description }</option>
-        					</c:forEach>
-        				</select>
+    					<span class="input-group-addon">Kaç gün banlanacak</span>
+        				<input id="banDay" type="text" name="banDay" >
         				<span class="input-group-btn">
-        					<button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
+        					<button type="submit" class="btn btn-default" value="Ekle" >Banla</button>
         				</span>
           			</div>
       			</form:form>
-      			
-      			<c:if test="${not empty locMsgSuccess}">
-					<div class="alert alert-success alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						${locMsgSuccess}
-					</div>
-				</c:if>
-				
-				<c:if test="${not empty locMsgError}">
-					<div class="alert alert-danger alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						${locMsgError}
-					</div>
-				</c:if>
-				
       			<!-- TABLE <<< -->
       			<div class="panel panel-default">
-      				<div class="panel-heading">Konumlar:</div>
+      				<div class="panel-heading">Ban geçmişi:</div>
       					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
       						<tr>
 					      		<th style="width: 10%;">ID</th>
-					      		<th style="width: 40%;">Konum adı</th>
-					      		<th style="width: 20%;">Üst konum</th>
+					      		<th style="width: 40%;">Açıklama</th>
+					      		<th style="width: 20%;">Banlanma tarihi</th>
+					      		<th>Bitiş tarihi</th>
+					      		<th>Banlı mı ?</th>
+					      		<th>Eylem</th>
       						</tr>
-						      <c:forEach items="${locationInfos }" var="data">
+						      <c:forEach items="${bans }" var="data">
 						      	<tr>
 						      		<td>${data.id }</td>
-						      		<td>${data.description }</td>
-						      		<td><c:forEach items="${locationInfos }" var="data2"><c:if test="${data.parentId == data2.id }">${data2.description }</c:if></c:forEach></td>
-						      		<td><a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
-						      			<a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
+						      		<td>${data.explanation }</td>
+						      		<td>${data.banTime }</td>
+						      		<td>${data.endTime }</td>
+						      		<td>${data.banned }</td>
+						      		<td><a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.id}" role="button">Banı kaldır</a>
+						      			
 									</td>
 						      	</tr>
 						      </c:forEach>

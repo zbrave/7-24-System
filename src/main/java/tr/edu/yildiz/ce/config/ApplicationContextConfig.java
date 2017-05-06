@@ -20,6 +20,10 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import tr.edu.yildiz.ce.dao.ActivationDAO;
+import tr.edu.yildiz.ce.dao.impl.ActivationDAOImpl;
+
+import tr.edu.yildiz.ce.dao.BanDAO;
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.MailSend;
@@ -28,6 +32,7 @@ import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
+import tr.edu.yildiz.ce.dao.impl.BanDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.ComplaintDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.LocationDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.MailSendImpl;
@@ -93,6 +98,16 @@ public class ApplicationContextConfig {
   @Bean(name = "supportTypeDAO")
   public SupportTypeDAO getSupportTypeDAO() {
       return new SupportTypeDAOImpl();
+  }
+  
+  @Bean(name = "banDAO")
+  public BanDAO getBanDAO() {
+      return new BanDAOImpl();
+  }
+  
+  @Bean(name = "ActivationDAO")
+  public ActivationDAO getActivationDAO() {
+	  return new ActivationDAOImpl();
   }
   
   @Bean(name = "mailSend")
