@@ -210,6 +210,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@Override
 	public void uniteComplaints(Integer uniteTo, Integer delete) {
+		List<ComplaintInfo> del = this.listComplaintProcess(delete);
 		ComplaintInfo c = this.findComplaintInfo(uniteTo);
 		while(c.getChildId()!=null){
 			c=this.findComplaintInfo(c.getChildId());
@@ -220,8 +221,11 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 			n.setComplaintId(uniteTo);
 			notificationDAO.saveNotification(n);
 		}
-		deleteComplaint(delete);
+		for(ComplaintInfo d:del){
+			deleteComplaint(d.getId());
+		}
 	}
+	
 	public ComplaintInfo findChildInfo(Integer parentId){
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
@@ -319,6 +323,97 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		}
 		complaintInfos.addAll(this.listComplaintInfosForSupport(userId));
 		return complaintInfos;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public long avgTimeForProcess() {
+		long time=0;
+		Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("ended",true));
+        crit.add(Restrictions.isNull("childId"));
+        List<Complaint> complaints = crit.list();
+        
+        List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
+        for(Complaint c:complaints){
+        	complaintInfos= this.listComplaintProcess(c.getId());
+        	time+=c.getResponseTime().getTime()-complaintInfos.get(0).getComplaintTime().getTime();
+        }
+        if(complaints.size()>0){
+            time=time/complaints.size();      	
+        }
+		return time;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public long avgTimeForComplaintBySupportType(Integer supportTypeId) {
+		long time=0;
+		Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("ended",true));
+        if(supportTypeId!=null){
+            crit.add(Restrictions.eq("supportTypeId", supportTypeId));
+        }
+        List<Complaint> complaints = crit.list();
+        for(Complaint c:complaints){
+        	time+=c.getResponseTime().getTime()-c.getComplaintTime().getTime();
+        }
+        if(complaints.size()>0){
+            time=time/complaints.size();      	
+        }
+        return time;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer numOfActiveComplaintBySupportType(Integer supportTypeId) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("ended",false));
+        crit.add(Restrictions.isNull("childId"));
+        if(supportTypeId!=null){
+            crit.add(Restrictions.eq("supportTypeId", supportTypeId));
+        }
+        List<Complaint> complaints = crit.list();
+        return complaints.size();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer numOfWaitingComplaintBySupportType(Integer supportTypeId) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("ended",false));
+        crit.add(Restrictions.isNotNull("childId"));
+        if(supportTypeId!=null){
+            crit.add(Restrictions.eq("supportTypeId", supportTypeId));
+        }
+        List<Complaint> complaints = crit.list();
+        return complaints.size();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer numOfComplaintBySupportType(Integer supportTypeId) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        if(supportTypeId!=null){
+            crit.add(Restrictions.eq("supportTypeId", supportTypeId));
+        }
+        List<Complaint> complaints = crit.list();
+        return complaints.size();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer numOfProcess() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.isNull("childId"));
+        List<Complaint> complaints = crit.list();
+        return complaints.size();
 	}
 	
 }

@@ -20,4 +20,10 @@ public interface ComplaintDAO {
     public List<ComplaintInfo> listComplaintProcess(Integer id);
     public List<ComplaintInfo> listActiveComplaintInfos();
     public List<ComplaintInfo> listComplaintInfosForManager(Integer userId);
+    public long avgTimeForProcess();
+    public long avgTimeForComplaintBySupportType(Integer supportTypeId);
+    public Integer numOfActiveComplaintBySupportType(Integer supportTypeId);
+    public Integer numOfWaitingComplaintBySupportType(Integer supportTypeId);
+    public Integer numOfComplaintBySupportType(Integer supportTypeId);
+    public Integer numOfProcess();
 }
