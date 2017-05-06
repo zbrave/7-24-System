@@ -158,6 +158,12 @@ public class MainController {
 		return this.userBanForm(model, user);
 	}
 	
+	@RequestMapping(value = "/report", method = RequestMethod.GET)
+	public String report(Model model ) {
+		
+		return "report";
+	}
+	
 	@RequestMapping(value = "/userBanForm", method = RequestMethod.GET)
 	public String userBanForm(Model model, UserInfo user) {
 		
