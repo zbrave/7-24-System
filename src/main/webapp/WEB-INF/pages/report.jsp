@@ -35,7 +35,8 @@
   		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').show()">Top users(En hızlı çözen vs)</a></li>
 	</ul>
  	</br>
- 	
+ 	<p>Total avg process time : ${avgProcess }</p> 
+ 	<p>Total complaints : ${total }</p> 
  	<!-- Location -->
  	<div class="collapse" id="locationTab">
       <div class="container">
@@ -47,21 +48,22 @@
       			
       			<!-- TABLE <<< -->
       			<div class="panel panel-default">
-      				<div class="panel-heading">Konumlar:</div>
+      				<div class="panel-heading">Raporlama</div>
       					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
       						<tr>
 					      		<th style="width: 10%;">ID</th>
-					      		<th style="width: 40%;">Konum adı</th>
-					      		<th style="width: 20%;">Üst konum</th>
+					      		<th style="width: 40%;">Destek tipi</th>
+					      		<th style="width: 20%;">Toplam şikayet</th>
+					      		<th style="width: 20%;">Bekleyen şikayetler</th>
+					      		<th style="width: 20%;">Aktif şikayetler</th>
       						</tr>
-						      <c:forEach items="${locationInfos }" var="data">
+						      <c:forEach items="${supTypeAvgProcess }" var="data">
 						      	<tr>
 						      		<td>${data.id }</td>
-						      		<td>${data.description }</td>
-						      		<td><c:forEach items="${locationInfos }" var="data2"><c:if test="${data.parentId == data2.id }">${data2.description }</c:if></c:forEach></td>
-						      		<td><a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
-						      			<a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
-									</td>
+						      		<td>${data.type }</td>
+						      		<td>${data.total }</td>
+						      		<td>${data.wait }</td>
+						      		<td>${data.active }</td>
 						      	</tr>
 						      </c:forEach>
       					</table>

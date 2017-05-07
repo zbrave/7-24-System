@@ -1,5 +1,6 @@
 package tr.edu.yildiz.ce.model;
 
+import java.io.File;
 import java.util.Date;
 
 
@@ -17,6 +18,8 @@ public class ComplaintInfo{
 	private String responseText;
 	private Integer childId;
 	private boolean ended;
+	private Byte[] photo;
+	private File file;
 	
 	private LocationInfo locationInfo;
 	private SupportTypeInfo supportTypeInfo;
@@ -176,6 +179,22 @@ public class ComplaintInfo{
 
 	public void setChildInfo(ComplaintInfo childInfo) {
 		this.childInfo = childInfo;
+	}
+
+	public Byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(Byte[] photo) {
+		this.photo = photo;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
 	}
 
 

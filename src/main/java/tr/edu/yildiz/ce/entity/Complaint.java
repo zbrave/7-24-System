@@ -19,6 +19,7 @@ public class Complaint {
 	private Integer supportTypeId;
 	private Integer parentId;
 	private Integer complainantUserId;
+	private Byte[] photo;
 	
 	private Date complaintTime;
 	private String complaintText;
@@ -126,6 +127,13 @@ public class Complaint {
 	}
 	public void setEnded(boolean ended) {
 		this.ended = ended;
+	}
+	@Column(name = "photo")
+	public Byte[] getPhoto() {
+		return photo;
+	}
+	public void setPhoto(Byte[] photo) {
+		this.photo = photo;
 	}
 	
 }

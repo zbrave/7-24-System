@@ -97,7 +97,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@Override
 	public void recordComplaint(Integer locationId, Integer supportTypeId, Integer complainantUserId,
-			String complaintText) {
+			String complaintText ) {
 		//notifications
 		ComplaintInfo complaintInfo = new ComplaintInfo();
 		complaintInfo.setLocationId(locationId);

@@ -1,9 +1,15 @@
 package tr.edu.yildiz.ce.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,10 +53,10 @@ public class ComplaintController {
 	private SupportTypeDAO supportTypeDAO;
 	
 	@RequestMapping(value = "/saveComplaint", method = RequestMethod.POST)
-	public String saveComplaint(Model model, //
+	public String saveComplaint(Model model, HttpServletRequest request, //
 			@ModelAttribute("complaintForm") @Validated ComplaintInfo complaintInfo, //
 			BindingResult result, //
-			final RedirectAttributes redirectAttributes) {
+			final RedirectAttributes redirectAttributes) throws IOException, ServletException {
 			
 		if (result.hasErrors()) {
 			model.addAttribute("compMsgError", "Hatalı giriş.");
@@ -64,7 +70,7 @@ public class ComplaintController {
 			System.out.println("Dept name cannot converted.");
 			e.printStackTrace();
 		}
-		System.out.println(complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getComplainantUserId()+" "+complaintInfo.getComplaintText());
+		System.out.println(complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getComplainantUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getFile());
 		this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText());
 
 		// Important!!: Need @EnableWebMvc
@@ -78,11 +84,15 @@ public class ComplaintController {
 	@RequestMapping(value = "/endComplaint", method = RequestMethod.GET)
 	public String endComplaint(Model model,Principal principal, @RequestParam("id") Integer id) {
 		UserInfo user = userDAO.findLoginUserInfo(principal.getName());
-		if(id==1){
+		if(id == null){
 			return "manager";
 		}
 		model.addAttribute("userInfo", user);
-		model.addAttribute("comp", this.complaintDAO.findComplaintInfo(id));
+		ComplaintInfo comp = this.complaintDAO.findComplaintInfo(id);
+		comp.setComplainantUserInfo(userDAO.findUserInfo(comp.getComplainantUserId()));
+		comp.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(comp.getSupportTypeId()));
+		comp.setLocationInfo(locationDAO.findLocationInfo(comp.getLocationId()));
+		model.addAttribute("comp", comp);
 //		return "redirect:/deptList";
 		return "endComplaint";
 	}

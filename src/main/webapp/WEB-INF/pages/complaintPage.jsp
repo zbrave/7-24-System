@@ -65,7 +65,7 @@
 							
 							<div class="input-group">
 							  	<span class="input-group-addon" ><i class="glyphicon glyphicon-paperclip"></i> Ek:</span>
-							  	<input type="file" class="form-control" placeholder="Resim veya video ekleyebilirsiniz">
+							  	<input type="file" name="file" id="file" class="form-control" placeholder="Resim veya video ekleyebilirsiniz">
 							</div>
 							</br>
 					        <button type="submit" class="button button-block" value="Ekle" > Ekle</button>

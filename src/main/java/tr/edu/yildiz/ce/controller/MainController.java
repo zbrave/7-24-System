@@ -161,6 +161,20 @@ public class MainController {
 	
 	@RequestMapping(value = "/report", method = RequestMethod.GET)
 	public String report(Model model ) {
+		Long avgProcess = complaintDAO.avgTimeForProcess();
+		model.addAttribute("avgProcess", avgProcess);
+		
+		List<SupportTypeInfo> supType = supportTypeDAO.listSupportTypeInfos();
+		for(SupportTypeInfo s : supType) {
+			s.setAvgTime(complaintDAO.avgTimeForComplaintBySupportType(s.getId()));
+			s.setTotal(complaintDAO.numOfComplaintBySupportType(s.getId()));
+			s.setActive(complaintDAO.numOfActiveComplaintBySupportType(s.getId()));
+			s.setWait(complaintDAO.numOfWaitingComplaintBySupportType(s.getId()));
+		}
+		model.addAttribute("supTypeAvgProcess", supType);
+		
+		Integer numTotal = complaintDAO.numOfProcess();
+		model.addAttribute("total", numTotal);
 		
 		return "report";
 	}

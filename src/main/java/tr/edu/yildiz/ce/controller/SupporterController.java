@@ -15,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import tr.edu.yildiz.ce.dao.BanDAO;
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
+import tr.edu.yildiz.ce.dao.LocationDAO;
+import tr.edu.yildiz.ce.dao.MailSend;
+import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
+import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 
@@ -37,11 +42,30 @@ public class SupporterController {
 	@Autowired
 	private SupporterDAO supporterDAO;
 	
+	@Autowired
+	private LocationDAO locationDAO;
+	
+	@Autowired
+	private SupportTypeDAO supportTypeDAO;
+
+	@Autowired
+	private UserRoleDAO userRoleDAO;
+	
+	@Autowired
+	private BanDAO banDAO;
+	
+	@Autowired
+	private MailSend mailSend;
+	
 	@RequestMapping(value = "/supporter", method = RequestMethod.GET)
 	public String supporterPage(Model model, Principal principal) {
 		
 		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForSupport(userDAO.findLoginUserInfo(principal.getName()).getId());
-		System.out.println(userDAO.findLoginUserInfo(principal.getName()).getId()+list.size());
+		for (ComplaintInfo l : list) {
+			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
+			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
+			l.setComplainantUserInfo(userDAO.findUserInfo(l.getComplainantUserId()));
+		}
 		model.addAttribute("complaintInfos", list);
 		return "supporter";
 	}
