@@ -24,7 +24,6 @@
 <body>
     <%@include file="navbar2.jsp" %>	
  	<link href="${tabStyleCSS}" rel="stylesheet" />
-    <h2>Admin Page</h2>
     
   <div style="padding:50px;">
     

@@ -12,6 +12,7 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -25,6 +26,7 @@ import tr.edu.yildiz.ce.model.ComplaintInfo;
  *
  */
 public class ComplaintsPdfBuilder extends AbstractPdf {
+	
  
     @Override
     protected void buildPdfDocument(Map<String, Object> model, Document doc,
@@ -33,17 +35,18 @@ public class ComplaintsPdfBuilder extends AbstractPdf {
         // get data model which is passed by the Spring container
         List<ComplaintInfo> listComplaints = (List<ComplaintInfo>) model.get("listComplaints");
          
-        doc.add(new Paragraph("Şikayetler Raporu"));
+        doc.add(new Paragraph("Sikayetler Raporu"));
          
         PdfPTable table = new PdfPTable(6);
         table.setWidthPercentage(100.0f);
-        table.setWidths(new float[] {2.0f, 2.0f, 2.0f, 2.0f, 1.0f, 1.0f});
+        table.setWidths(new float[] {1.0f, 2.5f, 2.0f, 2.0f, 1.5f, 1.0f});
         table.setSpacingBefore(10);
          
         // define font for table header row
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN);
         font.setColor(BaseColor.WHITE);
-         
+        
+        
         // define table header cell
         PdfPCell cell = new PdfPCell();
         cell.setBackgroundColor(BaseColor.BLUE);
@@ -53,7 +56,7 @@ public class ComplaintsPdfBuilder extends AbstractPdf {
         cell.setPhrase(new Phrase("ID", font));
         table.addCell(cell);
          
-        cell.setPhrase(new Phrase("Açıklama", font));
+        cell.setPhrase(new Phrase("Açiklama", font));
         table.addCell(cell);
  
         cell.setPhrase(new Phrase("Konum", font));
@@ -62,7 +65,7 @@ public class ComplaintsPdfBuilder extends AbstractPdf {
         cell.setPhrase(new Phrase("Tarih", font));
         table.addCell(cell);
         
-        cell.setPhrase(new Phrase("Şikayetçi", font));
+        cell.setPhrase(new Phrase("Sikayetçi", font));
         table.addCell(cell);
         
         cell.setPhrase(new Phrase("Durum", font));
@@ -72,9 +75,9 @@ public class ComplaintsPdfBuilder extends AbstractPdf {
         for (ComplaintInfo complaint : listComplaints) {
             table.addCell(String.valueOf(complaint.getId()));
             table.addCell(complaint.getComplaintText());
-            table.addCell(String.valueOf(complaint.getLocationId()));
+            table.addCell(complaint.getLocationInfo().getDescription());
             table.addCell(String.valueOf(complaint.getComplaintTime()));
-            table.addCell(String.valueOf(complaint.getComplainantUserId()));
+            table.addCell(complaint.getComplainantUserInfo().getUsername());
             table.addCell(complaint.getResponseText());
         }
          

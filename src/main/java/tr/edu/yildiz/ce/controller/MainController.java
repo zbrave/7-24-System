@@ -181,10 +181,14 @@ public class MainController {
 	
 	@RequestMapping(value = "/reportComplaintsPdf", method = RequestMethod.GET)
     public ModelAndView downloadExcel() {
-        // create some sample data
-        List<ComplaintInfo> listComplaints= this.complaintDAO.listComplaintInfos();
+
+        List<ComplaintInfo> listComplaints = complaintDAO.listComplaintInfos();
+		for (ComplaintInfo l : listComplaints) {
+			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
+			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
+			l.setComplainantUserInfo(userDAO.findUserInfo(l.getComplainantUserId()));
+		}
  
-        // return a view which will be resolved by an excel view resolver
         return new ModelAndView("complaintPdfView", "listComplaints", listComplaints);
     }
 	

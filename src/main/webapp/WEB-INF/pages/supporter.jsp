@@ -22,7 +22,11 @@
 </head>
 <body>
 	<%@include file="navbar2.jsp" %>	
-    <h2>Supporter Page</h2>
+    <div class="text-center">	
+    	<p style="font-size: 30px; color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
+    		Destek Personeli Sayfası
+    	</p>
+    </div>
     <c:if test="${not empty compMsg}">
    		<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsg}
    		</div>

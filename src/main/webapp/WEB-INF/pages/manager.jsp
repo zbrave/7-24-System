@@ -21,8 +21,12 @@
 	<title>${title}</title>
 </head>
 <body>
-	<%@include file="navbar2.jsp" %>	
-    <h2>Manager Page</h2>
+	<%@include file="navbar2.jsp" %>
+	<div class="text-center">	
+    	<p style="font-size: 30px; color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
+    		Yönetici sayfası
+    	</p>
+    </div>
     <div style="padding: 50px;">
     <div class="panel panel-default">
       	<div class="panel-heading">Şikayetler</div>
@@ -45,8 +49,7 @@
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
 			      	<td>
-						<a class="btn btn-primary btn-xs" href="#" role="button">Çöz</a>
-						<a class="btn btn-danger btn-xs" href="#" role="button">Yönlendir</a>
+						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/transferComplaint?id=${data.id }" role="button">Yönlendir</a>
 					</td>
 			    </tr>
 			</c:forEach>

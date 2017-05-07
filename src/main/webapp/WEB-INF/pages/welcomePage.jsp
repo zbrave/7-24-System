@@ -25,16 +25,24 @@ $.get("http://freegeoip.net/json/", function (response) {
     $("#address").html(response.country_name + " / " + response.region_name);
 }, "jsonp");
 </script>
+<style>
+        	.welcomeText{
+        		margin: 40px auto;
+        		font-size: 30px;
+        		color:blue;
+        		text-shadow: 1px 1px 2px #050050;
+        	}
+</style>
 <body>
+	
 	<%@include file="navbar2.jsp" %>
-	<p>Deneme</p>
 	<div id="country"></div>
 	<div class="text-center">
         <div class="media">
             <div class="media-body">
-                <h4 class="media-heading">Hoşgeldin, ${pageContext.request.userPrincipal.name} <small id="address"></small></h4>
-                <h5 id="ip"></h5>
-                <hr style="margin:8px auto">
+                <h4 style="font-size: 50px" class="media-heading">Merhaba, ${pageContext.request.userPrincipal.name}!</br> <small style="color:white" id="address"></small></h4>
+                <h5 style="font-size: 30px" id="ip"></h5>
+                <hr style="margin:8px auto;width:20%;">
                 <c:forEach var="role"
 					items="${pageContext['request'].userPrincipal.principal.authorities}">
 					<c:if test="${role.authority == 'ROLE_SUPER_ADMIN' }">
@@ -49,6 +57,22 @@ $.get("http://freegeoip.net/json/", function (response) {
 				</c:forEach>
             </div>
         </div>
+
+        <c:forEach var="role"
+					items="${pageContext['request'].userPrincipal.principal.authorities}">
+					<c:if test="${role.authority == 'ROLE_MANAGER' }">
+						<div class="welcomeText">Yönetici Sayfasına Hoş Geldiniz!</div>
+					</c:if>
+					<c:if test="${role.authority == 'ROLE_USER' }">
+						<div class="welcomeText">Kullanıcı Sayfasına Hoş Geldiniz!</div>
+					</c:if>
+					<c:if test="${role.authority == 'ROLE_ADMIN' }">
+						<div class="welcomeText">ADMIN Sayfasına Hoş Geldiniz!</div>
+					</c:if>
+					<c:if test="${role.authority == 'ROLE_SUPPORT' }">
+						<div class="welcomeText">Destek Personeli Sayfasına Hoş Geldiniz!</div>
+					</c:if>
+				</c:forEach>
     </div>
     <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
 </body>
