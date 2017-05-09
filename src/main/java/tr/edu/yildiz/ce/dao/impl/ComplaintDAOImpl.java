@@ -70,6 +70,9 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         complaint.setResponseText(complaintInfo.getResponseText());
         complaint.setChildId(complaintInfo.getChildId());
         complaint.setEnded(complaintInfo.isEnded());
+        complaint.setAck(complaintInfo.isAck());
+        complaint.setAckTime(complaintInfo.getAckTime());
+        complaint.setReported(complaintInfo.isReported());
         if (isNew){
             Session session = this.sessionFactory.getCurrentSession();
             session.persist(complaint);
@@ -84,7 +87,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
         return new ComplaintInfo(complaint.getId(), complaint.getLocationId() ,complaint.getSupportTypeId() ,complaint.getParentId(),
         		complaint.getComplainantUserId(),complaint.getComplaintTime(), complaint.getComplaintText(),complaint.getSupportUserId(),
-        		complaint.getResponseTime(),complaint.getResponseText(),complaint.getChildId() ,complaint.isEnded() );
+        		complaint.getResponseTime(),complaint.getResponseText(),complaint.getChildId() ,complaint.isEnded(),complaint.getAckTime(),complaint.isAck(),complaint.isReported() );
 	}
 
 	@Override
@@ -97,16 +100,17 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@Override
 	public void recordComplaint(Integer locationId, Integer supportTypeId, Integer complainantUserId,
-			String complaintText ) {
+			String complaintText,Integer parentId ) {
 		//notifications
 		ComplaintInfo complaintInfo = new ComplaintInfo();
 		complaintInfo.setLocationId(locationId);
 		complaintInfo.setSupportTypeId(supportTypeId);
 		complaintInfo.setComplainantUserId(complainantUserId);
 		complaintInfo.setComplaintText(complaintText);
-		Date dateNow =new Date();
-		complaintInfo.setComplaintTime(dateNow);
 		complaintInfo.setEnded(false);
+		complaintInfo.setAck(false);
+		complaintInfo.setParentId(parentId);
+		complaintInfo.setReported(false);
 		saveComplaint(complaintInfo);
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
@@ -114,7 +118,6 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         crit.add(Restrictions.eq("supportTypeId", supportTypeId));
         crit.add(Restrictions.eq("complainantUserId", complainantUserId));
         crit.add(Restrictions.eq("complaintText", complaintText));
-        crit.add(Restrictions.eq("complaintTime", dateNow));
         Complaint complaint=(Complaint) crit.uniqueResult();
 		NotificationInfo notificationInfo =new NotificationInfo();
 		notificationInfo.setUserId(complaint.getComplainantUserId());
@@ -127,32 +130,64 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		String text="  Merhaba "+userDAO.findUserInfo(complainantUserId).getUsername()+",\n"+
 		"Location : "+locationDAO.findLocationInfo(locationId).getDescription()+",\n"+
 		"Support Type : "+supportTypeDAO.findSupportTypeInfo( supportTypeId).getType() + ",\n"+
-		"Complaint Text : "+complaintText+ ",\n"+
-		"Complaint Time : "+dateNow.toString()+ ",\n";
+		"Complaint Text : "+complaintText+ ",\n";
 		mailSend.sendSimpleMessage(to, subject, text);
 	}
 
 	@Override
-	public void transferComplaint(Integer id, Integer supportUserId, String responseText, Integer newLocationId,
+	public void ackComplaint(Integer id) {
+		ComplaintInfo c =this.findComplaintInfo(id);
+		c.setAck(true);
+		Date dateNow =new Date();
+		c.setAckTime(dateNow);
+		saveComplaint(c);
+	}
+	@Override
+	public void reportComplaint(Integer id) {
+		ComplaintInfo c =this.findComplaintInfo(id);
+		c.setReported(true);
+		saveComplaint(c);
+		
+	}
+	@Override
+	public void assingComplaint(Integer id, Integer supportUserId) {
+		ComplaintInfo c =this.findComplaintInfo(id);
+		c.setSupportUserId(supportUserId);
+		Date dateNow =new Date();
+		c.setComplaintTime(dateNow);
+	}
+	
+	@Override
+	public void transferComplaint(Integer id,  String responseText, Integer newLocationId,
 		Integer newSupportTypeId, String newComplaintText,boolean ended) {
 		//notifications
 		Integer parentComplaintId=id;
 		Integer childComplaintId;
-		Complaint complaint = this.findComplaint(id);
-		ComplaintInfo newComplaintInfo = new ComplaintInfo();
-		complaint.setSupportUserId(supportUserId);
-		complaint.setResponseText(responseText);
-		complaint.setResponseTime(new Date());
-		complaint.setEnded(ended);
-		newComplaintInfo.setParentId(id);
-		newComplaintInfo.setLocationId(newLocationId);
-		newComplaintInfo.setSupportTypeId(newSupportTypeId);
-		newComplaintInfo.setComplainantUserId(supportUserId);
-		newComplaintInfo.setComplaintText(newComplaintText);
-		newComplaintInfo.setComplaintTime(new Date());
+		ComplaintInfo complaintInfo = this.findComplaintInfo(id);
+		complaintInfo.setResponseText(responseText);
+		complaintInfo.setResponseTime(new Date());
+		complaintInfo.setEnded(ended);
 		
-		saveComplaint(newComplaintInfo);
-		complaint.setChildId(findChildInfo(id).getId());
+		
+		this.recordComplaint(newLocationId,newSupportTypeId,complaintInfo.getComplainantUserId(),
+				newComplaintText,complaintInfo.getId() );
+		complaintInfo.setChildId(this.findChildInfo(id).getId());
+		childComplaintId=findChildInfo(id).getId();
+		this.saveComplaint(complaintInfo);
+		//complaint.setSupportUserId(supportUserId);
+		//complaint.setResponseText(responseText);
+		//complaint.setResponseTime(new Date());
+		//complaint.setEnded(ended);
+		
+		//newComplaintInfo.setParentId(id);
+		//newComplaintInfo.setLocationId(newLocationId);
+		//newComplaintInfo.setSupportTypeId(newSupportTypeId);
+		//newComplaintInfo.setComplainantUserId(supportUserId);
+		//newComplaintInfo.setComplaintText(newComplaintText);
+		//newComplaintInfo.setComplaintTime(new Date());
+		
+		//saveComplaint(newComplaintInfo);
+		
 		childComplaintId=findChildInfo(id).getId();
 		List<NotificationInfo> notificationInfos = notificationDAO.listNotificationInfosForComplaint(parentComplaintId);
 		for(NotificationInfo n : notificationInfos){
@@ -163,23 +198,24 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	}
 
 	@Override
-	public void endComplaint(Integer id, Integer supportUserId, String responseText) {
+	public void endComplaint(Integer id, String responseText) {
 		//notifications
 		boolean sendEmail=false;
-		Complaint complaint = this.findComplaint(id);
-		complaint.setSupportUserId(supportUserId);
-		complaint.setResponseText(responseText);
-		complaint.setResponseTime(new Date());
-		complaint.setEnded(true);
-		if(complaint.getParentId()!=null){
-			ComplaintInfo notComplete = findComplaintInfo(complaint.getParentId());
+		ComplaintInfo complaintInfo = this.findComplaintInfo(id);
+		complaintInfo.setResponseText(responseText);
+		complaintInfo.setResponseTime(new Date());
+		complaintInfo.setEnded(true);
+		saveComplaint(complaintInfo);
+		
+		if(complaintInfo.getParentId()!=null){
+			ComplaintInfo notComplete = findComplaintInfo(complaintInfo.getParentId());
 			while( notComplete.getParentId()!=null && notComplete.isEnded()==true ){
 				notComplete =findComplaintInfo(notComplete.getParentId());
 			}
 			if(notComplete.isEnded()==false){
 				notComplete.setEnded(true);
 				saveComplaint(notComplete);
-				transferComplaint(id, supportUserId, responseText,notComplete.getLocationId(),
+				transferComplaint(id, responseText,notComplete.getLocationId(),
 						notComplete.getSupportTypeId(), notComplete.getComplaintText(),true);
 			}else{
 				sendEmail=true;
@@ -251,27 +287,35 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	@Override
 	public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
-		List<SupporterInfo> supporterInfos = supporterDAO.listSupporterInfosById(userId);
-		List<Complaint> complaints = new ArrayList<Complaint>(); 
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("supportUserId", userId));
+        crit.add(Restrictions.eq("ack", true));
+        crit.add(Restrictions.eq("reported", false));
+		List<Complaint> complaints = (List<Complaint>)crit.list();
 		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
-		for(SupporterInfo s:supporterInfos){
-			List<LocationInfo> locationInfos =new ArrayList<LocationInfo>();
-			locationInfos.addAll(locationDAO.findLocationInfoTree(s.getLocationId()));
-			for(LocationInfo l:locationInfos){
-		        Criteria crit = session.createCriteria(Complaint.class);
-		        crit.add(Restrictions.eq("supportTypeId", s.getSupportTypeId()));
-		        crit.add(Restrictions.eq("locationId", l.getId()));
-		        crit.add(Restrictions.eq("ended",false));
-		        crit.add(Restrictions.isNull("childId"));
-		        complaints.addAll((List<Complaint>)crit.list());
-			}
-		}
+		
         for(Complaint c:complaints){
         	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
         }
         return complaintInfos;
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listComplaintInfosForSupportAck(Integer userId) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("supportUserId", userId));
+        crit.add(Restrictions.eq("ack", false));
+        crit.add(Restrictions.eq("reported", false));
+		List<Complaint> complaints = (List<Complaint>)crit.list();
+		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
+		
+        for(Complaint c:complaints){
+        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        }
+        return complaintInfos;
+	}
 	@Override
 	public List<ComplaintInfo> listComplaintProcess(Integer id) {
 		ComplaintInfo c=this.findComplaintInfo(id);
@@ -306,25 +350,46 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ComplaintInfo> listComplaintInfosForManager(Integer userId) {
-        Session session = sessionFactory.getCurrentSession();
+	public List<ComplaintInfo> listComplaintInfosForAssignment(Integer userId) {
+		Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
-        crit.add(Restrictions.eq("ended",false));
-        crit.add(Restrictions.isNull("childId"));
+        crit.add(Restrictions.isNull("supportUserId"));
         List<Complaint> complaints = crit.list();
         List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
-        List<Integer> userIds= new ArrayList<Integer>();
         for(Complaint c:complaints){
         	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
-        	userIds.addAll(supporterDAO.listSupporterUserIdBySupportType(c.getSupportTypeId()));
         }
-		for(Integer i : userIds){
-			complaintInfos.removeAll(listComplaintInfosForSupport(i));
-		}
-		complaintInfos.addAll(this.listComplaintInfosForSupport(userId));
-		return complaintInfos;
+        return complaintInfos;
 	}
-
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listComplaintInfosForManager(Integer userId) {
+		Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("reported", true));
+        List<Complaint> complaints = crit.list();
+        List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
+        for(Complaint c:complaints){
+        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        }
+        return complaintInfos;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public long avgTimeForProcess() {
@@ -415,5 +480,15 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         List<Complaint> complaints = crit.list();
         return complaints.size();
 	}
+
+
+
+
+
+
+
+
+
+
 	
 }

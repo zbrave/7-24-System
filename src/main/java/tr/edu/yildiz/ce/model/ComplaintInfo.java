@@ -18,9 +18,11 @@ public class ComplaintInfo{
 	private String responseText;
 	private Integer childId;
 	private boolean ended;
+	private boolean ack;
+	private boolean reported;
+	private Date ackTime;
 	private Byte[] photo;
 	private File file;
-	
 	private LocationInfo locationInfo;
 	private SupportTypeInfo supportTypeInfo;
 	private ComplaintInfo parentInfo;
@@ -33,7 +35,7 @@ public class ComplaintInfo{
 	}
 
 	public ComplaintInfo(Integer id,Integer locationId,Integer supportTypeId,Integer parentId,Integer complainantUserId,Date complaintTime,
-			String complaintText,Integer supportUserId,Date responseTime,String responseText,Integer childId,boolean ended){
+			String complaintText,Integer supportUserId,Date responseTime,String responseText,Integer childId,boolean ended,Date ackTime,boolean ack,boolean reported){
 		this.id=id;
 		this.locationId=locationId;
 		this.supportTypeId=supportTypeId;
@@ -46,6 +48,9 @@ public class ComplaintInfo{
 		this.responseText=responseText;
 		this.childId=childId;
 		this.ended=ended;
+		this.ack=ack;
+		this.ackTime=ackTime;
+		this.reported=reported;
 	}
 	
 	public Integer getId() {
@@ -195,6 +200,36 @@ public class ComplaintInfo{
 
 	public void setFile(File file) {
 		this.file = file;
+	}
+
+	public boolean isAck() {
+		return ack;
+	}
+
+	public void setAck(boolean ack) {
+		this.ack = ack;
+	}
+
+	public Date getAckTime() {
+		return ackTime;
+	}
+
+	public void setAckTime(Date ackTime) {
+		this.ackTime = ackTime;
+	}
+
+	/**
+	 * @return the reported
+	 */
+	public boolean isReported() {
+		return reported;
+	}
+
+	/**
+	 * @param reported the reported to set
+	 */
+	public void setReported(boolean reported) {
+		this.reported = reported;
 	}
 
 

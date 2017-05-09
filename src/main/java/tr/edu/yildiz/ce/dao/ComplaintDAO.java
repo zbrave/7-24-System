@@ -11,15 +11,23 @@ public interface ComplaintDAO {
     public ComplaintInfo findComplaintInfo (Integer id);  
     public void deleteComplaint (Integer id);
     
-    public void recordComplaint (Integer locationId,Integer supportTypeId,Integer complainantUserId,String complaintText);
-    public void transferComplaint (Integer id,Integer supportUserId,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended);
-    public void endComplaint(Integer id,Integer supportUserId,String responseText);
+    public void recordComplaint (Integer locationId,Integer supportTypeId,Integer complainantUserId,String complaintText,Integer parentId);
+    public void assingComplaint(Integer id,Integer supportUserId);
+    public void ackComplaint(Integer id);
+    public void reportComplaint(Integer id);
+    public void transferComplaint (Integer id,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended);
+    public void endComplaint(Integer id,String responseText);
     public void uniteComplaints(Integer uniteTo,Integer delete);
-    public List<ComplaintInfo> listComplaintInfos (); 
+    
+    public List<ComplaintInfo> listComplaintInfos ();
+    
     public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId);
+    public List<ComplaintInfo> listComplaintInfosForSupportAck(Integer userId);
     public List<ComplaintInfo> listComplaintProcess(Integer id);
     public List<ComplaintInfo> listActiveComplaintInfos();
+    public List<ComplaintInfo> listComplaintInfosForAssignment(Integer userId);
     public List<ComplaintInfo> listComplaintInfosForManager(Integer userId);
+    
     public long avgTimeForProcess();
     public long avgTimeForComplaintBySupportType(Integer supportTypeId);
     public Integer numOfActiveComplaintBySupportType(Integer supportTypeId);

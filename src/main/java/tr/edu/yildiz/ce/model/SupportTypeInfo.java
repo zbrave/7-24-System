@@ -8,7 +8,6 @@ public class SupportTypeInfo {
 	private Integer total;
 	private Integer wait;
 	private Integer active;
-	
 	public SupportTypeInfo(){
 		
 	}
@@ -63,5 +62,6 @@ public class SupportTypeInfo {
 	public void setActive(Integer active) {
 		this.active = active;
 	}
+
 	
 }

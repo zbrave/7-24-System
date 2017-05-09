@@ -9,6 +9,12 @@ public class UserInfo {
     private String passwordConf;
     private boolean enabled;
     private boolean banned;
+    private long avgAwarenessTime;
+    private long avgResponseTime;
+	private Integer total;
+	private Integer wait;
+	private Integer active;
+
 	
     public UserInfo() {
     	
@@ -76,6 +82,46 @@ public class UserInfo {
 
 	public void setBanned(boolean banned) {
 		this.banned = banned;
+	}
+
+	public long getAvgAwarenessTime() {
+		return avgAwarenessTime;
+	}
+
+	public void setAvgAwarenessTime(long avgAwarenessTime) {
+		this.avgAwarenessTime = avgAwarenessTime;
+	}
+
+	public long getAvgResponseTime() {
+		return avgResponseTime;
+	}
+
+	public void setAvgResponseTime(long avgResponseTime) {
+		this.avgResponseTime = avgResponseTime;
+	}
+
+	public Integer getTotal() {
+		return total;
+	}
+
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+
+	public Integer getWait() {
+		return wait;
+	}
+
+	public void setWait(Integer wait) {
+		this.wait = wait;
+	}
+
+	public Integer getActive() {
+		return active;
+	}
+
+	public void setActive(Integer active) {
+		this.active = active;
 	}
      
     

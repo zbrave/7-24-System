@@ -29,6 +29,9 @@ public class Complaint {
 	private String responseText;
 	private Integer childId;
 	private boolean ended;
+	private boolean ack;
+	private boolean reported;
+	private Date ackTime;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -134,6 +137,31 @@ public class Complaint {
 	}
 	public void setPhoto(Byte[] photo) {
 		this.photo = photo;
+	}
+	
+	@Column(name = "ack")
+	public boolean isAck() {
+		return ack;
+	}
+	public void setAck(boolean ack) {
+		this.ack = ack;
+	}
+	
+	@Column(name = "ack_time", columnDefinition="DATETIME")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getAckTime() {
+		return ackTime;
+	}
+	public void setAckTime(Date ackTime) {
+		this.ackTime = ackTime;
+	}
+	
+	@Column(name = "reported")
+	public boolean isReported() {
+		return reported;
+	}
+	public void setReported(boolean reported) {
+		this.reported = reported;
 	}
 	
 }
