@@ -19,19 +19,19 @@ public interface ComplaintDAO {
     public void endComplaint(Integer id,String responseText);
     public void uniteComplaints(Integer uniteTo,Integer delete);
     
-    public List<ComplaintInfo> listComplaintInfos ();
-    
+    public List<ComplaintInfo> listComplaintInfos (Integer locationId,Integer supportTypeId);
+    public List<ComplaintInfo> listWaitingAssingnComplaintInfos (Integer locationId,Integer supportTypeId);
+    public List<ComplaintInfo> listWaitingAckComplaintInfos (Integer locationId,Integer supportTypeId);
+    public List<ComplaintInfo> listActiveComplaintInfos (Integer locationId,Integer supportTypeId);
+    public List<ComplaintInfo> listWaitingChildComplaintInfos (Integer locationId,Integer supportTypeId);
+    public List<ComplaintInfo> listReportedComplaintInfos (Integer locationId,Integer supportTypeId);
+    public List<ComplaintInfo> listComplaintInfosByUserId (Integer supportUserId);
     public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId);
     public List<ComplaintInfo> listComplaintInfosForSupportAck(Integer userId);
     public List<ComplaintInfo> listComplaintProcess(Integer id);
-    public List<ComplaintInfo> listActiveComplaintInfos();
     public List<ComplaintInfo> listComplaintInfosForAssignment(Integer userId);
-    public List<ComplaintInfo> listComplaintInfosForManager(Integer userId);
+    public List<ComplaintInfo> listReportedComplaintInfosForManager(Integer userId);
+    public List<ComplaintInfo> listActiveComplaintInfosForUnification(Integer id);
     
-    public long avgTimeForProcess();
-    public long avgTimeForComplaintBySupportType(Integer supportTypeId);
-    public Integer numOfActiveComplaintBySupportType(Integer supportTypeId);
-    public Integer numOfWaitingComplaintBySupportType(Integer supportTypeId);
-    public Integer numOfComplaintBySupportType(Integer supportTypeId);
     public Integer numOfProcess();
 }

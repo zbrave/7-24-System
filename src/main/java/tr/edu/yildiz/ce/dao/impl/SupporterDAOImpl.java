@@ -101,18 +101,30 @@ public class SupporterDAOImpl implements SupporterDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Integer> listSupporterUserIdBySupportType(Integer supportTypeId) {
+	public List<SupporterInfo> listSupporterInfosBySupportType(Integer supportTypeId) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Supporter.class);
         crit.add(Restrictions.eq("supportTypeId", supportTypeId));
         List<Supporter> supporters=(List<Supporter>) crit.list();
-        List<Integer> userIds= new ArrayList<Integer>();
+        List<SupporterInfo> supporterInfos= new ArrayList<SupporterInfo>();
         
         for(Supporter s: supporters){
-        	if(!userIds.contains(s.getUserId())){
-        		userIds.add(s.getUserId());
-        	}
+        	supporterInfos.add(this.findSupporterInfo(s.getId()));
         }
-        return userIds;
+        return supporterInfos;
 	}
+
+	@Override
+	public List<UserInfo> listSupporterUserInfos() {
+		List<SupporterInfo> supporterInfos = listSupporterInfos();
+		List<UserInfo> userInfos=new ArrayList<UserInfo>();
+		for(SupporterInfo s:supporterInfos){
+			UserInfo u=userDAO.findUserInfo(s.getUserId());
+			if(!userInfos.contains(u)){
+				userInfos.add(u);
+			}
+		}
+		return userInfos;
+	}
+
 }

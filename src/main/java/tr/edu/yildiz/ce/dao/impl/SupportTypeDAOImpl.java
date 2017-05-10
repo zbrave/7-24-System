@@ -9,11 +9,15 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.entity.SupportType;
+import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
 
 public class SupportTypeDAOImpl implements SupportTypeDAO {
+    @Autowired
+    private ComplaintDAO complaintDAO;
 
 	@Autowired
     private SessionFactory sessionFactory;
@@ -77,6 +81,20 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
         	supportTypeInfos.add((SupportTypeInfo)findSupportTypeInfo(s.getId()));
         }
         return supportTypeInfos;
+	}
+
+	@Override
+	public List<SupportTypeInfo> reportSupportTypeInfos() {
+		List<SupportTypeInfo> supportTypeInfos= this.listSupportTypeInfos();
+		for(SupportTypeInfo s:supportTypeInfos){
+			s.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(null,s.getId()).size());
+			s.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(null,s.getId()).size());
+			s.setActive(complaintDAO.listActiveComplaintInfos(null,s.getId()).size());
+			s.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(null,s.getId()).size());
+			s.setTotal(complaintDAO.listComplaintInfos(null,s.getId()).size());
+			s.setReported(complaintDAO.listReportedComplaintInfos(null,s.getId()).size());
+		}
+		return supportTypeInfos;
 	}
 
 }

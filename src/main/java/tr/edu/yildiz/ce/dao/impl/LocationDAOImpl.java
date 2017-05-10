@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.entity.Location;
 import tr.edu.yildiz.ce.model.LocationInfo;
@@ -17,7 +18,8 @@ public class LocationDAOImpl implements LocationDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
-    
+    @Autowired
+    private ComplaintDAO complaintDAO;
     @Override
 	public Location findLocation(Integer id) {
         Session session = sessionFactory.getCurrentSession();
@@ -120,6 +122,54 @@ public class LocationDAOImpl implements LocationDAO {
 		for(int i=0;i<lenght;i++){
 			locationInfos.addAll( findChildInfos( locationInfos.get(i).getId() ) );
 			lenght=locationInfos.size();
+		}
+		return locationInfos;
+	}
+
+	@Override
+	public List<LocationInfo> listLocationInfoByProximity(Integer id) {
+		LocationInfo origin =this.findLocationInfo(id);
+		List<LocationInfo> finalTree=new ArrayList<LocationInfo>();
+		List<LocationInfo> tree = findLocationInfoTree(id);
+		List<LocationInfo> pathUp = new ArrayList<LocationInfo>();
+		LocationInfo up=origin;
+		while(up.getParentId()!=null){
+			up=this.findLocationInfo(up.getParentId());
+			pathUp.add(up);
+		}
+		List<LocationInfo> upTree = findLocationInfoTree(up.getId());
+		upTree.removeAll(tree);
+		upTree.removeAll(pathUp);
+		finalTree.addAll(tree);
+		finalTree.addAll(pathUp);
+		finalTree.addAll(upTree);
+		return finalTree;
+	}
+
+	@Override
+	public List<LocationInfo> findLocationInfoUpperTree(Integer id) {
+		LocationInfo origin =this.findLocationInfo(id);
+		LocationInfo up=origin;
+		List<LocationInfo> pathUp = new ArrayList<LocationInfo>();
+		pathUp.add(origin);
+		
+		while(up.getParentId()!=null){
+			up=this.findLocationInfo(up.getParentId());
+			pathUp.add(up);
+		}
+		return pathUp;
+	}
+
+	@Override
+	public List<LocationInfo> reportLocationInfos() {
+		List<LocationInfo> locationInfos= this.listLocationInfos();
+		for(LocationInfo l:locationInfos){
+			l.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(),null).size());
+			l.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(),null).size());
+			l.setActive(complaintDAO.listActiveComplaintInfos(l.getId(),null).size());
+			l.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(),null).size());
+			l.setTotal(complaintDAO.listComplaintInfos(l.getId(),null).size());
+			l.setReported(complaintDAO.listReportedComplaintInfos(l.getId(),null).size());
 		}
 		return locationInfos;
 	}

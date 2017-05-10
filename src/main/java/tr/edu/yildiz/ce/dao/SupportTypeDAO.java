@@ -12,4 +12,5 @@ public interface SupportTypeDAO {
     public SupportTypeInfo findSupportTypeInfo(Integer id);  
     public void deleteSupportType (Integer id);
     public List<SupportTypeInfo> listSupportTypeInfos();
+    public List<SupportTypeInfo> reportSupportTypeInfos();
 }

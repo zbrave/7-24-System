@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.MailSend;
+import tr.edu.yildiz.ce.dao.ManagerDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.NotificationDAO;
@@ -20,12 +21,16 @@ import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Complaint;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocationInfo;
+import tr.edu.yildiz.ce.model.ManagerInfo;
 import tr.edu.yildiz.ce.model.NotificationInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 
 public class ComplaintDAOImpl implements ComplaintDAO {
+	
 	@Autowired
 	private SessionFactory sessionFactory;
+	@Autowired
+	private ManagerDAO managerDAO;
 	@Autowired
 	private LocationDAO locationDAO;
 	@Autowired
@@ -167,27 +172,13 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		complaintInfo.setResponseText(responseText);
 		complaintInfo.setResponseTime(new Date());
 		complaintInfo.setEnded(ended);
-		
+		complaintInfo.setReported(false);
 		
 		this.recordComplaint(newLocationId,newSupportTypeId,complaintInfo.getComplainantUserId(),
 				newComplaintText,complaintInfo.getId() );
 		complaintInfo.setChildId(this.findChildInfo(id).getId());
 		childComplaintId=findChildInfo(id).getId();
 		this.saveComplaint(complaintInfo);
-		//complaint.setSupportUserId(supportUserId);
-		//complaint.setResponseText(responseText);
-		//complaint.setResponseTime(new Date());
-		//complaint.setEnded(ended);
-		
-		//newComplaintInfo.setParentId(id);
-		//newComplaintInfo.setLocationId(newLocationId);
-		//newComplaintInfo.setSupportTypeId(newSupportTypeId);
-		//newComplaintInfo.setComplainantUserId(supportUserId);
-		//newComplaintInfo.setComplaintText(newComplaintText);
-		//newComplaintInfo.setComplaintTime(new Date());
-		
-		//saveComplaint(newComplaintInfo);
-		
 		childComplaintId=findChildInfo(id).getId();
 		List<NotificationInfo> notificationInfos = notificationDAO.listNotificationInfosForComplaint(parentComplaintId);
 		for(NotificationInfo n : notificationInfos){
@@ -199,12 +190,12 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@Override
 	public void endComplaint(Integer id, String responseText) {
-		//notifications
 		boolean sendEmail=false;
 		ComplaintInfo complaintInfo = this.findComplaintInfo(id);
 		complaintInfo.setResponseText(responseText);
 		complaintInfo.setResponseTime(new Date());
 		complaintInfo.setEnded(true);
+		complaintInfo.setReported(false);
 		saveComplaint(complaintInfo);
 		
 		if(complaintInfo.getParentId()!=null){
@@ -272,10 +263,30 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ComplaintInfo> listComplaintInfos() {
+	public List<ComplaintInfo> listComplaintInfos(Integer locationId,Integer supportTypeId) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Complaint.class);
-        List<Complaint> complaints = crit.list();
+        List<Complaint> complaints =new ArrayList<Complaint>();
+        if(supportTypeId==null&&locationId==null){
+        	Criteria crit = session.createCriteria(Complaint.class);
+        	complaints.addAll(crit.list());
+        }
+        if(supportTypeId!=null&&locationId==null){
+        	Criteria crit = session.createCriteria(Complaint.class);
+        	crit.add(Restrictions.eq("supportTypeId", supportTypeId));
+        	complaints.addAll(crit.list());
+        }
+        if(locationId!=null){
+            List<LocationInfo> locationInfoTree = locationDAO.findLocationInfoTree(locationId);
+    		for(LocationInfo l:locationInfoTree){
+    			Criteria crit = session.createCriteria(Complaint.class);
+    	        if(supportTypeId!=null){
+    	        	crit.add(Restrictions.eq("supportTypeId", supportTypeId));
+    	        }
+    	        crit.add(Restrictions.eq("locationId", l.getId()));
+    	        complaints.addAll(crit.list());
+    		}
+        }
+
         List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
         for(Complaint c:complaints){
         	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
@@ -336,25 +347,17 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ComplaintInfo> listActiveComplaintInfos() {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Complaint.class);
-        crit.add(Restrictions.eq("ended",false));
-        List<Complaint> complaints = crit.list();
-        List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
-        for(Complaint c:complaints){
-        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
-        }
-        return complaintInfos;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
 	public List<ComplaintInfo> listComplaintInfosForAssignment(Integer userId) {
-		Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Complaint.class);
-        crit.add(Restrictions.isNull("supportUserId"));
-        List<Complaint> complaints = crit.list();
+        ManagerInfo managerInfo= managerDAO.findManagerInfo(userId);
+        List<LocationInfo> locationInfoTree = locationDAO.findLocationInfoTree(managerInfo.getLocationId());
+        Session session = sessionFactory.getCurrentSession();
+        List<Complaint> complaints =new ArrayList<Complaint>(); 
+		for(LocationInfo l:locationInfoTree){
+			Criteria crit = session.createCriteria(Complaint.class);
+			crit.add(Restrictions.isNull("supportUserId"));
+	        crit.add(Restrictions.eq("locationId", l.getId()));
+	        complaints.addAll(crit.list());
+		}
         List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
         for(Complaint c:complaints){
         	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
@@ -363,114 +366,52 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ComplaintInfo> listComplaintInfosForManager(Integer userId) {
-		Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Complaint.class);
-        crit.add(Restrictions.eq("reported", true));
-        List<Complaint> complaints = crit.list();
+	public List<ComplaintInfo> listReportedComplaintInfosForManager(Integer userId) {
+        ManagerInfo managerInfo= managerDAO.findManagerInfo(userId);
+        List<LocationInfo> locationInfoTree = locationDAO.findLocationInfoTree(managerInfo.getLocationId());
+        Session session = sessionFactory.getCurrentSession();
+        List<Complaint> complaints =new ArrayList<Complaint>(); 
+		for(LocationInfo l:locationInfoTree){
+			Criteria crit = session.createCriteria(Complaint.class);
+	        crit.add(Restrictions.eq("reported", true));
+	        crit.add(Restrictions.eq("locationId", l.getId()));
+	        complaints.addAll(crit.list());
+		}
         List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
         for(Complaint c:complaints){
         	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
         }
         return complaintInfos;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public long avgTimeForProcess() {
-		long time=0;
-		Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Complaint.class);
-        crit.add(Restrictions.eq("ended",true));
-        crit.add(Restrictions.isNull("childId"));
-        List<Complaint> complaints = crit.list();
-        
-        List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>(); 
-        for(Complaint c:complaints){
-        	complaintInfos= this.listComplaintProcess(c.getId());
-        	time+=c.getResponseTime().getTime()-complaintInfos.get(0).getComplaintTime().getTime();
-        }
-        if(complaints.size()>0){
-            time=time/complaints.size();      	
-        }
-		return time;
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public long avgTimeForComplaintBySupportType(Integer supportTypeId) {
-		long time=0;
-		Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Complaint.class);
-        crit.add(Restrictions.eq("ended",true));
-        if(supportTypeId!=null){
-            crit.add(Restrictions.eq("supportTypeId", supportTypeId));
-        }
-        List<Complaint> complaints = crit.list();
-        for(Complaint c:complaints){
-        	time+=c.getResponseTime().getTime()-c.getComplaintTime().getTime();
-        }
-        if(complaints.size()>0){
-            time=time/complaints.size();      	
-        }
-        return time;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Integer numOfActiveComplaintBySupportType(Integer supportTypeId) {
+	public List<ComplaintInfo> listActiveComplaintInfosForUnification(Integer id) {
+		ComplaintInfo com=this.findComplaintInfo(id);
+		List<LocationInfo> locTree=locationDAO.listLocationInfoByProximity(com.getLocationId());
         Session session = sessionFactory.getCurrentSession();
+        List<Complaint> complaints =new ArrayList<Complaint>();
+        for(LocationInfo l:locTree){
+        	Criteria crit = session.createCriteria(Complaint.class);
+            crit.add(Restrictions.eq("ended",false));
+            crit.add(Restrictions.eq("reported",false));
+            crit.add(Restrictions.eq("locationId",l.getId()));
+            complaints.addAll(crit.list());
+        }
+        List<Complaint> allComplaints =new ArrayList<Complaint>();
         Criteria crit = session.createCriteria(Complaint.class);
         crit.add(Restrictions.eq("ended",false));
-        crit.add(Restrictions.isNull("childId"));
-        if(supportTypeId!=null){
-            crit.add(Restrictions.eq("supportTypeId", supportTypeId));
+        crit.add(Restrictions.eq("reported",false));
+        allComplaints.addAll(crit.list());
+        allComplaints.removeAll(complaints);
+        complaints.addAll(allComplaints);
+        List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
+        for(Complaint c:complaints){
+        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
         }
-        List<Complaint> complaints = crit.list();
-        return complaints.size();
+        return complaintInfos;
 	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Integer numOfWaitingComplaintBySupportType(Integer supportTypeId) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Complaint.class);
-        crit.add(Restrictions.eq("ended",false));
-        crit.add(Restrictions.isNotNull("childId"));
-        if(supportTypeId!=null){
-            crit.add(Restrictions.eq("supportTypeId", supportTypeId));
-        }
-        List<Complaint> complaints = crit.list();
-        return complaints.size();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Integer numOfComplaintBySupportType(Integer supportTypeId) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Complaint.class);
-        if(supportTypeId!=null){
-            crit.add(Restrictions.eq("supportTypeId", supportTypeId));
-        }
-        List<Complaint> complaints = crit.list();
-        return complaints.size();
-	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Integer numOfProcess() {
@@ -481,14 +422,76 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         return complaints.size();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listComplaintInfosByUserId(Integer supportUserId) {
+		Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("supportUserId",supportUserId));
+		List<Complaint> complaints = (List<Complaint>)crit.list();
+		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
+        for(Complaint c:complaints){
+        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        }
+        return complaintInfos;
+	}
 
+	@Override
+	public List<ComplaintInfo> listWaitingAssingnComplaintInfos(Integer locationId, Integer supportTypeId) {
+		List<ComplaintInfo> complaintInfos=this.listComplaintInfos(locationId, supportTypeId);
+		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
+		for(ComplaintInfo c:complaintInfos){
+			if(c.getSupportUserId()==null){
+				retComplaintInfos.add(c);
+			}
+		}
+		return retComplaintInfos;
+	}
 
+	@Override
+	public List<ComplaintInfo> listWaitingAckComplaintInfos(Integer locationId, Integer supportTypeId) {
+		List<ComplaintInfo> complaintInfos=this.listComplaintInfos(locationId, supportTypeId);
+		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
+		for(ComplaintInfo c:complaintInfos){
+			if(c.isAck()==false&&c.getSupportUserId()!=null){
+				retComplaintInfos.add(c);
+			}
+		}
+		return retComplaintInfos;
+	}
 
+	@Override
+	public List<ComplaintInfo> listActiveComplaintInfos(Integer locationId, Integer supportTypeId) {
+		List<ComplaintInfo> complaintInfos=this.listComplaintInfos(locationId, supportTypeId);
+		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
+		for(ComplaintInfo c:complaintInfos){
+			if(c.isAck()==true&&c.isEnded()==false&&c.getChildId()==null&&c.isReported()==false){
+				retComplaintInfos.add(c);
+			}
+		}
+		return retComplaintInfos;
+	}
+	@Override
+	public List<ComplaintInfo> listWaitingChildComplaintInfos(Integer locationId, Integer supportTypeId) {
+		List<ComplaintInfo> complaintInfos=this.listComplaintInfos(locationId, supportTypeId);
+		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
+		for(ComplaintInfo c:complaintInfos){
+			if(c.isAck()==true&&c.isEnded()==false&&c.getChildId()!=null&&c.isReported()==false){
+				retComplaintInfos.add(c);
+			}
+		}
+		return retComplaintInfos;
+	}
 
-
-
-
-
-
-	
+	@Override
+	public List<ComplaintInfo> listReportedComplaintInfos(Integer locationId, Integer supportTypeId) {
+		List<ComplaintInfo> complaintInfos=this.listComplaintInfos(locationId, supportTypeId);
+		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
+		for(ComplaintInfo c:complaintInfos){
+			if(c.isReported()==true){
+				retComplaintInfos.add(c);
+			}
+		}
+		return retComplaintInfos;
+	}
 }

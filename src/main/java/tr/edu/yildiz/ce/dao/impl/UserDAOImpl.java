@@ -13,18 +13,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import tr.edu.yildiz.ce.dao.MailSend;
+import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 
 import tr.edu.yildiz.ce.entity.Activation;
 import tr.edu.yildiz.ce.dao.ActivationDAO;
+import tr.edu.yildiz.ce.dao.ComplaintDAO;
+import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
+import tr.edu.yildiz.ce.model.ComplaintInfo;
+import tr.edu.yildiz.ce.model.LocationInfo;
+import tr.edu.yildiz.ce.model.SupporterInfo;
 import tr.edu.yildiz.ce.model.UserInfo;
 import tr.edu.yildiz.ce.entity.User;
  
 @Service
 @Transactional
 public class UserDAOImpl implements UserDAO {
- 
+	@Autowired
+	private LocationDAO locationDAO;
+	
+	@Autowired
+	private SupporterDAO supporterDAO;
+	
+	@Autowired
+	private ComplaintDAO complaintDAO;
+	
 	@Autowired
 	private UserRoleDAO userRoleDAO;
 	
@@ -137,4 +151,63 @@ public class UserDAOImpl implements UserDAO {
         return userInfos;
 	}
 
+	@Override
+	public List<UserInfo> listUserInfosForAssignment(Integer complaintId) {
+		ComplaintInfo c=complaintDAO.findComplaintInfo(complaintId);
+		List<SupporterInfo> supporterInfos=supporterDAO.listSupporterInfosBySupportType(c.getSupportTypeId());
+		List<LocationInfo> pathUp = locationDAO.findLocationInfoUpperTree(c.getLocationId());
+		List<UserInfo> userInfos=new ArrayList<UserInfo>();
+        for(SupporterInfo s: supporterInfos){
+        	if(pathUp.contains(locationDAO.findLocationInfo(s.getLocationId()))&&!userInfos.contains(this.findUserInfo(s.getUserId()))){
+        		userInfos.add(this.findUserInfo(s.getUserId()));
+        	}
+        }
+		return userInfos;		
+	}
+
+	@Override
+	public List<UserInfo> reportSupportUserInfos() {
+		List<UserInfo> userInfos = supporterDAO.listSupporterUserInfos();
+		for(UserInfo u:userInfos){
+			long totalAwarenessTime=0;
+			long numAwarenessTime=0;
+			long totalResponseTime=0;
+			long numResponseTime=0;
+			Integer waitingAck=0;
+			Integer active=0;
+			Integer waitingChild=0;
+			Integer total=0;
+			Integer reported=0;
+			List<ComplaintInfo> complaintInfos = complaintDAO.listComplaintInfosByUserId(u.getId());
+			for(ComplaintInfo c:complaintInfos){
+				if(c.getComplaintTime()!=null&&c.getAckTime()!=null){
+					totalAwarenessTime+=c.getAckTime().getTime()-c.getComplaintTime().getTime();
+					numAwarenessTime++;
+				}
+				if(c.getAckTime()!=null&&c.getResponseTime()!=null){
+					totalResponseTime+=c.getResponseTime().getTime()-c.getAckTime().getTime();
+					numResponseTime++;
+				}
+				if(c.isAck()==false&&c.getSupportUserId()!=null){
+					waitingAck++;
+				}
+				if(c.isAck()==true&&c.isEnded()==false&&c.getChildId()==null&&c.isReported()==false){
+					active++;
+				}
+				if(c.isAck()==true&&c.isEnded()==false&&c.getChildId()!=null&&c.isReported()==false){
+					waitingChild++;
+				}
+				if(c.isReported()==true){
+					reported++;
+				}
+			}
+			u.setWaitingAck(waitingAck);
+			u.setActive(active);
+			u.setWaitingChild(waitingChild);
+			u.setReported(reported);
+			u.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
+			u.setAvgResponseTime(totalResponseTime/numResponseTime);
+		}
+		return userInfos;
+	}
 }

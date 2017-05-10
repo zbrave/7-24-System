@@ -15,4 +15,7 @@ public interface LocationDAO {
     public List<LocationInfo> findChildInfos(Integer id);
     public List<LocationInfo> listLocationInfos();
 	public List<LocationInfo> findLocationInfoTree(Integer id);
+	public List<LocationInfo> listLocationInfoByProximity(Integer id);
+	public List<LocationInfo> findLocationInfoUpperTree(Integer id);
+	public List<LocationInfo> reportLocationInfos();
 }

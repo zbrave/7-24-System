@@ -218,23 +218,10 @@ public class ComplaintInfo{
 		this.ackTime = ackTime;
 	}
 
-	/**
-	 * @return the reported
-	 */
 	public boolean isReported() {
 		return reported;
 	}
-
-	/**
-	 * @param reported the reported to set
-	 */
 	public void setReported(boolean reported) {
 		this.reported = reported;
 	}
-
-
-
-
-
-
 }

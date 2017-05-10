@@ -9,12 +9,14 @@ public class UserInfo {
     private String passwordConf;
     private boolean enabled;
     private boolean banned;
+    
     private long avgAwarenessTime;
     private long avgResponseTime;
-	private Integer total;
-	private Integer wait;
+	private Integer waitingAck;
 	private Integer active;
-
+	private Integer waitingChild;
+	private Integer total;
+	private Integer reported;
 	
     public UserInfo() {
     	
@@ -108,14 +110,6 @@ public class UserInfo {
 		this.total = total;
 	}
 
-	public Integer getWait() {
-		return wait;
-	}
-
-	public void setWait(Integer wait) {
-		this.wait = wait;
-	}
-
 	public Integer getActive() {
 		return active;
 	}
@@ -123,7 +117,37 @@ public class UserInfo {
 	public void setActive(Integer active) {
 		this.active = active;
 	}
-     
+
+	public Integer getWaitingAck() {
+		return waitingAck;
+	}
+
+	public void setWaitingAck(Integer waitingAck) {
+		this.waitingAck = waitingAck;
+	}
+
+	public Integer getWaitingChild() {
+		return waitingChild;
+	}
+
+	public void setWaitingChild(Integer waitingChild) {
+		this.waitingChild = waitingChild;
+	}
+
+	/**
+	 * @return the reported
+	 */
+	public Integer getReported() {
+		return reported;
+	}
+
+	/**
+	 * @param reported the reported to set
+	 */
+	public void setReported(Integer reported) {
+		this.reported = reported;
+	}
+    
     
  
 }
