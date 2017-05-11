@@ -120,7 +120,10 @@ public class LocationDAOImpl implements LocationDAO {
 		locationInfos.add(findLocationInfo(id));
 		int lenght=locationInfos.size();
 		for(int i=0;i<lenght;i++){
-			locationInfos.addAll( findChildInfos( locationInfos.get(i).getId() ) );
+			List<LocationInfo> loc= findChildInfos( locationInfos.get(i).getId() ) ;
+			if(loc!=null){
+				locationInfos.addAll(loc);
+			}
 			lenght=locationInfos.size();
 		}
 		return locationInfos;

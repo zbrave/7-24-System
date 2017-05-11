@@ -34,6 +34,7 @@ $(document).ready(function(){
 				<c:if test="${role.authority == 'ROLE_SUPPORT'}">
 					<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath}/supporter" >Destek Personeli Sayfası</a></li>
+					<li><a href="${pageContext.request.contextPath}/supporterAck" >ack</a></li>
 						<li><a href="#" data-toggle="collapse">İşlem geçmişi</a></li>
 					</ul>
 	      			<ul class="nav navbar-nav">
@@ -86,7 +87,8 @@ $(document).ready(function(){
 				
 				<c:if test="${role.authority == 'ROLE_MANAGER'}">
 					<ul class="nav navbar-nav">
-						<li><a href="${pageContext.request.contextPath}/manager" >Yönetici Sayfası</a></li>
+						<li><a href="${pageContext.request.contextPath}/reportedComplaints" >reported</a></li>
+						<li><a href="${pageContext.request.contextPath}/assignComplaints" >assign</a></li>
 				        <li><a href="${pageContext.request.contextPath}/complaint">Şikayet Oluştur</a></li>
 						<!--  <li><a href="#tableInfo" data-toggle="collapse">Takip</a></li>
 						<li><a href="#">Raporlar</a></li> -->

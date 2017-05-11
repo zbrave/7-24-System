@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -58,7 +59,7 @@ public class SupporterController {
 	private MailSend mailSend;
 	
 	@RequestMapping(value = "/supporter", method = RequestMethod.GET)
-	public String supporterPage(Model model, Principal principal) {
+	public String supporter(Model model, Principal principal) {
 		
 		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForSupport(userDAO.findLoginUserInfo(principal.getName()).getId());
 		for (ComplaintInfo l : list) {
@@ -68,6 +69,19 @@ public class SupporterController {
 		}
 		model.addAttribute("complaintInfos", list);
 		return "supporter";
+	}
+	
+	@RequestMapping(value = "/supporterAck", method = RequestMethod.GET)
+	public String supporterAck(Model model, Principal principal) {
+		
+		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForSupportAck(userDAO.findLoginUserInfo(principal.getName()).getId());
+		for (ComplaintInfo l : list) {
+			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
+			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
+			l.setComplainantUserInfo(userDAO.findUserInfo(l.getComplainantUserId()));
+		}
+		model.addAttribute("complaintInfos", list);
+		return "supporterAck";
 	}
 	
 	@RequestMapping(value = "/saveSupporter", method = RequestMethod.POST)
@@ -89,6 +103,16 @@ public class SupporterController {
 		redirectAttributes.addFlashAttribute("supMsgSuccess", "Destek birimi eklendi.");
 
 //		return "redirect:/deptList";
+		return "redirect:/supporterEdit";
+	}
+	
+	@RequestMapping(value = "/deleteSupporter", method = RequestMethod.GET)
+	public String deleteSupporter(Model model, @RequestParam(value = "id") Integer id, final RedirectAttributes redirectAttributes) {
+		if (id == null) {
+			return "redirect:/supporterEdit";
+		}
+		this.supporterDAO.deleteSupporter(id);
+		redirectAttributes.addFlashAttribute("message", "Destek silindi.");
 		return "redirect:/supporterEdit";
 	}
 }

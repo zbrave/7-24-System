@@ -69,6 +69,6 @@ public class BanController {
 		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet gönderildi.");
 
 //		return "redirect:/deptList";
-		return "redirect:/users";
+		return "redirect:/banUser?id="+banInfo.getUserId();
 	}
 }

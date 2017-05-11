@@ -3,6 +3,7 @@ package tr.edu.yildiz.ce.authentication;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,15 +13,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import tr.edu.yildiz.ce.dao.BanDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.model.UserInfo;
  
 @Service
 public class MyDBAuthenticationService implements UserDetailsService {
- 
+	
     @Autowired
     private UserDAO userDAO;
+    
+    @Autowired
+    private BanDAO banDAO;
     
     @Autowired
     private UserRoleDAO userRoleDAO;
@@ -58,8 +63,12 @@ public class MyDBAuthenticationService implements UserDetailsService {
     }
     
     private User buildUserForAuthentication(UserInfo userInfo,List<GrantedAuthority> authorities) {
-    		return new User(userInfo.getUsername(), userInfo.getPassword(),
-    				userInfo.isEnabled(), true, true, true, authorities);
+    	if (!userInfo.isEnabled()) {
+    		userInfo.setEnabled(!banDAO.isBanned(userInfo.getId()));
+    		userDAO.saveUser(userInfo);
+    	}
+    	return new User(userInfo.getUsername(), userInfo.getPassword(),
+				userInfo.isEnabled(), true, true, true, authorities);
     }
      
 }

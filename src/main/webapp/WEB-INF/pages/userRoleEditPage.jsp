@@ -88,8 +88,7 @@
        							</c:forEach></td>
 						      <td>${data.role }</td>
 						      <td>
-						      	  <a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
-						      	  <a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
+						      	  <a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUserRole?id=${data.id}" role="button">Sil</a>
 							  </td>
 						    </tr>
 						</c:forEach>

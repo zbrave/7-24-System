@@ -49,7 +49,8 @@
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
 			      	<td>
-						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/transferComplaint?id=${data.id }" role="button">Yönlendir</a>
+			      	<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/unifyComplaints?id=${data.id }" role="button">unify</a>
+						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/assignComplaint?id=${data.id }" role="button">Yönlendir</a>
 					</td>
 			    </tr>
 			</c:forEach>

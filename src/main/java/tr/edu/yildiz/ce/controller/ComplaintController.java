@@ -71,7 +71,7 @@ public class ComplaintController {
 			e.printStackTrace();
 		}
 		System.out.println(complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getComplainantUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getFile());
-		this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText());
+		this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText(), complaintInfo.getParentId());
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
@@ -116,7 +116,7 @@ public class ComplaintController {
 			e.printStackTrace();
 		}
 		System.out.println("detay: "+complaintInfo.getId()+" "+complaintInfo.getSupportUserId()+" "+complaintInfo.getResponseText());
-		this.complaintDAO.endComplaint(complaintInfo.getId(),complaintInfo.getSupportUserId(),complaintInfo.getResponseText());
+		this.complaintDAO.endComplaint(complaintInfo.getId(),complaintInfo.getResponseText());
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
@@ -135,8 +135,20 @@ public class ComplaintController {
 		model.addAttribute("locationInfos", list);
 		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
 		model.addAttribute("supportTypeInfos", list2);
-//		return "redirect:/deptList";
 		return "transferComplaint";
+	}
+	@RequestMapping(value = "/assignComplaint", method = RequestMethod.GET)
+	public String assignComplaint(Model model,Principal principal, @RequestParam("id") Integer id) {
+		UserInfo user = userDAO.findLoginUserInfo(principal.getName());
+		model.addAttribute("userInfo", user);
+		model.addAttribute("comp", this.complaintDAO.findComplaintInfo(id));
+		List<LocationInfo> list = locationDAO.listLocationInfos();
+		model.addAttribute("locationInfos", list);
+		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
+		model.addAttribute("supportTypeInfos", list2);
+		List<UserInfo> list3 = userDAO.listUserInfosForAssignment(id);
+		model.addAttribute("asgUser", list3);
+		return "assignComplaint";
 	}
 	
 	@RequestMapping(value = "/transferedComplaint", method = RequestMethod.POST)
@@ -161,7 +173,7 @@ public class ComplaintController {
 			e.printStackTrace();
 		}
 		System.out.println("detay: "+complaintInfo.getId()+" "+complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getSupportUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getResponseText()+" "+complaintInfo.isEnded());
-		this.complaintDAO.transferComplaint(complaintInfo.getId(),complaintInfo.getSupportUserId(),complaintInfo.getResponseText(),complaintInfo.getLocationId(),complaintInfo.getSupportTypeId(),complaintInfo.getComplaintText(),complaintInfo.isEnded());
+		this.complaintDAO.transferComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),complaintInfo.getLocationId(),complaintInfo.getSupportTypeId(),complaintInfo.getComplaintText(),complaintInfo.isEnded());
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope

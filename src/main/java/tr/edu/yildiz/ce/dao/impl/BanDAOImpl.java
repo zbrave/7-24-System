@@ -10,13 +10,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import tr.edu.yildiz.ce.dao.BanDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Ban;
 import tr.edu.yildiz.ce.model.BanInfo;
+import tr.edu.yildiz.ce.model.UserInfo;
 
-
+@Service
+@Transactional
 public class BanDAOImpl implements BanDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -81,7 +85,7 @@ public class BanDAOImpl implements BanDAO {
 	public boolean isBanned(Integer userId) {
 		boolean banned = false;
 		
-	    Session session = sessionFactory.getCurrentSession();
+	    Session session = this.sessionFactory.getCurrentSession();
 	    Criteria crit = session.createCriteria(Ban.class);
 	    crit.add(Restrictions.eq("userId", userId));
 	    crit.add(Restrictions.eq("banned", true));
@@ -117,7 +121,9 @@ public class BanDAOImpl implements BanDAO {
 
 	@Override
 	public void banUser(Integer userId, String explanation, Integer banDay) {
-		userDAO.findUserInfo(userId).setEnabled(false);
+		UserInfo u=userDAO.findUserInfo(userId);
+		u.setEnabled(false);
+		userDAO.saveUser(u);
 		BanInfo banInfo=new BanInfo();
 		banInfo.setUserId(userId);
 		banInfo.setExplanation(explanation);

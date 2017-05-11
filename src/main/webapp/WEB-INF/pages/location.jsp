@@ -79,8 +79,8 @@
 						      		<td>${data.id }</td>
 						      		<td>${data.description }</td>
 						      		<td><c:forEach items="${locationInfos }" var="data2"><c:if test="${data.parentId == data2.id }">${data2.description }</c:if></c:forEach></td>
-						      		<td><a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
-						      			<a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
+						      		<td>
+						      			<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteLocation?id=${data.id}" role="button">Sil</a>
 									</td>
 						      	</tr>
 						      </c:forEach>

@@ -65,7 +65,7 @@
 						      		<td>${data.banTime }</td>
 						      		<td>${data.endTime }</td>
 						      		<td>${data.banned }</td>
-						      		<td><a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.id}" role="button">Banı kaldır</a>
+						      		<td><a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/unban?id=${data.id}" role="button">Banı kaldır</a>
 						      			
 									</td>
 						      	</tr>

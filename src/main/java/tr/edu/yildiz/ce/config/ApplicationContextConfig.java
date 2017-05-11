@@ -22,21 +22,23 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 
 import tr.edu.yildiz.ce.dao.ActivationDAO;
-import tr.edu.yildiz.ce.dao.impl.ActivationDAOImpl;
 
 import tr.edu.yildiz.ce.dao.BanDAO;
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.MailSend;
+import tr.edu.yildiz.ce.dao.ManagerDAO;
 import tr.edu.yildiz.ce.dao.NotificationDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
+import tr.edu.yildiz.ce.dao.impl.ActivationDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.BanDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.ComplaintDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.LocationDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.MailSendImpl;
+import tr.edu.yildiz.ce.dao.impl.ManagerDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.NotificationDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.SupportTypeDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.SupporterDAOImpl;
@@ -109,6 +111,11 @@ public class ApplicationContextConfig {
   @Bean(name = "ActivationDAO")
   public ActivationDAO getActivationDAO() {
 	  return new ActivationDAOImpl();
+  }
+  
+  @Bean(name = "ManagerDAO")
+  public ManagerDAO getManagerDAO() {
+	  return new ManagerDAOImpl();
   }
   
   @Bean(name = "mailSend")

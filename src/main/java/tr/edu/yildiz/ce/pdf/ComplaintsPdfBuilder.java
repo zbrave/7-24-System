@@ -18,6 +18,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import tr.edu.yildiz.ce.model.ComplaintInfo;
+import tr.edu.yildiz.ce.pdf.AbstractPdf;;
  
 /**
  * This view class generates a PDF document 'on the fly' based on the data

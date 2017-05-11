@@ -159,18 +159,26 @@ public class MainController {
 		return this.userBanForm(model, user);
 	}
 	
+	@RequestMapping(value = "/unban", method = RequestMethod.GET)
+	public String unbanUser(Model model, @RequestParam(value = "id") Integer id) {
+		
+		UserInfo user = userDAO.findUserInfo(banDAO.findBanInfo(id).getUserId());
+		banDAO.deleteBan(id);
+		return "redirect:/banUser?id="+user.getId();
+	}
+	
 	@RequestMapping(value = "/report", method = RequestMethod.GET)
 	public String report(Model model ) {
-		Long avgProcess = complaintDAO.avgTimeForProcess();
-		model.addAttribute("avgProcess", avgProcess);
+//		Long avgProcess = complaintDAO.avgTimeForProcess();
+//		model.addAttribute("avgProcess", avgProcess);
 		
 		List<SupportTypeInfo> supType = supportTypeDAO.listSupportTypeInfos();
-		for(SupportTypeInfo s : supType) {
-			s.setAvgTime(complaintDAO.avgTimeForComplaintBySupportType(s.getId()));
-			s.setTotal(complaintDAO.numOfComplaintBySupportType(s.getId()));
-			s.setActive(complaintDAO.numOfActiveComplaintBySupportType(s.getId()));
-			s.setWait(complaintDAO.numOfWaitingComplaintBySupportType(s.getId()));
-		}
+//		for(SupportTypeInfo s : supType) {
+//			s.setAvgTime(complaintDAO.avgTimeForComplaintBySupportType(s.getId()));
+//			s.setTotal(complaintDAO.numOfComplaintBySupportType(s.getId()));
+//			s.setActive(complaintDAO.numOfActiveComplaintBySupportType(s.getId()));
+//			s.setWait(complaintDAO.numOfWaitingComplaintBySupportType(s.getId()));
+//		}
 		model.addAttribute("supTypeAvgProcess", supType);
 		
 		Integer numTotal = complaintDAO.numOfProcess();
@@ -182,7 +190,7 @@ public class MainController {
 	@RequestMapping(value = "/reportComplaintsPdf", method = RequestMethod.GET)
     public ModelAndView downloadExcel() {
 
-        List<ComplaintInfo> listComplaints = complaintDAO.listComplaintInfos();
+        List<ComplaintInfo> listComplaints = complaintDAO.listActiveComplaintInfos(1, 1);
 		for (ComplaintInfo l : listComplaints) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));

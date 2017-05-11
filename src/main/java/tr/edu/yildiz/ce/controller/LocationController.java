@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -54,6 +55,16 @@ public class LocationController {
 		redirectAttributes.addFlashAttribute("locMsgSuccess", "Başarıyla eklendi.");
 
 //		return "redirect:/deptList";
+		return "redirect:/locationEdit";
+	}
+	
+	@RequestMapping(value = "/deleteLocation", method = RequestMethod.GET)
+	public String deleteLocation(Model model, @RequestParam(value = "id") Integer id, final RedirectAttributes redirectAttributes) {
+		if (id == null) {
+			return "redirect:/locationEdit";
+		}
+		this.locationDAO.deleteLocation(id);
+		redirectAttributes.addFlashAttribute("message", "Lokasyon silindi.");
 		return "redirect:/locationEdit";
 	}
 }

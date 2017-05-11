@@ -61,7 +61,7 @@
 						      		<td>${data.id }</td>
 						      		<td>${data.type }</td>
 						      		<td>${data.total }</td>
-						      		<td>${data.wait }</td>
+						      		<td>${data.waitingAck }</td>
 						      		<td>${data.active }</td>
 						      	</tr>
 						      </c:forEach>

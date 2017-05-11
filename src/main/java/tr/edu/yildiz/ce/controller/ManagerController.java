@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
@@ -36,15 +37,41 @@ public class ManagerController {
 	@Autowired
 	private SupportTypeDAO supportTypeDAO;
 	
-	@RequestMapping(value = "/manager", method = RequestMethod.GET)
-	public String managerPage(Model model, Principal principal ) {
-		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForManager(userDAO.findLoginUserInfo(principal.getName()).getId());
+	@RequestMapping(value = "/reportedComplaints", method = RequestMethod.GET)
+	public String reportedComplaints(Model model, Principal principal ) {
+		List<ComplaintInfo> list = complaintDAO.listReportedComplaintInfosForManager(userDAO.findLoginUserInfo(principal.getName()).getId());
 		for (ComplaintInfo l : list) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
 			l.setComplainantUserInfo(userDAO.findUserInfo(l.getComplainantUserId()));
 		}
 		model.addAttribute("complaintInfos", list);
-		return "manager";
+		return "reportedComplaints";
 	}
+	
+	@RequestMapping(value = "/assignComplaints", method = RequestMethod.GET)
+	public String assisgnComplaints(Model model, Principal principal ) {
+		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForAssignment(userDAO.findLoginUserInfo(principal.getName()).getId());
+		for (ComplaintInfo l : list) {
+			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
+			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
+			l.setComplainantUserInfo(userDAO.findUserInfo(l.getComplainantUserId()));
+		}
+		model.addAttribute("complaintInfos", list);
+		return "assignComplaints";
+	}
+	
+	@RequestMapping(value = "/unifyComplaints", method = RequestMethod.GET)
+	public String unifyComplaints(Model model, @RequestParam Integer id, Principal principal ) {
+		List<ComplaintInfo> list = complaintDAO.listActiveComplaintInfosForUnification(id);
+		for (ComplaintInfo l : list) {
+			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
+			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
+			l.setComplainantUserInfo(userDAO.findUserInfo(l.getComplainantUserId()));
+		}
+		model.addAttribute("complaintInfos", list);
+		return "unifyComplaints";
+	}
+	
+	
 }

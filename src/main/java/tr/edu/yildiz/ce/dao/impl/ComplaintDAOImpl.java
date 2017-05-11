@@ -348,8 +348,13 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ComplaintInfo> listComplaintInfosForAssignment(Integer userId) {
-        ManagerInfo managerInfo= managerDAO.findManagerInfo(userId);
-        List<LocationInfo> locationInfoTree = locationDAO.findLocationInfoTree(managerInfo.getLocationId());
+        List<ManagerInfo> managerInfos= managerDAO.listManagerInfosById(userId);
+        List<LocationInfo> locationInfoTree = new ArrayList<LocationInfo>();
+        for(ManagerInfo m:managerInfos){
+        	List<LocationInfo> loc=locationDAO.findLocationInfoTree(m.getLocationId());
+        	loc.removeAll(locationInfoTree);
+        	locationInfoTree.addAll(loc);
+        }
         Session session = sessionFactory.getCurrentSession();
         List<Complaint> complaints =new ArrayList<Complaint>(); 
 		for(LocationInfo l:locationInfoTree){
@@ -367,8 +372,14 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ComplaintInfo> listReportedComplaintInfosForManager(Integer userId) {
-        ManagerInfo managerInfo= managerDAO.findManagerInfo(userId);
-        List<LocationInfo> locationInfoTree = locationDAO.findLocationInfoTree(managerInfo.getLocationId());
+        List<ManagerInfo> managerInfos= managerDAO.listManagerInfosById(userId);
+        List<LocationInfo> locationInfoTree = new ArrayList<LocationInfo>();
+        for(ManagerInfo m:managerInfos){
+        	List<LocationInfo> loc=locationDAO.findLocationInfoTree(m.getLocationId());
+        	loc.removeAll(locationInfoTree);
+        	locationInfoTree.addAll(loc);
+        }
+        
         Session session = sessionFactory.getCurrentSession();
         List<Complaint> complaints =new ArrayList<Complaint>(); 
 		for(LocationInfo l:locationInfoTree){

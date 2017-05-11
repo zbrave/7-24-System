@@ -30,7 +30,7 @@
       <div class="container">
       		<div class="col-md-12">
       			<div class="form"> <!-- for background transparent color -->
-				
+				<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteInactiveUsers" role="button">İnaktifleri sil</a>
       			<!-- TABLE <<< -->
       			<div class="panel panel-default">
       				<div class="panel-heading">Kullanıcılar:</div>
@@ -51,7 +51,7 @@
 						      		<td>${data.enabled }</td>
 						      		<td>${data.banned }</td>
 						      		<td><a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.id}" role="button">Banla</a>
-						      			<a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
+						      			<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUser?id=${data.id}" role="button">Sil</a>
 									</td>
 						      	</tr>
 						      </c:forEach>

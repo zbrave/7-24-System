@@ -1,5 +1,7 @@
 package tr.edu.yildiz.ce.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +23,17 @@ public class Activation {
 	
 	@Column(name = "code")
 	private String code;
+	
+	@Column(name = "recordDate")
+	private Date recordDate;
+
+	public Date getRecordDate() {
+		return recordDate;
+	}
+
+	public void setRecordDate(Date recordDate) {
+		this.recordDate = recordDate;
+	}
 
 	public Integer getId() {
 		return id;

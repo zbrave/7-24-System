@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // If no login, it will redirect to /login page.
         http.authorizeRequests().antMatchers("/admin").access("hasAnyRole('ROLE_ADMIN')");
         http.authorizeRequests().antMatchers("/manager").access("hasAnyRole('ROLE_MANAGER')");
-        http.authorizeRequests().antMatchers("/supporter", "/endComplaint", "/transferComplaint").access("hasAnyRole('ROLE_SUPPORT')");
+        http.authorizeRequests().antMatchers("/supporter", "/endComplaint", "/transferComplaint").access("hasAnyRole('ROLE_SUPPORT', 'ROLE_MANAGER')");
         http.authorizeRequests().antMatchers("/", "/welcome", "/userInfo").access("hasAnyRole('ROLE_USER' , 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SUPPORT')");
 //        http.authorizeRequests().antMatchers("/", "/welcome", "/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
         // For ADMIN only.

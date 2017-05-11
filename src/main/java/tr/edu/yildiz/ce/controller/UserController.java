@@ -1,6 +1,8 @@
 package tr.edu.yildiz.ce.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,6 +36,9 @@ import tr.edu.yildiz.ce.model.UserInfo;
 @EnableWebMvc
 public class UserController {
 	
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
+		    Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
+	
 	@Autowired
 	private UserDAO userDAO;
 	
@@ -45,6 +50,11 @@ public class UserController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
+	}
 	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public String saveUser(Model model, //
@@ -67,6 +77,11 @@ public class UserController {
 		if (!userInfo.getPassword().equals(userInfo.getPasswordConf())) {
 			model.addAttribute("signupMsg", "Parola eşleşmedi.");
 			System.out.println("Parola eşleşmedi.");
+			return "loginPage";
+		}
+		if (!validate(userInfo.getEmail())) {
+			model.addAttribute("signupMsg", "Email onaylanmadı.");
+			System.out.println("Email onaylanmadı.");
 			return "loginPage";
 		}
 		if (this.userDAO.findLoginUser(userInfo.getUsername()) != null) {
@@ -106,5 +121,23 @@ public class UserController {
 		else {
 			return "redirect:/403";
 		}
+	}
+	
+	@RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
+	public String deleteUser(Model model, @RequestParam(value = "id") Integer id, final RedirectAttributes redirectAttributes) {
+		if (id == null) {
+			return "redirect:/users";
+		}
+		this.userDAO.deleteUser(id);
+		redirectAttributes.addFlashAttribute("message", "Kullanıcı silindi.");
+		return "redirect:/users";
+	}
+	
+	@RequestMapping(value = "/deleteInactiveUsers", method = RequestMethod.GET)
+	public String deleteInactiveUsers(Model model, final RedirectAttributes redirectAttributes) {
+		
+		this.activationDAO.deleteUnusedAccs();
+		redirectAttributes.addFlashAttribute("message", "İnaktif kullanıcılar silindi.");
+		return "redirect:/users";
 	}
 }

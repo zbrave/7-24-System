@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -61,4 +62,15 @@ public class UserRoleController {
 //		return "redirect:/deptList";
 		return "redirect:/userRoleEdit";
 	}
+	
+	@RequestMapping(value = "/deleteUserRole", method = RequestMethod.GET)
+	public String deleteUserRole(Model model, @RequestParam Integer id, final RedirectAttributes redirectAttributes) {
+		if (id == null) {
+			return "redirect:/userRoleEdit";
+		}
+		this.userRoleDAO.deleteUserRole(id);
+
+		return "redirect:/userRoleEdit";
+	}
+	
 }

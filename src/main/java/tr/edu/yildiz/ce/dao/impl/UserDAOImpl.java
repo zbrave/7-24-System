@@ -1,5 +1,6 @@
 package tr.edu.yildiz.ce.dao.impl;
  
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -74,6 +75,7 @@ public class UserDAOImpl implements UserDAO {
 			Activation act = new Activation();
 			act.setUsername(userInfo.getUsername());
 		    act.setCode(getSaltString());
+		    act.setRecordDate(new Date());
 		    activationDAO.saveActivation(act);
 		    String text = "IYS hesabını aktif etmek için aşağıdaki linke tıklayın.\n\n";
 		    text = text.concat("http://localhost:8080/sysprog/activate?code="+act.getCode().toString());

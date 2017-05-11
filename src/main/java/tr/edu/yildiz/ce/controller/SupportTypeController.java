@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -55,6 +56,16 @@ public class SupportTypeController {
 		redirectAttributes.addFlashAttribute("supTypeMsgSuccess", "Başarıyla eklendi.");
 
 //		return "redirect:/deptList";
+		return "redirect:/supporterTypeEdit";
+	}
+	
+	@RequestMapping(value = "/deleteSupportType", method = RequestMethod.GET)
+	public String deleteSupportType(Model model, @RequestParam(value = "id") Integer id, final RedirectAttributes redirectAttributes) {
+		if (id == null) {
+			return "redirect:/supporterTypeEdit";
+		}
+		this.supportTypeDAO.deleteSupportType(id);
+		redirectAttributes.addFlashAttribute("message", "Destek tipi silindi.");
 		return "redirect:/supporterTypeEdit";
 	}
 }
