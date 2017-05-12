@@ -165,7 +165,7 @@ public class UserDAOImpl implements UserDAO {
 		List<UserInfo> userInfos=new ArrayList<UserInfo>();
 		List<Integer> userIds=new ArrayList<Integer>();
         for(SupporterInfo s: supporterInfos){
-        	if(pathUp.contains(s.getLocationId())&&!userIds.contains(s.getUserId())){
+        	if(pathUpIds.contains(s.getLocationId())&&!userIds.contains(s.getUserId())){
         		userIds.add(s.getUserId());
         		userInfos.add(this.findUserInfo(s.getUserId()));
         	}
