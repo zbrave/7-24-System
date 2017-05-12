@@ -18,7 +18,6 @@ public interface ComplaintDAO {
     public void transferComplaint (Integer id,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended);
     public void endComplaint(Integer id,String responseText);
     public void uniteComplaints(Integer uniteTo,Integer delete);// manager report edilenler ve assigndan önce
-    
     public List<ComplaintInfo> listComplaintInfos (Integer locationId,Integer supportTypeId);// report için hepsini gösteriyor
     public List<ComplaintInfo> listWaitingAssingnComplaintInfos (Integer locationId,Integer supportTypeId);// report için
     public List<ComplaintInfo> listWaitingAckComplaintInfos (Integer locationId,Integer supportTypeId);

@@ -23,6 +23,7 @@ import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.ManagerInfo;
 import tr.edu.yildiz.ce.model.NotificationInfo;
+import tr.edu.yildiz.ce.model.SupportTypeInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 
 public class ComplaintDAOImpl implements ComplaintDAO {
@@ -350,10 +351,18 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	public List<ComplaintInfo> listComplaintInfosForAssignment(Integer userId) {
         List<ManagerInfo> managerInfos= managerDAO.listManagerInfosById(userId);
         List<LocationInfo> locationInfoTree = new ArrayList<LocationInfo>();
+        List<Integer> locationInfoTreeIds=new ArrayList<Integer>();
         for(ManagerInfo m:managerInfos){
         	List<LocationInfo> loc=locationDAO.findLocationInfoTree(m.getLocationId());
-        	loc.removeAll(locationInfoTree);
-        	locationInfoTree.addAll(loc);
+        	List<Integer> locIds=new ArrayList<Integer>();
+    		for(LocationInfo l:loc){
+    			locIds.add(l.getId());
+    		}
+        	locIds.removeAll(locationInfoTreeIds);
+        	for(Integer l:locIds){
+        		locationInfoTreeIds.add(l);
+        		locationInfoTree.add(locationDAO.findLocationInfo(l));
+        	}
         }
         Session session = sessionFactory.getCurrentSession();
         List<Complaint> complaints =new ArrayList<Complaint>(); 
@@ -374,10 +383,18 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	public List<ComplaintInfo> listReportedComplaintInfosForManager(Integer userId) {
         List<ManagerInfo> managerInfos= managerDAO.listManagerInfosById(userId);
         List<LocationInfo> locationInfoTree = new ArrayList<LocationInfo>();
+        List<Integer> locationInfoTreeIds=new ArrayList<Integer>();
         for(ManagerInfo m:managerInfos){
         	List<LocationInfo> loc=locationDAO.findLocationInfoTree(m.getLocationId());
-        	loc.removeAll(locationInfoTree);
-        	locationInfoTree.addAll(loc);
+        	List<Integer> locIds=new ArrayList<Integer>();
+    		for(LocationInfo l:loc){
+    			locIds.add(l.getId());
+    		}
+        	locIds.removeAll(locationInfoTreeIds);
+        	for(Integer l:locIds){
+        		locationInfoTreeIds.add(l);
+        		locationInfoTree.add(locationDAO.findLocationInfo(l));
+        	}
         }
         
         Session session = sessionFactory.getCurrentSession();
@@ -400,25 +417,35 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	public List<ComplaintInfo> listActiveComplaintInfosForUnification(Integer id) {
 		ComplaintInfo com=this.findComplaintInfo(id);
 		List<LocationInfo> locTree=locationDAO.listLocationInfoByProximity(com.getLocationId());
+		SupportTypeInfo supportTypeInfo=supportTypeDAO.findSupportTypeInfo(com.getSupportTypeId());
         Session session = sessionFactory.getCurrentSession();
         List<Complaint> complaints =new ArrayList<Complaint>();
+        List<Integer> complaintIds =new ArrayList<Integer>();
         for(LocationInfo l:locTree){
         	Criteria crit = session.createCriteria(Complaint.class);
             crit.add(Restrictions.eq("ended",false));
-            crit.add(Restrictions.eq("reported",false));
             crit.add(Restrictions.eq("locationId",l.getId()));
+            crit.add(Restrictions.eq("supportTypeId",supportTypeInfo.getId()));
             complaints.addAll(crit.list());
         }
+        for(Complaint c: complaints){
+        	complaintIds.add(c.getId());
+        }
         List<Complaint> allComplaints =new ArrayList<Complaint>();
+        List<Integer> allComplaintIds =new ArrayList<Integer>();
         Criteria crit = session.createCriteria(Complaint.class);
+        crit.add(Restrictions.eq("supportTypeId",supportTypeInfo.getId()));
         crit.add(Restrictions.eq("ended",false));
-        crit.add(Restrictions.eq("reported",false));
         allComplaints.addAll(crit.list());
-        allComplaints.removeAll(complaints);
-        complaints.addAll(allComplaints);
+        for(Complaint c: allComplaints){
+        	allComplaintIds.add(c.getId());
+        }
+        allComplaintIds.removeAll(complaintIds);
+        complaintIds.addAll(allComplaintIds);
+        complaintIds.remove(id);
         List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
-        for(Complaint c:complaints){
-        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        for(Integer i:complaintIds){
+        	complaintInfos.add(this.findComplaintInfo(i));
         }
         return complaintInfos;
 	}

@@ -158,9 +158,15 @@ public class UserDAOImpl implements UserDAO {
 		ComplaintInfo c=complaintDAO.findComplaintInfo(complaintId);
 		List<SupporterInfo> supporterInfos=supporterDAO.listSupporterInfosBySupportType(c.getSupportTypeId());
 		List<LocationInfo> pathUp = locationDAO.findLocationInfoUpperTree(c.getLocationId());
+		List<Integer> pathUpIds = new ArrayList<Integer>();
+		for(LocationInfo l:pathUp){
+			pathUpIds.add(l.getId());
+		}		
 		List<UserInfo> userInfos=new ArrayList<UserInfo>();
+		List<Integer> userIds=new ArrayList<Integer>();
         for(SupporterInfo s: supporterInfos){
-        	if(pathUp.contains(locationDAO.findLocationInfo(s.getLocationId()))&&!userInfos.contains(this.findUserInfo(s.getUserId()))){
+        	if(pathUp.contains(s.getLocationId())&&!userIds.contains(s.getUserId())){
+        		userIds.add(s.getUserId());
         		userInfos.add(this.findUserInfo(s.getUserId()));
         	}
         }
@@ -181,6 +187,7 @@ public class UserDAOImpl implements UserDAO {
 			Integer total=0;
 			Integer reported=0;
 			List<ComplaintInfo> complaintInfos = complaintDAO.listComplaintInfosByUserId(u.getId());
+			total=complaintInfos.size();
 			for(ComplaintInfo c:complaintInfos){
 				if(c.getComplaintTime()!=null&&c.getAckTime()!=null){
 					totalAwarenessTime+=c.getAckTime().getTime()-c.getComplaintTime().getTime();
@@ -207,6 +214,7 @@ public class UserDAOImpl implements UserDAO {
 			u.setActive(active);
 			u.setWaitingChild(waitingChild);
 			u.setReported(reported);
+			u.setTotal(total);
 			u.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
 			u.setAvgResponseTime(totalResponseTime/numResponseTime);
 		}

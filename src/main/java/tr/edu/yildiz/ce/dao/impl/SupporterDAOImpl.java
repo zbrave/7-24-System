@@ -118,10 +118,12 @@ public class SupporterDAOImpl implements SupporterDAO {
 	public List<UserInfo> listSupporterUserInfos() {
 		List<SupporterInfo> supporterInfos = listSupporterInfos();
 		List<UserInfo> userInfos=new ArrayList<UserInfo>();
+		List<Integer> userIds =new ArrayList<Integer>();
 		for(SupporterInfo s:supporterInfos){
-			UserInfo u=userDAO.findUserInfo(s.getUserId());
-			if(!userInfos.contains(u)){
-				userInfos.add(u);
+			if(!userIds.contains(s.getUserId())){
+				userIds.add(s.getUserId());
+				userInfos.add(userDAO.findUserInfo(s.getUserId()));
+				
 			}
 		}
 		return userInfos;

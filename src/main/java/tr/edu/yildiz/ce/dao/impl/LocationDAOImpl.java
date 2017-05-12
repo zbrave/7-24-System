@@ -141,11 +141,30 @@ public class LocationDAOImpl implements LocationDAO {
 			pathUp.add(up);
 		}
 		List<LocationInfo> upTree = findLocationInfoTree(up.getId());
-		upTree.removeAll(tree);
-		upTree.removeAll(pathUp);
-		finalTree.addAll(tree);
-		finalTree.addAll(pathUp);
-		finalTree.addAll(upTree);
+		
+		List<Integer> treeIds = new ArrayList<Integer>();
+		List<Integer> pathUpIds = new ArrayList<Integer>();
+		List<Integer> upTreeIds = new ArrayList<Integer>();
+		for(LocationInfo l:tree){
+			treeIds.add(l.getId());
+		}
+		for(LocationInfo l:pathUp){
+			pathUpIds.add(l.getId());
+		}		
+		for(LocationInfo l:upTree){
+			upTreeIds.add(l.getId());
+		}			
+		upTreeIds.removeAll(treeIds);
+		upTreeIds.removeAll(pathUpIds);
+		for(Integer i:treeIds){
+			finalTree.add(this.findLocationInfo(i));
+		}
+		for(Integer i:pathUpIds){
+			finalTree.add(this.findLocationInfo(i));
+		}		
+		for(Integer i:upTreeIds){
+			finalTree.add(this.findLocationInfo(i));
+		}
 		return finalTree;
 	}
 
