@@ -21,6 +21,63 @@
 	<script src="${bootstrapJS}"></script>
 	<title>${title}</title>
 </head>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#loc').on('change',function(){
+		$.get("${pageContext.request.contextPath}/getComplaintList?id="+ $(this).children("option").filter(":selected").attr("id") +"&id2="+$('#sup').children("option").filter(":selected").attr("id"), null, function (data) {
+	        $('#comps > tbody:last-child').html(data);
+	    });
+	});
+	$('#sup').on('change',function(){
+		$.get("${pageContext.request.contextPath}/getComplaintList?id="+ $('#loc').children("option").filter(":selected").attr("id") +"&id2="+$(this).children("option").filter(":selected").attr("id"), null, function (data) {
+	        $('#comps > tbody:last-child').html(data);
+	    });
+	});
+	$('#loc2').on('change',function(){
+		$.get("${pageContext.request.contextPath}/getLocSupComplaints?id="+ $(this).children("option").filter(":selected").attr("id") +"&id2="+$('#sup2').children("option").filter(":selected").attr("id"), null, function (data) {
+	        $('#comps3 > tbody:last-child').html(data);
+	    });
+	});
+	$('#sup2').on('change',function(){
+		$.get("${pageContext.request.contextPath}/getLocSupComplaints?id="+ $('#loc2').children("option").filter(":selected").attr("id") +"&id2="+$(this).children("option").filter(":selected").attr("id"), null, function (data) {
+	        $('#comps3 > tbody:last-child').html(data);
+	    });
+	});
+	$('#loc3').on('change',function(){
+		getdata(0);
+		$.get("${pageContext.request.contextPath}/getSupporterInfo?id="+ $(this).children("option").filter(":selected").attr("id") +"&id2="+$('#sup3').children("option").filter(":selected").attr("id"), null, function (data) {
+	        $('#comps4 > tbody:last-child').html(data);
+	    });
+	});
+	$('#sup3').on('change',function(){
+		getdata(0);
+		$.get("${pageContext.request.contextPath}/getSupporterInfo?id="+ $('#loc3').children("option").filter(":selected").attr("id") +"&id2="+$(this).children("option").filter(":selected").attr("id"), null, function (data) {
+	        $('#comps4 > tbody:last-child').html(data);
+	    });
+	});
+});</script>
+<script type="text/javascript">
+function getdata(id) {
+	$.get("${pageContext.request.contextPath}/getSupportAllComplaints?id="+ id, null, function (data) {
+        $('#comps2 > tbody:last-child').html(data);
+	});
+}
+function getalldata(id) {
+	$.get("${pageContext.request.contextPath}/getSupportAllComplaints?id="+ id, null, function (data) {
+        $('#comps5 > tbody:last-child').html(data);
+	});
+}
+function getactivedata(id) {
+	$.get("${pageContext.request.contextPath}/getSupportAllComplaints?id="+ id, null, function (data) {
+        $('#comps5 > tbody:last-child').html(data);
+	});
+}
+function getinactivedata(id) {
+	$.get("${pageContext.request.contextPath}/getSupportAllComplaints?id="+ id, null, function (data) {
+        $('#comps5 > tbody:last-child').html(data);
+	});
+}
+</script>
 <body>
     <%@include file="navbar2.jsp" %>	
  	<link href="${tabStyleCSS}" rel="stylesheet" />
@@ -28,14 +85,13 @@
   <div style="padding:50px;">
     
  	<ul class="nav nav-tabs">
- 		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').show(); $('#supporterSetTab').hide()">Bölüm-Şikayet</a></li>
-  		<li role="presentation"><a href="#" onclick="$('#locationTab').show(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').hide()">Ortalama Çözüm Süresi</a></li>
+ 		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').show(); $('#supporterSetTab').hide()">Konum/Hizmet tipi şikayetleri</a></li>
+  		<li role="presentation"><a href="#" onclick="$('#locationTab').show(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').hide()">Tüm bölümlerin şikayet istatistikleri</a></li>
   		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').show(); $('#userRoleTab').hide(); $('#supporterSetTab').hide()">Şikayet detayları (progress bar)</a></li>
-  		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').show()">Top users(En hızlı çözen vs)</a></li>
+  		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').show()">Personel şikayet yoğunluğu</a></li>
 	</ul>
  	</br>
- 	<p>Total avg process time : ${avgProcess }</p> 
- 	<p>Total complaints : ${total }</p> 
+ 	
  	<!-- Location -->
  	<div class="collapse" id="locationTab">
       <div class="container">
@@ -43,28 +99,56 @@
       		<div class="col-md-6 offset-md-3">
       			<div class="form"> <!-- for background transparent color -->
       			
-      			</br>
-      			
+      			<div class="input-group">
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Konum</span>         
+		        <select id="loc2" class="form-control" name="loc2" >
+		        	<option id="0" value="0">Konum seçin.</option>
+			        <c:forEach items="${loc }" var="data">
+			        	<option id="${data.id }" value="${data.id }">${data.description }</option>
+			        </c:forEach>
+		        </select>
+	        </div>
+	        <div class="input-group">
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i>Destek tipi</span>         
+		        <select id="sup2" class="form-control" name="sup2" >
+		        	<option id="0" value="0">Destek tipi seçin.</option>
+			        <c:forEach items="${sup }" var="data">
+			        	<option id="${data.id }" value="${data.id }">${data.type }</option>
+			        </c:forEach>
+		        </select>
+	        </div>
       			<!-- TABLE <<< -->
       			<div class="panel panel-default">
-      				<div class="panel-heading">Raporlama</div>
-      					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
+      				<div class="panel-heading"><p>Toplam süreç : ${total }</p> </div>
+      					<table id="comps3" class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
+      						<thead>
       						<tr>
-					      		<th style="width: 10%;">ID</th>
+					      		<th style="width: 10%;">Konum</th>
 					      		<th style="width: 40%;">Destek tipi</th>
 					      		<th style="width: 20%;">Toplam şikayet</th>
-					      		<th style="width: 20%;">Bekleyen şikayetler</th>
+					      		<th style="width: 20%;">Onay bekleyen şikayetler</th>
+					      		<th style="width: 20%;">Atanma bekleyen şikayetler</th>
+					      		<th style="width: 20%;">Çocuğunu bekleyen şikayetler</th>
 					      		<th style="width: 20%;">Aktif şikayetler</th>
+					      		<th style="width: 20%;">Sonlanmış şikayetler</th>
+					      		<th style="width: 20%;">Raporlanan şikayetler</th>
       						</tr>
-						      <c:forEach items="${supTypeAvgProcess }" var="data">
+      						</thead>
+      						<tbody>
+						      <c:forEach items="${LocSupTypeInfo }" var="data">
 						      	<tr>
-						      		<td>${data.id }</td>
-						      		<td>${data.type }</td>
-						      		<td>${data.total }</td>
-						      		<td>${data.waitingAck }</td>
-						      		<td>${data.active }</td>
+						      		<td>${data.locationInfo.description }</td>
+						      		<td>${data.supportTypeInfo.type }</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.total }</td>
+						      		<td onclick="getwaitackdata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.waitAck }</td>
+						      		<td onclick="getwaitasgdata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.waitAsg }</td>
+						      		<td onclick="getwaitchilddata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.waitChild }</td>
+						      		<td onclick="getactivedata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.active }</td>
+						      		<td onclick="getendeddata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.ended }</td>
+						      		<td onclick="getreportdata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.report }</td>
 						      	</tr>
 						      </c:forEach>
+						    </tbody>
       					</table>
       			</div>  <!-- TABLE >>> -->
       			</div>
@@ -116,26 +200,41 @@
       		
       		
       		<!-- TABLE <<< -->
+      		<div class="input-group">
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Konum</span>         
+		        <select id="loc" class="form-control" name="loc" >
+		        	<option id="0" value="0">Konum seçin.</option>
+			        <c:forEach items="${loc }" var="data">
+			        	<option id="${data.id }" value="${data.id }">${data.description }</option>
+			        </c:forEach>
+		        </select>
+	        </div>
+	        <div class="input-group">
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i>Destek tipi</span>         
+		        <select id="sup" class="form-control" name="sup" >
+		        	<option id="0" value="0">Destek tipi seçin.</option>
+			        <c:forEach items="${sup }" var="data">
+			        	<option id="${data.id }" value="${data.id }">${data.type }</option>
+			        </c:forEach>
+		        </select>
+	        </div>
       			<div class="panel panel-default">
-      				<div class="panel-heading">Kullanıcı ID ve Rolleri:</div>
-      				<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
-	      				<tr>
-					      	<th style="width: 10%;">ID</th>
-					      	<th style="width: 10%;">UserId</th>
-					      	<th style="width: 30%;">Role</th>
-					    </tr>
-	      				<c:forEach items="${userRoleInfos }" var="data">
-							<tr>
-						      <td>${data.id }</td>
-						      <td><c:forEach items="${userInfos }" var="user"><c:if test="${data.userId == user.id }">${user.username }</c:if></c:forEach></td>
-						      <td>${data.role }</td>
-						      <td>
-						      	  <a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
-						      	  <a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
-							  </td>
-						    </tr>
-						</c:forEach>
-					</table>
+      				<div class="panel-heading">Şikayet listesi</div>
+      				<table id="comps" class="table table-striped custab" style="background-color: #FFF;">
+				    <thead>
+				        <tr>
+				            <th>ID</th>
+				            <th>Konumu</th>
+				            <th>Destek tipi</th>
+				            <th>Sorumlu kişi</th>
+				            <th>Kayıt tarihi</th>
+				            <th>Eylem</th>
+				        </tr>
+				    </thead>
+				   	<tbody>
+				   		
+				   	</tbody>
+				    </table>
 				</div> <!-- TABLE >>> -->
      
 			</div>
@@ -154,30 +253,63 @@
       			
       			
      		<!-- TABLE <<< -->
+     		<div class="input-group">
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Konum</span>         
+		        <select id="loc3" class="form-control" name="loc3" >
+		        	<option id="0" value="0">Konum seçin.</option>
+			        <c:forEach items="${loc }" var="data">
+			        	<option id="${data.id }" value="${data.id }">${data.description }</option>
+			        </c:forEach>
+		        </select>
+	        </div>
+	        <div class="input-group">
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i>Destek tipi</span>         
+		        <select id="sup3" class="form-control" name="sup3" >
+		        	<option id="0" value="0">Destek tipi seçin.</option>
+			        <c:forEach items="${sup }" var="data">
+			        	<option id="${data.id }" value="${data.id }">${data.type }</option>
+			        </c:forEach>
+		        </select>
+	        </div>
       			<div class="panel panel-default">
-      				<div class="panel-heading">Destek Ekibi:</div>
-      				<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
+      				<div class="panel-heading">Destek Ekibi</div>
+      				<table id="comps4" class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
+      				<thead>
 	      				<tr>
-				      		<th>ID</th>
-				      		<th>Destek Personeli</th>
-				      		<th>Tipi</th>
-				      		<th>İlgili Konum</th>
+				      		<th>Personel adı</th>
+				      		<th>Çalıştığı konum</th>
+				      		<th>Görevi</th>
+				      		<th>Toplam şikayet sayısı</th>
 				      	</tr>
-				      <c:forEach items="${supporterInfos }" var="data">
+			      	</thead>
+			      	<tbody>
+				      <c:forEach items="${SupporterRepInfo }" var="data">
 				      	<tr>
-				      		<td>${data.id }</td>
 				      		<td>${data.userInfo.username }</td>
-				      		<td>${data.supportTypeInfo.type }</td>
 				      		<td>${data.locationInfo.description }</td>
-				      	<td>
-						    <a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
-						    <a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
-						</td>
+				      		<td>${data.supportTypeInfo.type }</td>
+				      		<td onclick="getdata(${data.userInfo.id})">${data.comps }</td>
 						</tr>
 				      </c:forEach>
+				      </tbody>
 				  	</table>
 				</div>
 				  <!-- TABLE >>> -->
+				  <table id="comps2"  class="table table-striped custab" style="background-color: #FFF;">
+	    <thead>
+	        <tr>
+	            <th>ID</th>
+	            <th>Konumu</th>
+	            <th>Destek tipi</th>
+	            <th>Sorumlu kişi</th>
+	            <th>Kayıt tarihi</th>
+	            <th>Eylem</th>
+	        </tr>
+	    </thead>
+	   	<tbody>
+	   		
+	   	</tbody>
+	    </table>
 			</div>
 			</div>
       	</div>

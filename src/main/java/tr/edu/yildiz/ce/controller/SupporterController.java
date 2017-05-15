@@ -84,6 +84,46 @@ public class SupporterController {
 		return "supporterAck";
 	}
 	
+	@RequestMapping(value = "/ackComplaint", method = RequestMethod.GET)
+	public String ackComplaint(Model model, @RequestParam(value = "id") Integer id, Principal principal) {
+		
+		ComplaintInfo list = complaintDAO.findComplaintInfo(id);
+		if ( list == null) {
+			model.addAttribute("message", "There is no complaint");
+			return "supporterAck";
+		}
+		complaintDAO.ackComplaint(id);
+		model.addAttribute("message", "Şikayet onaylandı.");
+		return "redirect:/supporter";
+	}
+	
+	@RequestMapping(value = "/reportComplaint", method = RequestMethod.GET)
+	public String reportComplaint(Model model, @RequestParam(value = "id") Integer id, Principal principal) {
+		
+		ComplaintInfo list = complaintDAO.findComplaintInfo(id);
+		if ( list == null) {
+			model.addAttribute("message", "There is no complaint");
+			return "supporterAck";
+		}
+		complaintDAO.reportComplaint(id);
+		model.addAttribute("message", "Şikayet raporlandı.");
+		return "redirect:/supporterAck";
+	}
+	
+	@RequestMapping(value = "/unifyComplaint", method = RequestMethod.GET)
+	public String unifyComplaint(Model model, @RequestParam(value = "id") Integer id, @RequestParam(value = "id2") Integer id2, Principal principal) {
+		
+		ComplaintInfo list = complaintDAO.findComplaintInfo(id);
+		ComplaintInfo list2 = complaintDAO.findComplaintInfo(id2);
+		if ( list == null || list2 == null) {
+			model.addAttribute("message", "There is no complaint");
+			return "reportedComplaints";
+		}
+		complaintDAO.uniteComplaints(id, id2);
+		model.addAttribute("message", "Şikayetler birleştirildi.");
+		return "reportedComplaints";
+	}
+	
 	@RequestMapping(value = "/saveSupporter", method = RequestMethod.POST)
 	public String saveSupporter(Model model, //
 			@ModelAttribute("supporterForm") @Validated SupporterInfo supporterInfo, //

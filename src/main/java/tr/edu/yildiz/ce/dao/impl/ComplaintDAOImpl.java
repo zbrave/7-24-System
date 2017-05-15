@@ -161,6 +161,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		c.setSupportUserId(supportUserId);
 		Date dateNow =new Date();
 		c.setComplaintTime(dateNow);
+		saveComplaint(c);
 	}
 	
 	@Override
@@ -173,6 +174,10 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		complaintInfo.setResponseText(responseText);
 		complaintInfo.setResponseTime(new Date());
 		complaintInfo.setEnded(ended);
+		if(complaintInfo.isReported()==true){
+			complaintInfo.setEnded(true);
+			complaintInfo.setAck(true);
+		}
 		complaintInfo.setReported(false);
 		
 		this.recordComplaint(newLocationId,newSupportTypeId,complaintInfo.getComplainantUserId(),
@@ -303,6 +308,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         crit.add(Restrictions.eq("supportUserId", userId));
         crit.add(Restrictions.eq("ack", true));
         crit.add(Restrictions.eq("reported", false));
+        crit.add(Restrictions.eq("ended",false));
 		List<Complaint> complaints = (List<Complaint>)crit.list();
 		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
 		
@@ -491,7 +497,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		List<ComplaintInfo> complaintInfos=this.listComplaintInfos(locationId, supportTypeId);
 		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
 		for(ComplaintInfo c:complaintInfos){
-			if(c.isAck()==false&&c.getSupportUserId()!=null){
+			if(c.isAck()==false&&c.getSupportUserId()!=null&&c.isReported()==false){
 				retComplaintInfos.add(c);
 			}
 		}
@@ -527,6 +533,18 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
 		for(ComplaintInfo c:complaintInfos){
 			if(c.isReported()==true){
+				retComplaintInfos.add(c);
+			}
+		}
+		return retComplaintInfos;
+	}
+
+	@Override
+	public List<ComplaintInfo> listEndedComplaintInfos(Integer locationId, Integer supportTypeId) {
+		List<ComplaintInfo> complaintInfos=this.listComplaintInfos(locationId, supportTypeId);
+		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
+		for(ComplaintInfo c:complaintInfos){
+			if(c.isEnded()){
 				retComplaintInfos.add(c);
 			}
 		}

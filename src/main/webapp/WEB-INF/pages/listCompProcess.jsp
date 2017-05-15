@@ -21,15 +21,15 @@
 	<title>${title}</title>
 </head>
 <body>
-	<%@include file="navbar2.jsp" %>
-	<div class="text-center">	
-    	<p style="font-size: 30px; color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
-    		Yönetici sayfası
-    	</p>
-    </div>
-    <div style="padding: 50px;">
+	<%@include file="navbar2.jsp" %>	
+ 
+ 	<c:if test="${not empty message}">
+    	<h1>Message : ${message}</h1>
+    </c:if>
+    
+      <div style="padding: 50px;">
     <div class="panel panel-default">
-      	<div class="panel-heading">Şikayetler</div>
+      	<div class="panel-heading">Şikayet Ağacı ("${main.complaintText }" için)</div>
       	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      	<tr>
 		      	<th style="width: 8%;">ID</th>
@@ -38,9 +38,8 @@
 		      	<th style="width: 12%;">Şikayet eden</th>
 		      	<th style="width: 8%;">Tarih</th>
 		      	<th style="width: 35%;">Açıklama</th>
-		      	<th style="width: 10%;">Eylem</th>
 		    </tr>
-      		<c:forEach items="${complaintInfos }" var="data">
+      		<c:forEach items="${tree }" var="data">
       			<tr>
       				<td>${data.id }</td>
 			      	<td>${data.locationInfo.description }</td>
@@ -48,16 +47,11 @@
 			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
-			      	<td>
-			      	<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/unifyComplaints?id=${data.id }" role="button">Birleştir</a>
-						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/assignComplaint?id=${data.id }" role="button">Atama yap</a>
-					</td>
 			    </tr>
 			</c:forEach>
       	</table>
    </div>
    </div>
-<footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
-  </body>
+</body>
 	
 </html>

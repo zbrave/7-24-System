@@ -44,13 +44,14 @@ public class ManagerController {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
 			l.setComplainantUserInfo(userDAO.findUserInfo(l.getComplainantUserId()));
+			l.setSupportUserInfo(userDAO.findUserInfo(l.getSupportUserId()));
 		}
 		model.addAttribute("complaintInfos", list);
 		return "reportedComplaints";
 	}
 	
 	@RequestMapping(value = "/assignComplaints", method = RequestMethod.GET)
-	public String assisgnComplaints(Model model, Principal principal ) {
+	public String assignComplaints(Model model, Principal principal ) {
 		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForAssignment(userDAO.findLoginUserInfo(principal.getName()).getId());
 		for (ComplaintInfo l : list) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));

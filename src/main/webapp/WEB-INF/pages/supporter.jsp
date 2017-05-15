@@ -54,7 +54,8 @@
 			      	<td>${data.complaintText }</td>
 			      	<td>
 						<a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/endComplaint?id=${data.id }" role="button">Çöz</a>
-						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/transferComplaint?id=${data.id }" role="button">Yönlendir</a>
+						<a class="btn btn-success btn-xs" href="${pageContext.request.contextPath}/transferComplaint?id=${data.id }" role="button">Yönlendir</a>
+						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/reportComplaint?id=${data.id }" role="button">Raporla</a>
 					</td>
 			    </tr>
 			</c:forEach>

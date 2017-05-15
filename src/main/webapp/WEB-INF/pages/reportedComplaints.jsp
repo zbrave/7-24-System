@@ -38,6 +38,7 @@
 		      	<th style="width: 12%;">Şikayet eden</th>
 		      	<th style="width: 8%;">Tarih</th>
 		      	<th style="width: 35%;">Açıklama</th>
+		      	<th style="width: 35%;">Raporlayan</th>
 		      	<th style="width: 10%;">Eylem</th>
 		    </tr>
       		<c:forEach items="${complaintInfos }" var="data">
@@ -48,8 +49,9 @@
 			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
+			      	<td>${data.supportUserInfo.username }</td>
 			      	<td>
-			      	<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/unifyComplaints?id=${data.id }" role="button">unify</a>
+			      	<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/unifyComplaints?id=${data.id }" role="button">Birleştir</a>
 						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/transferComplaint?id=${data.id }" role="button">Yönlendir</a>
 					</td>
 			    </tr>

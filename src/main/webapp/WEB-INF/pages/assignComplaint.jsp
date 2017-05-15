@@ -20,6 +20,14 @@
 	<script src="${bootstrapJS}"></script>	
 	<title>${title}</title>
 </head>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#supportUserId').on('change',function(){
+		$.get("${pageContext.request.contextPath}/getSupportComplaints?id="+ $(this).children("option").filter(":selected").attr("id"), null, function (data) {
+	        $('#comps > tbody:last-child').html(data);
+	    });
+	});
+});</script>
 <body>
 	<%@include file="navbar2.jsp" %>	
  
@@ -32,63 +40,30 @@
       	<div class="row justify-content-center">
       		<div class="col-md-6 offset-md-3">
       			<div class="form"> <!-- for background transparent color -->
-      				<form:form action="transferedComplaint" method="POST" modelAttribute="complaintForm">
+      				<form:form action="assignedComplaint" method="POST" modelAttribute="complaintForm">
 						<div class="form-group">
 						
 							<div class="input-group">
 								<input id="id" name="id" type="hidden" value="${comp.id }"/>
 								<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konumu:&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</span>	 			
-						   		<select id="locationId" class="form-control" name="locationId" >
-						   			<c:forEach items="${locationInfos }" var="data">
-						        		<option id="${data.id }" value="${data.id }">${data.description }</option>
-						        	</c:forEach>
-						        </select>
+						   		<input type="" name="" value="${comp.locationInfo.description}" readonly>
 					    	</div>
 					    	
 					    	<div class="input-group">
 						    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Destek Personeli Tipi:</span>         
-						        <select id="supportTypeId" class="form-control" name="supportTypeId" >
-							        <c:forEach items="${supportTypeInfos }" var="data">
-							        	<option id="${data.id }" value="${data.id }">${data.type }</option>
-							        </c:forEach>
-						        </select>
+						        <input type="" name="" value="${comp.supportTypeInfo.type}" readonly>
 					        </div>
 					        <div class="input-group">
 						    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Seçilebilir kişiler</span>         
-						        <select id="supportTypeId" class="form-control" name="supportTypeId" >
+						        <select id="supportUserId" class="form-control" name="supportUserId" >
+						        	<option id="" value="">Atanacak kişi seçin.</option>
 							        <c:forEach items="${asgUser }" var="data">
 							        	<option id="${data.id }" value="${data.id }">${data.username }</option>
 							        </c:forEach>
 						        </select>
 					        </div>
-					        
-					        <div class="input-group">
-					        	<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i> Destek birimi(id):</span>
-					        	<input id="supportUserId" class="form-control" name="supportUserId" value="${userInfo.id }" />
-					        </div>
-					        
-					        <div class="input-group">
-					        	<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i> Şikayet açıklaması:</span>
-					        	<textarea id="complaintText" class="form-control" name="complaintText" rows="5"></textarea>
-					        </div>
-					        
-					        <div class="input-group">
-					        	<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i> Cevap açıklaması:</span>
-					        	<textarea id="responseText" class="form-control" name="responseText" rows="5"></textarea>
-					        </div>
-							
-							<div class="input-group">
-					        	<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i> Kapatılsın mı ?</span>
-					        	<input id="ended" class="form-control" name="ended" type="checkbox"></input>
-					        </div>
-							
-							<div class="input-group">
-							  	<span class="input-group-addon" ><i class="glyphicon glyphicon-paperclip"></i> Ek:</span>
-							  	<input type="file" class="form-control" placeholder="Resim veya video ekleyebilirsiniz">
-							</div>
-							
 							</br>
-					        <button type="submit" class="button button-block" value="Ekle" > Ekle</button>
+					        <button type="submit" class="button button-block" value="Ekle" > Atama yap</button>
 			        		</br>
 				        	<c:if test="${not empty compMsg}">
 						   		<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsg}
@@ -101,6 +76,21 @@
       		</div>
       	</div>
       </div>
+      <table id="comps" class="table table-striped custab" style="background-color: #FFF;">
+	    <thead>
+	        <tr>
+	            <th>ID</th>
+	            <th>Konumu</th>
+	            <th>Destek tipi</th>
+	            <th>Sorumlu kişi</th>
+	            <th>Kayıt tarihi</th>
+	            <th>Eylem</th>
+	        </tr>
+	    </thead>
+	   	<tbody>
+	   		
+	   	</tbody>
+	    </table>
 </body>
 	
 </html>

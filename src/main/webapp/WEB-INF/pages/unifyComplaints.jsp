@@ -49,7 +49,7 @@
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
 			      	<td>
-						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/assignComplaint?id=${data.id }" role="button">Yönlendir</a>
+			      		<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/unifyComplaint?id=${data.id }&id2=<%= request.getParameter("id") %>" role="button">Seç</a>
 					</td>
 			    </tr>
 			</c:forEach>

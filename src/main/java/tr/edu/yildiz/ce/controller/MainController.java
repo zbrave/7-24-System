@@ -3,6 +3,7 @@ package tr.edu.yildiz.ce.controller;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,9 +30,11 @@ import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.model.BanInfo;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
+import tr.edu.yildiz.ce.model.LocSupTypeInt;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
+import tr.edu.yildiz.ce.model.SupporterRepInt;
 import tr.edu.yildiz.ce.model.UserInfo;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
 
@@ -169,22 +172,117 @@ public class MainController {
 	
 	@RequestMapping(value = "/report", method = RequestMethod.GET)
 	public String report(Model model ) {
-//		Long avgProcess = complaintDAO.avgTimeForProcess();
-//		model.addAttribute("avgProcess", avgProcess);
 		
-		List<SupportTypeInfo> supType = supportTypeDAO.listSupportTypeInfos();
-//		for(SupportTypeInfo s : supType) {
-//			s.setAvgTime(complaintDAO.avgTimeForComplaintBySupportType(s.getId()));
-//			s.setTotal(complaintDAO.numOfComplaintBySupportType(s.getId()));
-//			s.setActive(complaintDAO.numOfActiveComplaintBySupportType(s.getId()));
-//			s.setWait(complaintDAO.numOfWaitingComplaintBySupportType(s.getId()));
-//		}
-		model.addAttribute("supTypeAvgProcess", supType);
+		List<LocationInfo> loc = this.locationDAO.listLocationInfos();
+		model.addAttribute("loc", loc);
+		
+		List<SupportTypeInfo> sup = this.supportTypeDAO.listSupportTypeInfos();
+		model.addAttribute("sup", sup);
+		
+		List<LocSupTypeInt> list = new ArrayList<LocSupTypeInt>();
+		
+		for (LocationInfo l : loc) {
+			for (SupportTypeInfo s : sup) {
+				if (complaintDAO.listComplaintInfos(l.getId(), s.getId()).size() != 0) {
+					LocSupTypeInt x = new LocSupTypeInt();
+					x.setLocationInfo(l);
+					x.setSupportTypeInfo(s);
+					x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId()).size());
+					x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId()).size());
+					x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId()).size());
+					x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId()).size());
+					x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId()).size());
+					x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId()).size());
+					x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId()).size());
+					list.add(x);
+				}
+			}
+		}
+		model.addAttribute("LocSupTypeInfo", list);
+		
+		List<SupporterInfo> sups = supporterDAO.listSupporterInfos();
+		List<SupporterRepInt> list2 = new ArrayList<SupporterRepInt>();
+		for (SupporterInfo s : sups) {
+			SupporterRepInt x = new SupporterRepInt();
+			x.setLocationInfo(locationDAO.findLocationInfo(s.getLocationId()));
+			x.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(s.getSupportTypeId()));
+			x.setComps(complaintDAO.listComplaintInfosByUserId(s.getUserId()).size());
+			x.setUserInfo(userDAO.findUserInfo(s.getUserId()));
+			list2.add(x);
+		}
+		model.addAttribute("SupporterRepInfo", list2);
 		
 		Integer numTotal = complaintDAO.numOfProcess();
 		model.addAttribute("total", numTotal);
 		
 		return "report";
+	}
+	
+	@RequestMapping(value="/getLocSupComplaints",method = RequestMethod.GET, produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String getLocSupComplaints(@RequestParam(required = false) Integer id, @RequestParam(required = false) Integer id2) {
+		String res = "";
+		System.out.println("idler: "+id+" "+id2);
+		List<LocationInfo> loc = this.locationDAO.listLocationInfos();
+		
+		List<SupportTypeInfo> sup = this.supportTypeDAO.listSupportTypeInfos();
+		
+		List<LocSupTypeInt> list = new ArrayList<LocSupTypeInt>();
+		
+		for (LocationInfo l : loc) {
+			System.out.println("l id: "+l.getId());
+			if (id == null || id == 0 || l.getId() == id) {
+				for (SupportTypeInfo s : sup) {
+					System.out.println("s id: "+s.getId());
+					if (id2 == null || id2 == 0 || s.getId() == id2) {
+						if (complaintDAO.listComplaintInfos(l.getId(), s.getId()).size() != 0) {
+							LocSupTypeInt x = new LocSupTypeInt();
+							x.setLocationInfo(l);
+							x.setSupportTypeInfo(s);
+							x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId()).size());
+							x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId()).size());
+							x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId()).size());
+							x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId()).size());
+							x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId()).size());
+							x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId()).size());
+							x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId()).size());
+							list.add(x);
+						}
+					}
+				}
+			}
+		}
+		for (LocSupTypeInt tmp : list) {
+			res = res.concat("<tr><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getTotal()+"</td><td>"+tmp.getWaitAck()+"</td><td>"+tmp.getWaitAsg()+"</td><td>"+tmp.getWaitChild()+"</td><td>"+tmp.getActive()+"</td><td>"+tmp.getEnded()+"</td><td>"+tmp.getReport()+"</td></tr>");
+		}
+		return res;
+	}
+	
+	@RequestMapping(value="/getSupporterInfo",method = RequestMethod.GET, produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String getSupporterInfo(@RequestParam(required = false) Integer id, @RequestParam(required = false) Integer id2 ) {
+		String res = "";
+		System.out.println("idler: "+id+" "+id2);
+		List<LocationInfo> loc = this.locationDAO.listLocationInfos();
+		
+		List<SupportTypeInfo> sup = this.supportTypeDAO.listSupportTypeInfos();
+		
+		List<SupporterInfo> supInfo = this.supporterDAO.listSupporterInfos();
+		
+		for (LocationInfo l : loc) {
+			if (l.getId() == id || id == 0 || id == null) {
+				for (SupportTypeInfo s : sup) {
+					if (s.getId() == id2 || id2 == 0 || id2 == null) {
+						for (SupporterInfo sI : supInfo) {
+							if (s.getId() == sI.getSupportTypeId() && l.getId() == sI.getLocationId()) {
+								res = res.concat("<tr><td>"+userDAO.findUserInfo(sI.getUserId()).getUsername()+"</td><td>"+l.getDescription()+"</td><td>"+s.getType()+"</td><td onclick=\"getdata("+sI.getUserId()+")\">"+complaintDAO.listComplaintInfosByUserId(sI.getUserId()).size()+"</td></tr>");
+							}
+						}
+					}
+				}
+			}
+		}
+		return res;
 	}
 	
 	@RequestMapping(value = "/reportComplaintsPdf", method = RequestMethod.GET)
