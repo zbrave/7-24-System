@@ -16,4 +16,5 @@ public interface SupporterDAO {
     public List<SupporterInfo> listSupporterInfos();
     public List<SupporterInfo> listSupporterInfosBySupportType(Integer supportTypeId);
     public List<UserInfo> listSupporterUserInfos();
+    public List<SupporterInfo> reportSupporterInfos();
 }

@@ -7,9 +7,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
+import tr.edu.yildiz.ce.entity.Complaint;
 import tr.edu.yildiz.ce.entity.Supporter;
+import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 import tr.edu.yildiz.ce.model.UserInfo;
 
@@ -24,7 +28,10 @@ public class SupporterDAOImpl implements SupporterDAO {
     @Autowired
     private SessionFactory sessionFactory;
 	@Autowired
-	private UserDAO userDAO;	
+	private UserDAO userDAO;
+	@Autowired
+	private ComplaintDAO complaintDAO;
+	
     @Override
 	public Supporter findSupporter(Integer id) {
         Session session = sessionFactory.getCurrentSession();
@@ -127,6 +134,65 @@ public class SupporterDAOImpl implements SupporterDAO {
 			}
 		}
 		return userInfos;
+	}
+
+	@Override
+	public List<SupporterInfo> reportSupporterInfos() {
+		List<SupporterInfo> supporterInfos = listSupporterInfos();
+		for(SupporterInfo s:supporterInfos){
+			Session session = sessionFactory.getCurrentSession();
+	        Criteria crit = session.createCriteria(Complaint.class);
+	        crit.add(Restrictions.eq("supportUserId", s.getUserId()));
+	        crit.add(Restrictions.eq("locationId", s.getLocationId()));
+	        crit.add(Restrictions.eq("supportTypeId", s.getSupportTypeId()));
+	        
+	        long totalAwarenessTime=0;
+			long numAwarenessTime=0;
+			long totalResponseTime=0;
+			long numResponseTime=0;
+			Integer waitingAck=0;
+			Integer active=0;
+			Integer waitingChild=0;
+			Integer total=0;
+			Integer reported=0;
+			List<Complaint> complaints = (List<Complaint>)crit.list();
+			List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
+			
+	        for(Complaint c:complaints){
+	        	complaintInfos.add(complaintDAO.findComplaintInfo(c.getId()));
+	        }
+			total=complaintInfos.size();
+			for(ComplaintInfo c:complaintInfos){
+				if(c.getComplaintTime()!=null&&c.getAckTime()!=null){
+					totalAwarenessTime+=c.getAckTime().getTime()-c.getComplaintTime().getTime();
+					numAwarenessTime++;
+				}
+				if(c.getAckTime()!=null&&c.getResponseTime()!=null){
+					totalResponseTime+=c.getResponseTime().getTime()-c.getAckTime().getTime();
+					numResponseTime++;
+				}
+				if(c.isAck()==false&&c.getSupportUserId()!=null){
+					waitingAck++;
+				}
+				if(c.isAck()==true&&c.isEnded()==false&&c.getChildId()==null&&c.isReported()==false){
+					active++;
+				}
+				if(c.isAck()==true&&c.isEnded()==false&&c.getChildId()!=null&&c.isReported()==false){
+					waitingChild++;
+				}
+				if(c.isReported()==true){
+					reported++;
+				}
+			}
+			s.setWaitingAck(waitingAck);
+			s.setActive(active);
+			s.setWaitingChild(waitingChild);
+			s.setReported(reported);
+			s.setTotal(total);
+			s.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
+			s.setAvgResponseTime(totalResponseTime/numResponseTime);
+		}
+		return supporterInfos;
 	}
 
 }
