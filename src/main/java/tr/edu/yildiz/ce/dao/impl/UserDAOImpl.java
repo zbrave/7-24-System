@@ -215,8 +215,12 @@ public class UserDAOImpl implements UserDAO {
 			u.setWaitingChild(waitingChild);
 			u.setReported(reported);
 			u.setTotal(total);
-			u.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
-			u.setAvgResponseTime(totalResponseTime/numResponseTime);
+			if(numAwarenessTime!=0){
+				u.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
+			}
+			if(numResponseTime!=0){
+				u.setAvgResponseTime(totalResponseTime/numResponseTime);
+			}
 		}
 		return userInfos;
 	}

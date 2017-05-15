@@ -280,6 +280,13 @@ function getinactivedata(id) {
 				      		<th>Çalıştığı konum</th>
 				      		<th>Görevi</th>
 				      		<th>Toplam şikayet sayısı</th>
+				      		<th>Ort. farkındalık süresi</th>
+				      		<th>Ort. cevap süresi</th>
+				      		<th>Onay bekleyen şikayet sayısı</th>
+				      		<th>Aktif şikayet sayısı</th>
+				      		<th>Çocuğunu bekleyen şikayet sayısı</th>
+				      		<th>Raporlanan şikayet sayısı</th>
+				      		<th>Tamamlanan şikayet sayısı</th>
 				      	</tr>
 			      	</thead>
 			      	<tbody>
@@ -288,7 +295,15 @@ function getinactivedata(id) {
 				      		<td>${data.userInfo.username }</td>
 				      		<td>${data.locationInfo.description }</td>
 				      		<td>${data.supportTypeInfo.type }</td>
-				      		<td onclick="getdata(${data.userInfo.id})">${data.comps }</td>
+				      		<td onclick="getdata(${data.userInfo.id})">${data.total }</td>
+				      		<td>${data.avgAwarenessTime/3600000 }</td>
+				      		<td>${data.avgResponseTime/3600000 }</td>
+				      		<td>${data.waitingAck }</td>
+				      		<td>${data.active }</td>
+				      		<td>${data.waitingChild }</td>
+				      		<td>${data.reported }</td>
+				      		<td>${data.ended }</td>
+				      		
 						</tr>
 				      </c:forEach>
 				      </tbody>

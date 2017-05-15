@@ -14,6 +14,7 @@ public class SupporterInfo {
 	private Integer active;
 	private Integer waitingChild;
 	private Integer total;
+	private Integer ended;
 	private Integer reported;
 
 	
@@ -113,6 +114,12 @@ public class SupporterInfo {
 	}
 	public void setReported(Integer reported) {
 		this.reported = reported;
+	}
+	public Integer getEnded() {
+		return ended;
+	}
+	public void setEnded(Integer ended) {
+		this.ended = ended;
 	}
 	
 

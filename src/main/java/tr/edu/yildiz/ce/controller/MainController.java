@@ -200,17 +200,17 @@ public class MainController {
 		}
 		model.addAttribute("LocSupTypeInfo", list);
 		
-		List<SupporterInfo> sups = supporterDAO.listSupporterInfos();
-		List<SupporterRepInt> list2 = new ArrayList<SupporterRepInt>();
+		List<SupporterInfo> sups = supporterDAO.reportSupporterInfos();
+		//List<SupporterRepInt> list2 = new ArrayList<SupporterRepInt>();
 		for (SupporterInfo s : sups) {
-			SupporterRepInt x = new SupporterRepInt();
-			x.setLocationInfo(locationDAO.findLocationInfo(s.getLocationId()));
-			x.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(s.getSupportTypeId()));
-			x.setComps(complaintDAO.listComplaintInfosByUserId(s.getUserId()).size());
-			x.setUserInfo(userDAO.findUserInfo(s.getUserId()));
-			list2.add(x);
+			//SupporterRepInt x = new SupporterRepInt();
+			s.setLocationInfo(locationDAO.findLocationInfo(s.getLocationId()));
+			s.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(s.getSupportTypeId()));
+			//x.setComps(complaintDAO.listComplaintInfosByUserId(s.getUserId()).size());
+			s.setUserInfo(userDAO.findUserInfo(s.getUserId()));
+			//list2.add(x);
 		}
-		model.addAttribute("SupporterRepInfo", list2);
+		model.addAttribute("SupporterRepInfo", sups);
 		
 		Integer numTotal = complaintDAO.numOfProcess();
 		model.addAttribute("total", numTotal);

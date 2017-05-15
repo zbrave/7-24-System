@@ -155,6 +155,7 @@ public class SupporterDAOImpl implements SupporterDAO {
 			Integer waitingChild=0;
 			Integer total=0;
 			Integer reported=0;
+			Integer ended=0;
 			List<Complaint> complaints = (List<Complaint>)crit.list();
 			List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
 			
@@ -183,14 +184,23 @@ public class SupporterDAOImpl implements SupporterDAO {
 				if(c.isReported()==true){
 					reported++;
 				}
+				if(c.isEnded()==true){
+					ended++;
+				}
 			}
 			s.setWaitingAck(waitingAck);
 			s.setActive(active);
 			s.setWaitingChild(waitingChild);
 			s.setReported(reported);
 			s.setTotal(total);
-			s.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
-			s.setAvgResponseTime(totalResponseTime/numResponseTime);
+			s.setEnded(ended);
+			if(numAwarenessTime!=0){
+				s.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
+			}
+			if(numResponseTime!=0){
+				s.setAvgResponseTime(totalResponseTime/numResponseTime);
+			}
+			
 		}
 		return supporterInfos;
 	}

@@ -152,6 +152,8 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	public void reportComplaint(Integer id) {
 		ComplaintInfo c =this.findComplaintInfo(id);
 		c.setReported(true);
+		Date dateNow =new Date();
+		c.setAckTime(dateNow);
 		saveComplaint(c);
 		
 	}

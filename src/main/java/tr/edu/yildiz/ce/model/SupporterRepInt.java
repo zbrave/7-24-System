@@ -5,6 +5,55 @@ public class SupporterRepInt {
 	private LocationInfo locationInfo;
 	private SupportTypeInfo supportTypeInfo;
 	private Integer comps;
+	private long avgAwarenessTime;
+    private long avgResponseTime;
+	private Integer waitingAck;
+	private Integer active;
+	private Integer waitingChild;
+	private Integer total;
+	private Integer reported;
+	public long getAvgAwarenessTime() {
+		return avgAwarenessTime;
+	}
+	public void setAvgAwarenessTime(long avgAwarenessTime) {
+		this.avgAwarenessTime = avgAwarenessTime;
+	}
+	public long getAvgResponseTime() {
+		return avgResponseTime;
+	}
+	public void setAvgResponseTime(long avgResponseTime) {
+		this.avgResponseTime = avgResponseTime;
+	}
+	public Integer getWaitingAck() {
+		return waitingAck;
+	}
+	public void setWaitingAck(Integer waitingAck) {
+		this.waitingAck = waitingAck;
+	}
+	public Integer getActive() {
+		return active;
+	}
+	public void setActive(Integer active) {
+		this.active = active;
+	}
+	public Integer getWaitingChild() {
+		return waitingChild;
+	}
+	public void setWaitingChild(Integer waitingChild) {
+		this.waitingChild = waitingChild;
+	}
+	public Integer getTotal() {
+		return total;
+	}
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
+	public Integer getReported() {
+		return reported;
+	}
+	public void setReported(Integer reported) {
+		this.reported = reported;
+	}
 	public LocationInfo getLocationInfo() {
 		return locationInfo;
 	}
