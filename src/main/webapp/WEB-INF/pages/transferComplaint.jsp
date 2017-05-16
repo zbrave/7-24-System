@@ -60,13 +60,13 @@
 					        </div>
 					        
 					        <div class="input-group">
-					        	<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i> Şikayet açıklaması:</span>
-					        	<textarea id="complaintText" class="form-control" name="complaintText" rows="5"></textarea>
+					        	<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i> Cevap açıklaması:</span>
+					        	<textarea id="responseText" class="form-control" name="responseText" rows="5"></textarea>
 					        </div>
 					        
 					        <div class="input-group">
-					        	<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i> Cevap açıklaması:</span>
-					        	<textarea id="responseText" class="form-control" name="responseText" rows="5"></textarea>
+					        	<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i>Yeni Şikayet açıklaması:</span>
+					        	<textarea id="complaintText" class="form-control" name="complaintText" rows="5"></textarea>
 					        </div>
 							
 							<div class="input-group">

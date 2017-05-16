@@ -40,8 +40,10 @@
 		      	<th style="width: 12%;">Konum</th>
 		      	<th style="width: 12%;">Şikayet tipi</th>
 		      	<th style="width: 12%;">Şikayet eden</th>
-		      	<th style="width: 8%;">Tarih</th>
-		      	<th style="width: 35%;">Açıklama</th>
+		      	<th style="width: 8%;">Şikayet Tarihi</th>
+		      	<th style="width: 15%;">Şikayet</th>
+		      	<th style="width: 15%;">Çözüm Tarihi</th>
+		      	<th style="width: 15%;">Çözüm</th>
 		    </tr>
       		<c:forEach items="${complaintInfos }" var="data">
       			<tr>
@@ -51,6 +53,8 @@
 			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
+			      	<td>${data.responseTime }</td>
+			      	<td>${data.responseText }</td>
 			    </tr>
 			</c:forEach>
       	</table>

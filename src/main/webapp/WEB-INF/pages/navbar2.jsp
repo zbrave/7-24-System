@@ -24,7 +24,7 @@ $(document).ready(function(){
 	    		
 	    		<c:if test="${role.authority == 'ROLE_USER'}">
 					<ul class="nav navbar-nav">
-						<li><a href="#" data-toggle="collapse">İşlem geçmişi</a></li>
+						<li><a href="${pageContext.request.contextPath}/userPast" >İşlem geçmişi</a></li>
 					</ul>
 	      			<ul class="nav navbar-nav">
 	        			<li><a href="${pageContext.request.contextPath}/complaint">Şikayet Oluştur</a></li>
@@ -34,12 +34,9 @@ $(document).ready(function(){
 				<c:if test="${role.authority == 'ROLE_SUPPORT'}">
 					<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath}/supporter" >Destek Personeli Sayfası</a></li>
-					<li><a href="${pageContext.request.contextPath}/supporterAck" >ack</a></li>
-						<li><a href="${pageContext.request.contextPath}/supporterPast" >İşlem geçmişi</a></li>
+					<li><a href="${pageContext.request.contextPath}/supporterAck" >Şikayet Onayı</a></li>
+						<li><a href="${pageContext.request.contextPath}/supporterPast" >Destek İşlem geçmişi</a></li>
 					</ul>
-	      			<ul class="nav navbar-nav">
-	        			<li><a href="${pageContext.request.contextPath}/complaint">Şikayet Oluştur</a></li>
-	      			</ul>
 				</c:if>
 				
 				<c:if test="${role.authority == 'ROLE_ADMIN'}">
@@ -87,9 +84,8 @@ $(document).ready(function(){
 				
 				<c:if test="${role.authority == 'ROLE_MANAGER'}">
 					<ul class="nav navbar-nav">
-						<li><a href="${pageContext.request.contextPath}/reportedComplaints" >reported</a></li>
-						<li><a href="${pageContext.request.contextPath}/assignComplaints" >assign</a></li>
-				        <li><a href="${pageContext.request.contextPath}/complaint">Şikayet Oluştur</a></li>
+						<li><a href="${pageContext.request.contextPath}/reportedComplaints" >Raporlanan Şikayetler</a></li>
+						<li><a href="${pageContext.request.contextPath}/assignComplaints" >Atanacak Şikayetler</a></li>
 						<!--  <li><a href="#tableInfo" data-toggle="collapse">Takip</a></li>
 						<li><a href="#">Raporlar</a></li> -->
 				    </ul>

@@ -34,6 +34,6 @@ public interface ComplaintDAO {
     public List<ComplaintInfo> listComplaintInfosForAssignment(Integer userId);//manager assign edecekleri+
     public List<ComplaintInfo> listReportedComplaintInfosForManager(Integer userId);//manager report edilenler+
     public List<ComplaintInfo> listActiveComplaintInfosForUnification(Integer id);// unify edilecekler+
-    
+    public List<ComplaintInfo> listComplaintInfosByComplainantUserId(Integer complainantUserId);
     public Integer numOfProcess();//kaç tane aktif işlem var
 }

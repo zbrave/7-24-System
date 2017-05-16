@@ -1,6 +1,8 @@
 package tr.edu.yildiz.ce.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.security.Principal;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +22,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tr.edu.yildiz.ce.dao.ActivationDAO;
-
+import tr.edu.yildiz.ce.dao.ComplaintDAO;
+import tr.edu.yildiz.ce.dao.LocationDAO;
+import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.entity.Activation;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
 
@@ -46,6 +50,15 @@ public class UserController {
 	private UserRoleDAO userRoleDAO;
 	
 	@Autowired
+	private ComplaintDAO complaintDAO;
+	
+	@Autowired
+	private LocationDAO locationDAO;
+	
+	@Autowired
+	private SupportTypeDAO supportTypeDAO;
+	
+	@Autowired
 	private ActivationDAO activationDAO;
 	
 	@Autowired
@@ -54,6 +67,18 @@ public class UserController {
 	public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
         return matcher.find();
+	}
+	
+	@RequestMapping(value = "/userPast", method = RequestMethod.GET)
+	public String userPast(Model model, Principal principal) {
+		List<ComplaintInfo> list = complaintDAO.listComplaintInfosByComplainantUserId(userDAO.findLoginUserInfo(principal.getName()).getId());
+		for (ComplaintInfo l : list) {
+			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
+			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
+			l.setComplainantUserInfo(userDAO.findUserInfo(l.getComplainantUserId()));
+		}
+		model.addAttribute("complaintInfos", list);
+		return "userPast";
 	}
 	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)

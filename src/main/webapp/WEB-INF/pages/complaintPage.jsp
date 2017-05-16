@@ -54,8 +54,8 @@
 					        </div>
 					        
 					        <div class="input-group">
-					        	<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i> Şikayeti gönderen(id):</span>
-					        	<input id="complainantUserId" class="form-control" name="complainantUserId" value="${userInfo.id }" />
+					        	
+					        	<input id="complainantUserId" type="hidden" class="form-control" name="complainantUserId" value="${userInfo.id }" />
 					        </div>
 					        
 					        <div class="input-group">

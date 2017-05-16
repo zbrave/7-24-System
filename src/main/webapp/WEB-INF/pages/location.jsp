@@ -40,7 +40,7 @@
     				<div class="input-group">
     					<span class="input-group-addon">Üst konum</span>
         				<select id="parentId" class="form-control" name="parentId" >
-        					<option id="" value="">Alt konum seçin.</option>
+        					<option id="" value="">Üst konum seçin.</option>
    							<c:forEach items="${locationInfos }" var="data">
         						<option id="${data.id }" value="${data.id }">${data.description }</option>
         					</c:forEach>

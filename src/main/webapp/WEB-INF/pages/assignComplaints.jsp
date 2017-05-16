@@ -49,9 +49,11 @@
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
 			      	<td>
+			      	<a class="btn btn-info btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.complainantUserInfo.id }" role="button">Kullanıcıyı banla</a>
 			      	<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/savedComplaint?id=${data.id }" role="button">Değiştir</a>
-			      	<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/unifyComplaints?id=${data.id }" role="button">Birleştir</a>
-						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/assignComplaint?id=${data.id }" role="button">Atama yap</a>
+			      	<a class="btn btn-warning btn-xs" href="${pageContext.request.contextPath}/unifyComplaints?id=${data.id }" role="button">Birleştir</a>
+						<a class="btn btn-success btn-xs" href="${pageContext.request.contextPath}/assignComplaint?id=${data.id }" role="button">Atama yap</a>
+						<a class="btn btn-info btn-xs" href="${pageContext.request.contextPath}/endComplaint?id=${data.id }" role="button">Çöz</a>
 					</td>
 			    </tr>
 			</c:forEach>
