@@ -26,6 +26,7 @@ import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
+import tr.edu.yildiz.ce.model.UserRoleInfo;
 
 @Controller
 //Enable Hibernate Transaction.
@@ -84,6 +85,18 @@ public class SupporterController {
 		return "supporterAck";
 	}
 	
+	@RequestMapping(value = "/supporterPast", method = RequestMethod.GET)
+	public String supporterPast(Model model, Principal principal) {
+		List<ComplaintInfo> list = complaintDAO.listEndedComplaintInfos(null, null, null, userDAO.findLoginUserInfo(principal.getName()).getId());
+		for (ComplaintInfo l : list) {
+			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
+			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
+			l.setComplainantUserInfo(userDAO.findUserInfo(l.getComplainantUserId()));
+		}
+		model.addAttribute("complaintInfos", list);
+		return "supporterPast";
+	}
+	
 	@RequestMapping(value = "/ackComplaint", method = RequestMethod.GET)
 	public String ackComplaint(Model model, @RequestParam(value = "id") Integer id, Principal principal) {
 		
@@ -135,7 +148,7 @@ public class SupporterController {
 			System.out.println("Hata!");
 			return "supporterEditor";
 		}
-		
+		userRoleDAO.saveUserRole(new UserRoleInfo(null, supporterInfo.getUserId(), "SUPPORT"));
 		this.supporterDAO.saveSupporter(supporterInfo);
 
 		// Important!!: Need @EnableWebMvc

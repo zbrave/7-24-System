@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import tr.edu.yildiz.ce.dao.ManagerDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
+import tr.edu.yildiz.ce.model.ManagerInfo;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
 
 @Controller
@@ -28,6 +30,9 @@ public class UserRoleController {
 	
 	@Autowired
 	private UserDAO userDAO;
+	
+	@Autowired
+	private ManagerDAO managerDAO;
 	
 	@Autowired
 	private UserRoleDAO userRoleDAO;
@@ -53,6 +58,10 @@ public class UserRoleController {
 			e.printStackTrace();
 		}
 		userRoleInfo.setUserId(userRoleInfo.getUserId());
+		if (userRoleInfo.getRole().equals("MANAGER")) {
+			ManagerInfo m = new ManagerInfo(null, userRoleInfo.getUserId(), userRoleInfo.getLocid());
+			managerDAO.saveManager(m);
+		}
 		this.userRoleDAO.saveUserRole(userRoleInfo);
 
 		// Important!!: Need @EnableWebMvc

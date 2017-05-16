@@ -42,12 +42,20 @@
        							</c:forEach>
         					</select>
         				</div>
+        				<div class="input-group">
+							<input id="id" name="id" type="hidden" value=""/>
+							<span class="input-group-addon">Konum:</span>
+   							<select id="locid" class="form-control" name="locid" >
+   								<option id="" value="">Seçin.</option>
+   								<c:forEach items="${locInfos }" var="data">
+        							<option id="${data.id }" value="${data.id }">${data.description }</option>
+       							</c:forEach>
+        					</select>
+        				</div>
     					<div class="input-group">
     						<span class="input-group-addon">Rolü: &ensp;&ensp;&ensp;</span>
 					        <select id="role" class="form-control" name="role" >
-					        	<option value="ADMIN">ADMIN</option>
-					        	<option value="USER">USER</option>
-					        	<option value="SUPPORT">SUPPORT</option>
+					        	<option value="MANAGER">MANAGER</option>
 					        </select>
 					        <span class="input-group-btn">
         						<button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>

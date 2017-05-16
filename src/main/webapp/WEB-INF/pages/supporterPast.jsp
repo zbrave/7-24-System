@@ -21,12 +21,16 @@
 	<title>${title}</title>
 </head>
 <body>
-	<%@include file="navbar2.jsp" %>
-	<div class="text-center">	
+	<%@include file="navbar2.jsp" %>	
+    <div class="text-center">	
     	<p style="font-size: 30px; color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
-    		Yönetici sayfası
+    		Destek Personeli Sayfası
     	</p>
     </div>
+    <c:if test="${not empty compMsg}">
+   		<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsg}
+   		</div>
+	</c:if>
     <div style="padding: 50px;">
     <div class="panel panel-default">
       	<div class="panel-heading">Şikayetler</div>
@@ -34,11 +38,10 @@
 	      	<tr>
 		      	<th style="width: 8%;">ID</th>
 		      	<th style="width: 12%;">Konum</th>
-		      	<th style="width: 12%;">Şikayet türü</th>
+		      	<th style="width: 12%;">Şikayet tipi</th>
 		      	<th style="width: 12%;">Şikayet eden</th>
 		      	<th style="width: 8%;">Tarih</th>
 		      	<th style="width: 35%;">Açıklama</th>
-		      	<th style="width: 10%;">Eylem</th>
 		    </tr>
       		<c:forEach items="${complaintInfos }" var="data">
       			<tr>
@@ -48,11 +51,6 @@
 			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
-			      	<td>
-			      	<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/savedComplaint?id=${data.id }" role="button">Değiştir</a>
-			      	<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/unifyComplaints?id=${data.id }" role="button">Birleştir</a>
-						<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/assignComplaint?id=${data.id }" role="button">Atama yap</a>
-					</td>
 			    </tr>
 			</c:forEach>
       	</table>

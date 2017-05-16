@@ -7,6 +7,7 @@ public class UserRoleInfo {
 	private Integer userId;
 	private String role;
 	private UserInfo userInfo;
+	private Integer locid;
 	public UserRoleInfo(){
 		
 	}
@@ -39,6 +40,12 @@ public class UserRoleInfo {
 	}
 	public void setUserInfo(UserInfo userInfo) {
 		this.userInfo = userInfo;
+	}
+	public Integer getLocid() {
+		return locid;
+	}
+	public void setLocid(Integer locid) {
+		this.locid = locid;
 	}
 
 	

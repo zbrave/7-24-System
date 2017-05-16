@@ -50,8 +50,9 @@
 						      		<td>${data.email }</td>
 						      		<td>${data.enabled }</td>
 						      		<td>${data.banned }</td>
-						      		<td><a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.id}" role="button">Banla</a>
-						      			<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUser?id=${data.id}" role="button">Sil</a>
+						      		<td>
+						      		<a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.id}" role="button">Banla</a>
+						      		<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUser?id=${data.id}" role="button">Sil</a>
 									</td>
 						      	</tr>
 						      </c:forEach>

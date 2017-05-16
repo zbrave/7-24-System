@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +35,7 @@
 	      	<tr>
 		      	<th style="width: 8%;">ID</th>
 		      	<th style="width: 12%;">Konum</th>
-		      	<th style="width: 12%;">Şikayet türü</th>
+		      	<th style="width: 12%;">Destek türü</th>
 		      	<th style="width: 12%;">Şikayet eden</th>
 		      	<th style="width: 8%;">Tarih</th>
 		      	<th style="width: 35%;">Açıklama</th>
@@ -50,8 +51,52 @@
 			    </tr>
 			</c:forEach>
       	</table>
+      	<div class="progress">
+      	<c:forEach items="${tree }" var="data">
+		  <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: ${data.percentAssign }%">
+		    <span class="sr-only">${data.percentAssign }% Complete (assign)</span><a href="#myModal${data.id}" data-toggle="modal">
+		    <fmt:formatNumber value="${data.percentAssign }" minFractionDigits="0" maxFractionDigits="0"/>% 
+		    </a>
+		  </div>
+		  <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: ${data.percentAck }%">
+		    <span class="sr-only">${data.percentAck }% Complete (ack)</span><a href="#myModal${data.id}" data-toggle="modal">
+		    <fmt:formatNumber value="${data.percentAck }" minFractionDigits="0" maxFractionDigits="0"/>% 
+		    </a>
+		  </div>
+		  <div class="progress-bar progress-bar-info progress-bar-striped" style="width: ${data.percentResponse }%">
+		    <span class="sr-only">${data.percentResponse }% Complete (response)</span><a href="#myModal${data.id}" data-toggle="modal">
+		    <fmt:formatNumber value="${data.percentResponse }" minFractionDigits="0" maxFractionDigits="0"/>%
+		    </a>
+		  </div>
+		  </c:forEach>
+		</div>
    </div>
    </div>
+   <c:forEach items="${tree }" var="data">
+   <!-- Modal -->
+	<div class="modal fade" id="myModal${data.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	        <h4 class="modal-title" id="myModalLabel">Toplam şikayet yüzdesi: <fmt:formatNumber value="${data.percentAssign+data.percentAck+data.percentResponse }" minFractionDigits="0" maxFractionDigits="0"/>%</h4>
+	      </div>
+	      <div class="modal-body center-block">
+	        	<p>ID</p>${data.id }
+		      	<p>Konum</p>${data.locationInfo.description }
+		      	<p>Şikayet türü</p>${data.supportTypeInfo.type }
+		      	<p>Şikayet eden</p>${data.complainantUserInfo.username }
+		      	<p>Tarih</p>${data.complaintTime }
+		      	<p>Şikayet açıklaması</p>${data.complaintText }
+		      	<p>Şikayet cevabı</p>${data.responseText }
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	</c:forEach>
 </body>
 	
 </html>

@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,19 +63,16 @@ function getdata(id) {
         $('#comps2 > tbody:last-child').html(data);
 	});
 }
-function getalldata(id) {
-	$.get("${pageContext.request.contextPath}/getSupportAllComplaints?id="+ id, null, function (data) {
+function getalldata(id,id2,id3,id4,id5) {
+	$.get("${pageContext.request.contextPath}/getComplexComplaintList?id="+ id + "&id2=" + id2 + "&id3=" + id3 + "&id4=" + id4 + "&id5=" + id5, null, function (data) {
         $('#comps5 > tbody:last-child').html(data);
+        console.log("id: "+id + id2 + id3 + id4 + id5)
 	});
 }
-function getactivedata(id) {
-	$.get("${pageContext.request.contextPath}/getSupportAllComplaints?id="+ id, null, function (data) {
-        $('#comps5 > tbody:last-child').html(data);
-	});
-}
-function getinactivedata(id) {
-	$.get("${pageContext.request.contextPath}/getSupportAllComplaints?id="+ id, null, function (data) {
-        $('#comps5 > tbody:last-child').html(data);
+function getalldata2(id,id2,id3,id4,id5) {
+	$.get("${pageContext.request.contextPath}/getComplexComplaintList?id="+ id + "&id2=" + id2 + "&id3=" + id3 + "&id4=" + id4 + "&id5=" + id5, null, function (data) {
+        $('#comps2 > tbody:last-child').html(data);
+        console.log("id: "+id + id2 + id3 + id4 + id5)
 	});
 }
 </script>
@@ -139,18 +137,34 @@ function getinactivedata(id) {
 						      	<tr>
 						      		<td>${data.locationInfo.description }</td>
 						      		<td>${data.supportTypeInfo.type }</td>
-						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.total }</td>
-						      		<td onclick="getwaitackdata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.waitAck }</td>
-						      		<td onclick="getwaitasgdata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.waitAsg }</td>
-						      		<td onclick="getwaitchilddata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.waitChild }</td>
-						      		<td onclick="getactivedata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.active }</td>
-						      		<td onclick="getendeddata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.ended }</td>
-						      		<td onclick="getreportdata(${data.locationInfo.id}, ${data.supportTypeInfo.id})">${data.report }</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 1)">${data.total }</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 2)">${data.waitAck }</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 3)">${data.waitAsg }</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 4)">${data.waitChild }</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 5)">${data.active }</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 6)">${data.ended }</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 7)">${data.report }</td>
 						      	</tr>
 						      </c:forEach>
 						    </tbody>
       					</table>
+
       			</div>  <!-- TABLE >>> -->
+      			<table id="comps5" class="table table-striped custab" style="background-color: #FFF;">
+					    <thead>
+					        <tr>
+					            <th>ID</th>
+					            <th>Konumu</th>
+					            <th>Destek tipi</th>
+					            <th>Sorumlu kişi</th>
+					            <th>Kayıt tarihi</th>
+					            <th>Eylem</th>
+					        </tr>
+					    </thead>
+					   	<tbody>
+					   		
+					   	</tbody>
+					    </table>
       			</div>
       		</div>
       	</div>
@@ -295,14 +309,14 @@ function getinactivedata(id) {
 				      		<td>${data.userInfo.username }</td>
 				      		<td>${data.locationInfo.description }</td>
 				      		<td>${data.supportTypeInfo.type }</td>
-				      		<td onclick="getdata(${data.userInfo.id})">${data.total }</td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 1)">${data.total }</td>
 				      		<td>${data.avgAwarenessTime/3600000 }</td>
 				      		<td>${data.avgResponseTime/3600000 }</td>
-				      		<td>${data.waitingAck }</td>
-				      		<td>${data.active }</td>
-				      		<td>${data.waitingChild }</td>
-				      		<td>${data.reported }</td>
-				      		<td>${data.ended }</td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 2)">${data.waitingAck }</td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 5)">${data.active }</td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 4)">${data.waitingChild }</td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 7)">${data.reported }</td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 6)">${data.ended }</td>
 				      		
 						</tr>
 				      </c:forEach>

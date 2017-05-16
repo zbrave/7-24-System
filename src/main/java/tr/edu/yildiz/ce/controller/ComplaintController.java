@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -83,6 +84,36 @@ public class ComplaintController {
 		return "redirect:/complaint";
 	}
 	
+	@RequestMapping(value = "/save2Complaint", method = RequestMethod.POST)
+	public String save2Complaint(Model model, HttpServletRequest request, //
+			@ModelAttribute("complaintForm") @Validated ComplaintInfo complaintInfo, //
+			BindingResult result, //
+			final RedirectAttributes redirectAttributes) throws IOException, ServletException {
+			
+		if (result.hasErrors()) {
+			model.addAttribute("compMsgError", "Hatalı giriş.");
+			System.out.println("Hata!");
+		}
+		String decodedToUTF8;
+		try {
+			decodedToUTF8 = new String(complaintInfo.getComplaintText().getBytes("ISO-8859-1"), "UTF-8");
+			complaintInfo.setComplaintText(decodedToUTF8);
+		} catch (UnsupportedEncodingException e) {
+			System.out.println("Dept name cannot converted.");
+			e.printStackTrace();
+		}
+		System.out.println(complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getComplainantUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getFile());
+		complaintInfo.setComplaintTime(new Date());
+		this.complaintDAO.saveComplaint(complaintInfo);
+
+		// Important!!: Need @EnableWebMvc
+		// Add message to flash scope
+		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet gönderildi.");
+
+//		return "redirect:/deptList";
+		return "redirect:/assignComplaints";
+	}
+	
 	@RequestMapping(value = "/endComplaint", method = RequestMethod.GET)
 	public String endComplaint(Model model,Principal principal, @RequestParam("id") Integer id) {
 		UserInfo user = userDAO.findLoginUserInfo(principal.getName());
@@ -138,6 +169,21 @@ public class ComplaintController {
 		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
 		model.addAttribute("supportTypeInfos", list2);
 		return "transferComplaint";
+	}
+	
+	@RequestMapping(value = "/savedComplaint", method = RequestMethod.GET)
+	public String savedComplaint(Model model,Principal principal, @RequestParam("id") Integer id) {
+		UserInfo user = userDAO.findLoginUserInfo(principal.getName());
+		ComplaintInfo comp = complaintDAO.findComplaintInfo(id);
+		comp.setLocationInfo(locationDAO.findLocationInfo(comp.getLocationId()));
+		comp.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(comp.getSupportTypeId()));
+		model.addAttribute("userInfo", user);
+		model.addAttribute("comp", comp);
+		List<LocationInfo> list = locationDAO.listLocationInfos();
+		model.addAttribute("locationInfos", list);
+		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
+		model.addAttribute("supportTypeInfos", list2);
+		return "savedComplaint";
 	}
 	
 	@RequestMapping(value = "/assignComplaint", method = RequestMethod.GET)
@@ -222,10 +268,67 @@ public class ComplaintController {
 			tmp.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(tmp.getSupportTypeId()));
 			tmp.setComplainantUserInfo(userDAO.findUserInfo(tmp.getSupportUserId()));
 		}
-		System.out.println("size:"+list4.size());
 		for (ComplaintInfo tmp : list4) {
-			if (tmp.getComplaintTime() == null && tmp.getSupportUserId() == null) {
-				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+"Atama yapılmamış."+"</td><td>"+"Atama yapılmamış."+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
+			if (tmp.getSupportUserId() == null) {
+				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+"Atama yapılmamış."+"</td><td>"+tmp.getComplaintTime()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
+			}
+			else {
+				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getComplainantUserInfo().getUsername()+"</td><td>"+tmp.getComplaintTime()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-success btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
+			}
+		}
+		return res;
+	}
+	
+	@RequestMapping(value="/getComplexComplaintList",method = RequestMethod.GET, produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String getComplexComplaintList(@RequestParam(required = false) Integer id, @RequestParam(required = false) Integer id2, @RequestParam(required = false) Integer id3, @RequestParam(required = false) Integer id4, @RequestParam(required = false) Integer id5 ) {
+		String res = "";
+		List<ComplaintInfo> list4 = null;
+		if (id == 0) {
+			id = null;
+		}
+		if (id2 == 0) {
+			id2 = null;
+		}
+		if (id3 == 0) {
+			id3 = null;
+		}
+		if (id4 == 0) {
+			id4 = null;
+		}
+		if (id5 == 1) {
+			list4 = this.complaintDAO.listComplaintInfos(id, id2,id3,id4);
+		}
+		else if (id5 == 2){
+			list4 = this.complaintDAO.listWaitingAckComplaintInfos(id, id2,id3,id4);
+		}
+		else if (id5 == 3){
+			list4 = this.complaintDAO.listWaitingAssingnComplaintInfos(id, id2,id3,id4);
+		}
+		else if (id5 == 4) {
+			list4 = this.complaintDAO.listWaitingChildComplaintInfos(id, id2, id3, id4);
+		}
+		else if (id5 == 5) {
+			list4 = this.complaintDAO.listActiveComplaintInfos(id, id2, id3, id4);
+		}
+		else if (id5 == 6) {
+			list4 = this.complaintDAO.listEndedComplaintInfos(id, id2, id3, id4);
+		}
+		else if (id5 == 7) {
+			list4 = this.complaintDAO.listReportedComplaintInfos(id, id2, id3, id4);
+		}
+		if (list4.isEmpty() || list4 == null ) {
+			System.out.println("Liste boş döndü");
+			return res;
+		}
+		for (ComplaintInfo tmp : list4) {
+			tmp.setLocationInfo(locationDAO.findLocationInfo(tmp.getLocationId()));
+			tmp.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(tmp.getSupportTypeId()));
+			tmp.setComplainantUserInfo(userDAO.findUserInfo(tmp.getSupportUserId()));
+		}
+		for (ComplaintInfo tmp : list4) {
+			if (tmp.getSupportUserId() == null) {
+				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+"Atama yapılmamış."+"</td><td>"+tmp.getComplaintTime()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
 			}
 			else {
 				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getComplainantUserInfo().getUsername()+"</td><td>"+tmp.getComplaintTime()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-success btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");

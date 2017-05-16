@@ -253,7 +253,7 @@ public class MainController {
 			}
 		}
 		for (LocSupTypeInt tmp : list) {
-			res = res.concat("<tr><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getTotal()+"</td><td>"+tmp.getWaitAck()+"</td><td>"+tmp.getWaitAsg()+"</td><td>"+tmp.getWaitChild()+"</td><td>"+tmp.getActive()+"</td><td>"+tmp.getEnded()+"</td><td>"+tmp.getReport()+"</td></tr>");
+			res = res.concat("<tr><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 1)\">"+tmp.getTotal()+"</td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 2)\">"+tmp.getWaitAck()+"</td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 3)\">"+tmp.getWaitAsg()+"</td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 4)\">"+tmp.getWaitChild()+"</td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 5)\">"+tmp.getActive()+"</td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 6)\">"+tmp.getEnded()+"</td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 7)\">"+tmp.getReport()+"</td></tr>");
 		}
 		return res;
 	}
@@ -267,7 +267,7 @@ public class MainController {
 		
 		List<SupportTypeInfo> sup = this.supportTypeDAO.listSupportTypeInfos();
 		
-		List<SupporterInfo> supInfo = this.supporterDAO.listSupporterInfos();
+		List<SupporterInfo> supInfo = this.supporterDAO.reportSupporterInfos();
 		
 		for (LocationInfo l : loc) {
 			if (l.getId() == id || id == 0 || id == null) {
@@ -275,7 +275,7 @@ public class MainController {
 					if (s.getId() == id2 || id2 == 0 || id2 == null) {
 						for (SupporterInfo sI : supInfo) {
 							if (s.getId() == sI.getSupportTypeId() && l.getId() == sI.getLocationId()) {
-								res = res.concat("<tr><td>"+userDAO.findUserInfo(sI.getUserId()).getUsername()+"</td><td>"+l.getDescription()+"</td><td>"+s.getType()+"</td><td onclick=\"getdata("+sI.getUserId()+")\">"+complaintDAO.listComplaintInfosByUserId(sI.getUserId()).size()+"</td></tr>");
+								res = res.concat("<tr><td>"+userDAO.findUserInfo(sI.getUserId()).getUsername()+"</td><td>"+l.getDescription()+"</td><td>"+s.getType()+"</td><td onclick=\"getdata("+sI.getUserId()+")\">"+complaintDAO.listComplaintInfosByUserId(sI.getUserId()).size()+"</td><td>"+sI.getAvgAwarenessTime()/3600000+"</td><td>"+sI.getAvgResponseTime()/3600000+"</td><td>"+sI.getWaitingAck()+"</td><td>"+sI.getActive()+"</td><td>"+sI.getWaitingChild()+"</td><td>"+sI.getReported()+"</td><td>"+sI.getEnded()+"</td></tr>");
 							}
 						}
 					}
@@ -317,6 +317,21 @@ public class MainController {
 		model.addAttribute("userInfos", list5);
 		
 		return "userRoleEditPage";
+	}
+	
+	@RequestMapping(value = "/addManager", method = RequestMethod.GET)
+	public String addManager(Model model) {
+		
+		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfos();
+		model.addAttribute("userRoleInfos", list3);
+		
+		List<UserInfo> list5 = userDAO.listUserInfos();
+		model.addAttribute("userInfos", list5);
+		
+		List<LocationInfo> list6 = locationDAO.listLocationInfos();
+		model.addAttribute("locInfos", list6);
+		
+		return "addManager";
 	}
 	
 	@RequestMapping(value = "/complaint", method = RequestMethod.GET)

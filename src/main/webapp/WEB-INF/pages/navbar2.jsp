@@ -35,7 +35,7 @@ $(document).ready(function(){
 					<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath}/supporter" >Destek Personeli Sayfası</a></li>
 					<li><a href="${pageContext.request.contextPath}/supporterAck" >ack</a></li>
-						<li><a href="#" data-toggle="collapse">İşlem geçmişi</a></li>
+						<li><a href="${pageContext.request.contextPath}/supporterPast" >İşlem geçmişi</a></li>
 					</ul>
 	      			<ul class="nav navbar-nav">
 	        			<li><a href="${pageContext.request.contextPath}/complaint">Şikayet Oluştur</a></li>
@@ -53,6 +53,7 @@ $(document).ready(function(){
 				          	Kullanıcı Yönetimi <span class="caret"></span>
 				          </a>
 				          	<ul class="dropdown-menu">
+				          		<li><a href="${pageContext.request.contextPath}/addManager">Yönetici Ekleme</a></li>
 				          		<li><a href="${pageContext.request.contextPath}/userRoleEdit">Kullanıcı Rolü Yönetme</a></li>
 				          		<li role="separator" class="divider"></li>
 				            	<li><a href="${pageContext.request.contextPath}/users">Kullanıcı Bilgileri</a></li>
@@ -63,7 +64,6 @@ $(document).ready(function(){
 				          	Destek Ekibi <span class="caret"></span>
 				          </a>
 				          	<ul class="dropdown-menu">
-				            	<li><a href="#"></a></li>
 				            	<li><a href="${pageContext.request.contextPath}/supporterTypeEdit">Rol Ekleme</a></li>
 				            	<li><a href="${pageContext.request.contextPath}/supporterEdit">Yönetme</a></li>
 				          	</ul>
