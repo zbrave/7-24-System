@@ -18,14 +18,16 @@ public interface ComplaintDAO {
     public void transferComplaint (Integer id,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended);
     public void endComplaint(Integer id,String responseText);
     public void uniteComplaints(Integer uniteTo,Integer delete);// manager report edilenler ve assigndan önce+
-    public List<ComplaintInfo> listComplaintInfos (Integer locationId,Integer supportTypeId);// report için hepsini gösteriyor+
-    public List<ComplaintInfo> listWaitingAssingnComplaintInfos (Integer locationId,Integer supportTypeId);// report için
-    public List<ComplaintInfo> listWaitingAckComplaintInfos (Integer locationId,Integer supportTypeId);
-    public List<ComplaintInfo> listActiveComplaintInfos (Integer locationId,Integer supportTypeId);
-    public List<ComplaintInfo> listWaitingChildComplaintInfos (Integer locationId,Integer supportTypeId);
-    public List<ComplaintInfo> listReportedComplaintInfos (Integer locationId,Integer supportTypeId);
-    public List<ComplaintInfo> listEndedComplaintInfos (Integer locationId,Integer supportTypeId);
+    public List<ComplaintInfo> listComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);// report için hepsini gösteriyor+
+    public List<ComplaintInfo> listWaitingAssingnComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);// report için
+    public List<ComplaintInfo> listWaitingAckComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
+    public List<ComplaintInfo> listActiveComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
+    public List<ComplaintInfo> listWaitingChildComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
+    public List<ComplaintInfo> listReportedComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
+    public List<ComplaintInfo> listEndedComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
     public List<ComplaintInfo> listComplaintInfosByUserId (Integer supportUserId);// buraya kadar report
+    public List<ComplaintInfo> listComplaintInfosBySupporterId (Integer supporterId);
+    
     public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId);//ack yapılanlar+
     public List<ComplaintInfo> listComplaintInfosForSupportAck(Integer userId);// ack yapılmayanlar+
     public List<ComplaintInfo> listComplaintProcess(Integer id);// tüm tree çekiyor listeleme için // report için-compl listleenn yerlerede konulabilir

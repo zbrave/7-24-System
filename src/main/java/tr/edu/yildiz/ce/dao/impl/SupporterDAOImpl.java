@@ -136,16 +136,11 @@ public class SupporterDAOImpl implements SupporterDAO {
 		return userInfos;
 	}
 
+
 	@Override
 	public List<SupporterInfo> reportSupporterInfos() {
 		List<SupporterInfo> supporterInfos = listSupporterInfos();
 		for(SupporterInfo s:supporterInfos){
-			Session session = sessionFactory.getCurrentSession();
-	        Criteria crit = session.createCriteria(Complaint.class);
-	        crit.add(Restrictions.eq("supportUserId", s.getUserId()));
-	        crit.add(Restrictions.eq("locationId", s.getLocationId()));
-	        crit.add(Restrictions.eq("supportTypeId", s.getSupportTypeId()));
-	        
 	        long totalAwarenessTime=0;
 			long numAwarenessTime=0;
 			long totalResponseTime=0;
@@ -156,21 +151,20 @@ public class SupporterDAOImpl implements SupporterDAO {
 			Integer total=0;
 			Integer reported=0;
 			Integer ended=0;
-			List<Complaint> complaints = (List<Complaint>)crit.list();
-			List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
-			
-	        for(Complaint c:complaints){
-	        	complaintInfos.add(complaintDAO.findComplaintInfo(c.getId()));
-	        }
+			List<ComplaintInfo> complaintInfos =complaintDAO.listComplaintInfos(null, null, s.getId(), null);
 			total=complaintInfos.size();
 			for(ComplaintInfo c:complaintInfos){
-				if(c.getComplaintTime()!=null&&c.getAckTime()!=null){
-					totalAwarenessTime+=c.getAckTime().getTime()-c.getComplaintTime().getTime();
-					numAwarenessTime++;
+				if(c.getAssignTime()!=null&&c.getAckTime()!=null){
+					totalAwarenessTime+=c.getAckTime().getTime()-c.getAssignTime().getTime();
+					if(c.getAckTime().getTime()-c.getAssignTime().getTime()!=0){
+						numAwarenessTime++;
+					}
 				}
 				if(c.getAckTime()!=null&&c.getResponseTime()!=null){
 					totalResponseTime+=c.getResponseTime().getTime()-c.getAckTime().getTime();
-					numResponseTime++;
+					if(c.getResponseTime().getTime()-c.getAckTime().getTime()!=0){
+						numResponseTime++;	
+					}
 				}
 				if(c.isAck()==false&&c.getSupportUserId()!=null){
 					waitingAck++;
