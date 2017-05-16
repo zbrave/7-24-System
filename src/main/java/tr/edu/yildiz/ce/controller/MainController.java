@@ -183,17 +183,17 @@ public class MainController {
 		
 		for (LocationInfo l : loc) {
 			for (SupportTypeInfo s : sup) {
-				if (complaintDAO.listComplaintInfos(l.getId(), s.getId()).size() != 0) {
+				if (complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size() != 0) {
 					LocSupTypeInt x = new LocSupTypeInt();
 					x.setLocationInfo(l);
 					x.setSupportTypeInfo(s);
-					x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId()).size());
-					x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId()).size());
-					x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId()).size());
-					x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId()).size());
-					x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId()).size());
-					x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId()).size());
-					x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId()).size());
+					x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId(),null,null).size());
 					list.add(x);
 				}
 			}
@@ -235,17 +235,17 @@ public class MainController {
 				for (SupportTypeInfo s : sup) {
 					System.out.println("s id: "+s.getId());
 					if (id2 == null || id2 == 0 || s.getId() == id2) {
-						if (complaintDAO.listComplaintInfos(l.getId(), s.getId()).size() != 0) {
+						if (complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size() != 0) {
 							LocSupTypeInt x = new LocSupTypeInt();
 							x.setLocationInfo(l);
 							x.setSupportTypeInfo(s);
-							x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId()).size());
-							x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId()).size());
-							x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId()).size());
-							x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId()).size());
-							x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId()).size());
-							x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId()).size());
-							x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId()).size());
+							x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId(),null,null).size());
+							x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId(),null,null).size());
+							x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size());
+							x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId(),null,null).size());
+							x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId(),null,null).size());
+							x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId(),null,null).size());
+							x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId(),null,null).size());
 							list.add(x);
 						}
 					}
@@ -288,7 +288,7 @@ public class MainController {
 	@RequestMapping(value = "/reportComplaintsPdf", method = RequestMethod.GET)
     public ModelAndView downloadExcel() {
 
-        List<ComplaintInfo> listComplaints = complaintDAO.listActiveComplaintInfos(1, 1);
+        List<ComplaintInfo> listComplaints = complaintDAO.listActiveComplaintInfos(1, 1,null,null);
 		for (ComplaintInfo l : listComplaints) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));

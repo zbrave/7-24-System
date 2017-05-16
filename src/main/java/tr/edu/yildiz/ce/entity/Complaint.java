@@ -22,6 +22,7 @@ public class Complaint {
 	private Byte[] photo;
 	
 	private Date complaintTime;
+	private Date assignTime;
 	private String complaintText;
 	
 	private Integer supportUserId;
@@ -162,6 +163,16 @@ public class Complaint {
 	}
 	public void setReported(boolean reported) {
 		this.reported = reported;
+	}
+
+	@Column(name = "assign_time", columnDefinition="DATETIME")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getAssignTime() {
+		return assignTime;
+	}
+
+	public void setAssignTime(Date assignTime) {
+		this.assignTime = assignTime;
 	}
 	
 }

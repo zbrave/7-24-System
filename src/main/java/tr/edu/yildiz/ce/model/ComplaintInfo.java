@@ -12,6 +12,7 @@ public class ComplaintInfo{
 	private Integer parentId;
 	private Integer complainantUserId;
 	private Date complaintTime;
+	private Date assignTime;
 	private String complaintText;
 	private Integer supportUserId;
 	private Date responseTime;
@@ -29,13 +30,16 @@ public class ComplaintInfo{
 	private UserInfo complainantUserInfo;
 	private UserInfo supportUserInfo;
 	private ComplaintInfo childInfo;
+	private float percentAssign;
+	private float percentAck;
+	private float percentResponse;
 	
 	public ComplaintInfo(){
 		
 	}
 
 	public ComplaintInfo(Integer id,Integer locationId,Integer supportTypeId,Integer parentId,Integer complainantUserId,Date complaintTime,
-			String complaintText,Integer supportUserId,Date responseTime,String responseText,Integer childId,boolean ended,Date ackTime,boolean ack,boolean reported){
+			String complaintText,Integer supportUserId,Date responseTime,String responseText,Integer childId,boolean ended,Date ackTime,boolean ack,boolean reported,Date assignTime){
 		this.id=id;
 		this.locationId=locationId;
 		this.supportTypeId=supportTypeId;
@@ -51,6 +55,7 @@ public class ComplaintInfo{
 		this.ack=ack;
 		this.ackTime=ackTime;
 		this.reported=reported;
+		this.assignTime=assignTime;
 	}
 	
 	public Integer getId() {
@@ -224,4 +229,62 @@ public class ComplaintInfo{
 	public void setReported(boolean reported) {
 		this.reported = reported;
 	}
+
+	/**
+	 * @return the percent
+	 */
+	public float getPercentAck() {
+		return percentAck;
+	}
+
+	/**
+	 * @param percent the percent to set
+	 */
+	public void setPercentAck(float percentAck) {
+		this.percentAck = percentAck;
+	}
+
+	/**
+	 * @return the percentResponse
+	 */
+	public float getPercentResponse() {
+		return percentResponse;
+	}
+
+	/**
+	 * @param percentResponse the percentResponse to set
+	 */
+	public void setPercentResponse(float percentResponse) {
+		this.percentResponse = percentResponse;
+	}
+
+	/**
+	 * @return the assignTime
+	 */
+	public Date getAssignTime() {
+		return assignTime;
+	}
+
+	/**
+	 * @param assignTime the assignTime to set
+	 */
+	public void setAssignTime(Date assignTime) {
+		this.assignTime = assignTime;
+	}
+
+	/**
+	 * @return the percentAssign
+	 */
+	public float getPercentAssign() {
+		return percentAssign;
+	}
+
+	/**
+	 * @param percentAssign the percentAssign to set
+	 */
+	public void setPercentAssign(float percentAssign) {
+		this.percentAssign = percentAssign;
+	}
+
+
 }

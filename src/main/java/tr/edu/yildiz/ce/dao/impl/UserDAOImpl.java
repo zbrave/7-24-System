@@ -186,16 +186,20 @@ public class UserDAOImpl implements UserDAO {
 			Integer waitingChild=0;
 			Integer total=0;
 			Integer reported=0;
-			List<ComplaintInfo> complaintInfos = complaintDAO.listComplaintInfosByUserId(u.getId());
+			List<ComplaintInfo> complaintInfos =complaintDAO.listComplaintInfos(null, null, null, u.getId());
 			total=complaintInfos.size();
 			for(ComplaintInfo c:complaintInfos){
-				if(c.getComplaintTime()!=null&&c.getAckTime()!=null){
-					totalAwarenessTime+=c.getAckTime().getTime()-c.getComplaintTime().getTime();
-					numAwarenessTime++;
+				if(c.getAssignTime()!=null&&c.getAckTime()!=null){
+					totalAwarenessTime+=c.getAckTime().getTime()-c.getAssignTime().getTime();
+					if(c.getAckTime().getTime()-c.getAssignTime().getTime()!=0){
+						numAwarenessTime++;
+					}
 				}
 				if(c.getAckTime()!=null&&c.getResponseTime()!=null){
 					totalResponseTime+=c.getResponseTime().getTime()-c.getAckTime().getTime();
-					numResponseTime++;
+					if(c.getResponseTime().getTime()-c.getAckTime().getTime()!=0){
+						numResponseTime++;	
+					}
 				}
 				if(c.isAck()==false&&c.getSupportUserId()!=null){
 					waitingAck++;

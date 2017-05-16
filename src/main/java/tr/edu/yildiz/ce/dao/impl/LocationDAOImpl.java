@@ -186,12 +186,12 @@ public class LocationDAOImpl implements LocationDAO {
 	public List<LocationInfo> reportLocationInfos() {
 		List<LocationInfo> locationInfos= this.listLocationInfos();
 		for(LocationInfo l:locationInfos){
-			l.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(),null).size());
-			l.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(),null).size());
-			l.setActive(complaintDAO.listActiveComplaintInfos(l.getId(),null).size());
-			l.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(),null).size());
-			l.setTotal(complaintDAO.listComplaintInfos(l.getId(),null).size());
-			l.setReported(complaintDAO.listReportedComplaintInfos(l.getId(),null).size());
+			l.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(),null,null,null).size());
+			l.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(),null,null,null).size());
+			l.setActive(complaintDAO.listActiveComplaintInfos(l.getId(),null,null,null).size());
+			l.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(),null,null,null).size());
+			l.setTotal(complaintDAO.listComplaintInfos(l.getId(),null,null,null).size());
+			l.setReported(complaintDAO.listReportedComplaintInfos(l.getId(),null,null,null).size());
 		}
 		return locationInfos;
 	}

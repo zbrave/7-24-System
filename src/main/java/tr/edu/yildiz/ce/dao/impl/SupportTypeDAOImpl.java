@@ -87,12 +87,12 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
 	public List<SupportTypeInfo> reportSupportTypeInfos() {
 		List<SupportTypeInfo> supportTypeInfos= this.listSupportTypeInfos();
 		for(SupportTypeInfo s:supportTypeInfos){
-			s.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(null,s.getId()).size());
-			s.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(null,s.getId()).size());
-			s.setActive(complaintDAO.listActiveComplaintInfos(null,s.getId()).size());
-			s.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(null,s.getId()).size());
-			s.setTotal(complaintDAO.listComplaintInfos(null,s.getId()).size());
-			s.setReported(complaintDAO.listReportedComplaintInfos(null,s.getId()).size());
+			s.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(null,s.getId(),null,null).size());
+			s.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(null,s.getId(),null,null).size());
+			s.setActive(complaintDAO.listActiveComplaintInfos(null,s.getId(),null,null).size());
+			s.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(null,s.getId(),null,null).size());
+			s.setTotal(complaintDAO.listComplaintInfos(null,s.getId(),null,null).size());
+			s.setReported(complaintDAO.listReportedComplaintInfos(null,s.getId(),null,null).size());
 		}
 		return supportTypeInfos;
 	}

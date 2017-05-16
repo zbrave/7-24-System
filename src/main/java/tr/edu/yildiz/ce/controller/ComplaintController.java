@@ -202,16 +202,16 @@ public class ComplaintController {
 		String res = "";
 		List<ComplaintInfo> list4 = null;
 		if (id == 0 && id2 != 0) {
-			list4 = this.complaintDAO.listComplaintInfos(null, id2);
+			list4 = this.complaintDAO.listComplaintInfos(null, id2,null,null);
 		}
 		else if (id != 0 && id2 == 0){
-			list4 = this.complaintDAO.listComplaintInfos(id, null);
+			list4 = this.complaintDAO.listComplaintInfos(id, null,null,null);
 		}
 		else if ((id == 0 && id2 == 0)){
-			list4 = this.complaintDAO.listComplaintInfos(null, null);
+			list4 = this.complaintDAO.listComplaintInfos(null, null,null,null);
 		}
 		else {
-			list4 = this.complaintDAO.listComplaintInfos(id, id2);
+			list4 = this.complaintDAO.listComplaintInfos(id, id2,null,null);
 		}
 		if (list4.isEmpty() || list4 == null ) {
 			System.out.println("Liste boş döndü");
