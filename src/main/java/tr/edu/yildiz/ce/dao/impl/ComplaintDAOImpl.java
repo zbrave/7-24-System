@@ -189,6 +189,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 			complaintInfo.setResponseTime(dateNow);
 		}
 		complaintInfo.setEnded(ended);
+		
 		if(complaintInfo.getAckTime()==null){
 			complaintInfo.setAckTime(dateNow);
 		}
@@ -347,6 +348,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         crit.add(Restrictions.eq("ack", true));
         crit.add(Restrictions.eq("reported", false));
         crit.add(Restrictions.eq("ended",false));
+        crit.add(Restrictions.isNull("childId"));
 		List<Complaint> complaints = (List<Complaint>)crit.list();
 		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
 		
@@ -607,7 +609,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		List<ComplaintInfo> complaintInfos=this.listComplaintInfos(locationId, supportTypeId,supporterId,supportUserId);
 		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
 		for(ComplaintInfo c:complaintInfos){
-			if(c.isReported()==true){
+			if(c.isReported()==true&&c.isEnded()==false){
 				retComplaintInfos.add(c);
 			}
 		}
@@ -619,7 +621,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		List<ComplaintInfo> complaintInfos=this.listComplaintInfos(locationId, supportTypeId,supporterId,supportUserId);
 		List<ComplaintInfo> retComplaintInfos=new ArrayList<ComplaintInfo>();
 		for(ComplaintInfo c:complaintInfos){
-			if(c.isEnded()){
+			if(c.isEnded()==true&&c.isReported()==false){
 				retComplaintInfos.add(c);
 			}
 		}
