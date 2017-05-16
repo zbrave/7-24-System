@@ -157,10 +157,15 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	public void reportComplaint(Integer id) {
 		ComplaintInfo c =this.findComplaintInfo(id);
 		c.setReported(true);
+		c.setEnded(true);
 		Date dateNow =new Date();
-		c.setAckTime(dateNow);
+		if(c.getAckTime()==null){
+			c.setAckTime(dateNow);
+		}
+		if(c.getResponseTime()==null){
+			c.setResponseTime(dateNow);
+		}
 		saveComplaint(c);
-		
 	}
 	@Override
 	public void assingComplaint(Integer id, Integer supportUserId) {
@@ -180,7 +185,9 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		ComplaintInfo complaintInfo = this.findComplaintInfo(id);
 		complaintInfo.setResponseText(responseText);
 		Date dateNow =new Date();
-		complaintInfo.setResponseTime(dateNow);
+		if(complaintInfo.getResponseTime()==null){
+			complaintInfo.setResponseTime(dateNow);
+		}
 		complaintInfo.setEnded(ended);
 		if(complaintInfo.getAckTime()==null){
 			complaintInfo.setAckTime(dateNow);
