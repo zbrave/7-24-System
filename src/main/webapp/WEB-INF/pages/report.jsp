@@ -81,132 +81,162 @@ function getalldata2(id,id2,id3,id4,id5) {
  	<link href="${tabStyleCSS}" rel="stylesheet" />
     
   <div style="padding:50px;">
-    
+    <!-- *******  TAB MENU   ******* -->
  	<ul class="nav nav-tabs">
- 		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').show(); $('#supporterSetTab').hide()">Konum/Hizmet tipi şikayetleri</a></li>
-  		<li role="presentation"><a href="#" onclick="$('#locationTab').show(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').hide()">Tüm bölümlerin şikayet istatistikleri</a></li>
-  		<!-- <li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').show(); $('#userRoleTab').hide(); $('#supporterSetTab').hide()">Şikayet detayları (progress bar)</a></li> -->
-  		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').show()">Personel şikayet yoğunluğu</a></li>
+ 		<li role="presentation">
+ 			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#locationServiceComplaints').show(); $('#supportPersonnelDensity').hide()">
+ 				Konum/Hizmet tipi şikayetleri
+ 			</a>
+ 		</li>
+  		<li role="presentation">
+  			<a href="#" onclick="$('#allDepartmentStatistics').show(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').hide()">
+  			Tüm bölümlerin şikayet istatistikleri
+  			</a>
+  		</li>
+  		<li role="presentation">
+  			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').show()">
+  		Personel şikayet yoğunluğu
+  			</a>
+  		</li>
 	</ul>
+	<!-- *******  TAB MENU END HERE   ******* -->
+	
  	</br>
  	
- 	<!-- Location -->
- 	<div class="collapse" id="locationTab">
+ 	<!---- Tüm bölümlerin şikayet istatistikleri ---->
+ 	<div class="collapse" id="allDepartmentStatistics">
       <div class="container">
       	<div class="row justify-content-center">
       		<div class="col-md-12">
       			<div class="form" style="max-width: 900px;"> <!-- for background transparent color -->
-      			
-      			<div class="input-group">
-		    	<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konum</span>         
-		        <select id="loc2" class="form-control" name="loc2" >
-		        	<option id="0" value="0">Konum seçin.</option>
-			        <c:forEach items="${loc }" var="data">
-			        	<option id="${data.id }" value="${data.id }">${data.description }</option>
-			        </c:forEach>
-		        </select>
-	        </div>
-	        <div class="input-group">
-		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Destek tipi</span>         
-		        <select id="sup2" class="form-control" name="sup2" >
-		        	<option id="0" value="0">Destek tipi seçin.</option>
-			        <c:forEach items="${sup }" var="data">
-			        	<option id="${data.id }" value="${data.id }">${data.type }</option>
-			        </c:forEach>
-		        </select>
-	        </div>
-      			<!-- TABLE <<< -->
+      				<div class="input-group">
+		    			<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konum</span>         
+		        		<select id="loc2" class="form-control" name="loc2" >
+				        	<option id="0" value="0">Konum seçin.</option>
+					        <c:forEach items="${loc }" var="data">
+					        	<option id="${data.id }" value="${data.id }">${data.description }</option>
+					        </c:forEach>
+				        </select>
+	        		</div>
+			        <div class="input-group">
+				    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Destek tipi</span>         
+				        <select id="sup2" class="form-control" name="sup2" >
+				        	<option id="0" value="0">Destek tipi seçin.</option>
+					        <c:forEach items="${sup }" var="data">
+					        	<option id="${data.id }" value="${data.id }">${data.type }</option>
+					        </c:forEach>
+				        </select>
+			        </div>
+			        
+			        </br>
+      			<!-- >>> TABLE <<< -->
       			<div class="panel panel-default">
       				<div class="panel-heading"><p>Toplam süreç : ${total }</p> </div>
       					<table id="comps3" class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
       						<thead>
-      						<tr>
-					      		<th style="width: 10%;">Konum</th>
-					      		<th style="width: 40%;">Destek tipi</th>
-					      		<th style="width: 20%;">Toplam şikayet</th>
-					      		<th style="width: 20%;">Onay bekleyen şikayetler</th>
-					      		<th style="width: 20%;">Atanma bekleyen şikayetler</th>
-					      		<th style="width: 20%;">Çocuğunu bekleyen şikayetler</th>
-					      		<th style="width: 20%;">Aktif şikayetler</th>
-					      		<th style="width: 20%;">Sonlanmış şikayetler</th>
-					      		<th style="width: 20%;">Raporlanan şikayetler</th>
-      						</tr>
+	      						<tr>
+						      		<th style="width: 10%;">Konum</th>
+						      		<th style="width: 10%;">Destek tipi</th>
+						      		<th style="width: 10%;">Toplam şikayet</th>
+						      		<th style="width: 10%;">Onay bekleyen şikayetler</th>
+						      		<th style="width: 10%;">Atanma bekleyen şikayetler</th>
+						      		<th style="width: 10%;">Çocuğunu bekleyen şikayetler</th>
+						      		<th style="width: 10%;">Aktif şikayetler</th>
+						      		<th style="width: 10%;">Sonlanmış şikayetler</th>
+						      		<th style="width: 10%;">Raporlanan şikayetler</th>
+	      						</tr>
       						</thead>
       						<tbody>
 						      <c:forEach items="${LocSupTypeInfo }" var="data">
 						      	<tr>
 						      		<td>${data.locationInfo.description }</td>
 						      		<td>${data.supportTypeInfo.type }</td>
-						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 1)">${data.total }</td>
-						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 2)">${data.waitAck }</td>
-						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 3)">${data.waitAsg }</td>
-						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 4)">${data.waitChild }</td>
-						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 5)">${data.active }</td>
-						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 6)">${data.ended }</td>
-						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 7)">${data.report }</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 1)">
+						      			<c:if test="${data.total != 0 }"><a data-toggle="modal" data-target="#childTable"> <!--  onclick="$('#tab').show();"--> ${data.total }</a></c:if>
+						      			<c:if test="${data.total == 0 }">${data.total }</c:if>
+						      		</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 2)">
+						      			<c:if test="${data.waitAck != 0 }"><a data-toggle="modal" data-target="#childTable">${data.waitAck }</a></c:if>
+						      			<c:if test="${data.waitAck == 0 }">${data.waitAck }</c:if>
+						      		</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 3)">
+						      			<c:if test="${data.waitAsg != 0 }"><a data-toggle="modal" data-target="#childTable">${data.waitAsg }</a></c:if>
+						      			<c:if test="${data.waitAsg == 0 }">${data.waitAsg }</c:if>
+						      		</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 4)">
+						      			<c:if test="${data.waitChild != 0 }"><a data-toggle="modal" data-target="#childTable">${data.waitChild }</a></c:if>
+						      			<c:if test="${data.waitChild == 0 }">${data.waitChild }</c:if>
+						      		</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 5)">
+						      			<c:if test="${data.active != 0 }"><a data-toggle="modal" data-target="#childTable">${data.active }</a></c:if>
+						      			<c:if test="${data.active == 0 }">${data.active }</c:if>
+						      		</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 6)">
+						      			<c:if test="${data.ended != 0 }"><a data-toggle="modal" data-target="#childTable">${data.ended }</a></c:if>
+						      			<c:if test="${data.ended == 0 }">${data.ended }</c:if>
+						      		</td>
+						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 7)">
+						      			<c:if test="${data.report != 0 }"><a data-toggle="modal" data-target="#childTable">${data.report }</a></c:if>
+						      			<c:if test="${data.report == 0 }">${data.report }</c:if>
+						      		</td>
 						      	</tr>
 						      </c:forEach>
 						    </tbody>
       					</table>
 
-      			</div>  <!-- TABLE >>> -->
-      			<table id="comps5" class="table table-striped custab" style="background-color: #FFF;">
-					    <thead>
-					        <tr>
-					            <th>ID</th>
-					            <th>Konumu</th>
-					            <th>Destek tipi</th>
-					            <th>Sorumlu kişi</th>
-					            <th>Kayıt tarihi</th>
-					            <th>Eylem</th>
-					        </tr>
-					    </thead>
-					   	<tbody>
-					   		
-					   	</tbody>
-					    </table>
       			</div>
+      			<!-- <<< TABLE >>> -->
+      			
+      			  <!-- Modal  **POP** -->
+				  <div class="modal fade" id="childTable" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				          <h4 class="modal-title">Detaylı Liste</h4>
+				        </div>
+				        <div class="modal-body">
+				        
+      			
+      			
+	      			<table id="comps5" class="table table-striped custab" style="background-color: #FFF;">
+						<thead>
+						        <tr>
+						            <th>ID</th>
+						            <th>Konumu</th>
+						            <th>Destek tipi</th>
+						            <th>Sorumlu kişi</th>
+						            <th>Kayıt tarihi</th>
+						            <th>Eylem</th>
+						        </tr>
+						 </thead>
+						   	<tbody>
+						   		
+						   	</tbody>
+					</table>
+				
+				</div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+				        </div>
+				      </div>
+				      
+				    </div>
+				  </div>
+				
+				
+      			</div><!-- div-form -->
       		</div>
       	</div>
       </div>
-     </div>  <!-- LocationTab -->
+     </div>  <!-- Tüm bölümlerin şikayet istatistikleri -->
       
-      <!-- SupportType -->
-     <div class="collapse" id="supporterTypeTab">
-      <div class="container">
-      	<div class="row justify-content-center">
-      		<div class="col-md-12">
-      			<div class="form" style="max-width: 900px;"> <!-- for background transparent color -->
-      			
-      			
-      			<!-- TABLE <<< -->
-      			<div class="panel panel-default">
-      				<div class="panel-heading">Destek Personeli:</div>
-      					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
-					      	<tr>
-					      		<th style="width: 10%;">ID</th>
-					      		<th style="width: 50%;">Tip</th>
-					      	</tr>
-					      <c:forEach items="${supportTypeInfos }" var="data">
-					      	<tr>
-					      		<td>${data.id }</td>
-					      		<td>${data.type }</td>
-					      		<td>
-					      			<a class="btn btn-primary btn-xs" href="#" role="button">Güncelle</a>
-						      		<a class="btn btn-danger btn-xs" href="#" role="button">Sil</a>
-								</td>
-					      	</tr>
-					      </c:forEach>
-					     </table>
-      			</div> <!-- TABLE >>> -->
-      		</div>
-      		</div>
-      		</div>
-      	</div>
-      </div>
+      
      
-      <!-- UserRole set -->
-      <div class="collapse" id="userRoleTab">
+      <!---- Konum/Hizmet tipi şikayetleri ---->
+      <div class="collapse" id="locationServiceComplaints">
       <div class="container">
       	<div class="row justify-content-center">
       		<div class="col-md-12">
@@ -257,8 +287,8 @@ function getalldata2(id,id2,id3,id4,id5) {
       </div>
      </div>
      
-      <!-- Supporter set -->
-      <div class="collapse" id="supporterSetTab">
+      <!---- Personel şikayet yoğunluğu ---->
+      <div class="collapse" id="supportPersonnelDensity">
       <div class="container">
       	<div class="row justify-content-center">
       		<div class="col-md-12">

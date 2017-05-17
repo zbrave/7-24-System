@@ -32,14 +32,14 @@
       	<div class="panel-heading">Şikayetler</div>
       	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      	<tr>
-		      	<th style="width: 8%;">ID</th>
+		      	<th style="width: 5%;">ID</th>
 		      	<th style="width: 12%;">Konum</th>
-		      	<th style="width: 12%;">Şikayet türü</th>
-		      	<th style="width: 12%;">Şikayet eden</th>
+		      	<th style="width: 8%;">Şikayet türü</th>
+		      	<th style="width: 8%;">Şikayet eden</th>
 		      	<th style="width: 8%;">Tarih</th>
-		      	<th style="width: 35%;">Açıklama</th>
-		      	<th style="width: 35%;">Raporlayan</th>
-		      	<th style="width: 10%;">Eylem</th>
+		      	<th style="width: 20%;">Açıklama</th>
+		      	<th style="width: 10%;">Raporlayan</th>
+		      	<th style="width: 15%;">Eylem</th>
 		    </tr>
       		<c:forEach items="${complaintInfos }" var="data">
       			<tr>

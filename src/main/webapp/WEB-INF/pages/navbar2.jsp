@@ -66,17 +66,7 @@ $(document).ready(function(){
 				          	</ul>
 				        </li>
 				        <li><a href="${pageContext.request.contextPath}/locationEdit">Mekan Yönetimi</a></li>
-						<li class="dropdown">
-				          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				          	Raporlama <span class="caret"></span>
-				          </a>
-				          	<ul class="dropdown-menu">
-				            	<li><a href="${pageContext.request.contextPath}/reportComplaintsPdf">Şikayetler Raporu</a></li>
-				            	<li><a href="#">Destek Personeli Raporu</a></li>
-				            	<li role="separator" class="divider"></li>
-				            	<li><a href="#">Kullanıcı Raporlama</a></li>
-				          	</ul>
-				        </li>
+				        <li><a href="${pageContext.request.contextPath}/reportComplaintsPdf">Aktif Şikayetler Raporu</a></li>
 				        <li><a href="${pageContext.request.contextPath}/complaint">Şikayet Oluştur</a></li>
 				        <li><a href="${pageContext.request.contextPath}/report">Şikayet İstatistiği</a></li>
 				      </ul>

@@ -201,16 +201,14 @@ public class LocationDAOImpl implements LocationDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<LocationInfo> listLocationInfosPagination(Integer offset, Integer maxResults) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Location.class);
-        crit.setFirstResult(offset!=null?offset:0);
-        crit.setMaxResults(maxResults!=null?maxResults:10);
-		List<Location> locations =(List<Location>) crit.list();
-        List<LocationInfo> locationInfos= new ArrayList<LocationInfo>();
-        for(Location l :locations ){
-        	locationInfos.add((LocationInfo) findLocationInfo(l.getId()));
+        List<LocationInfo>listLocationInfos=listLocationInfos();
+        List<LocationInfo>listLocationInfospageination=new ArrayList<LocationInfo>();
+        maxResults = maxResults!=null?maxResults:10;
+        offset = (offset!=null?offset:0);
+        for(int i=0; i<maxResults && offset+i<listLocationInfos.size(); i++){
+        	listLocationInfospageination.add(listLocationInfos.get(offset+i));
         }
-        return locationInfos;
+        return listLocationInfospageination;
 	}
 	
 	@Override

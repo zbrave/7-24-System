@@ -45,8 +45,8 @@ $.get("http://freegeoip.net/json/", function (response) {
                 <hr style="margin:8px auto;width:20%;">
                 <c:forEach var="role"
 					items="${pageContext['request'].userPrincipal.principal.authorities}">
-					<c:if test="${role.authority == 'ROLE_SUPER_ADMIN' }">
-						<span class="label label-primary"><c:out value="SUPER ADMIN" /></span>
+					<c:if test="${role.authority == 'ROLE_MANAGER' }">
+						<span class="label label-primary"><c:out value="MANAGER" /></span>
 					</c:if>
 					<c:if test="${role.authority == 'ROLE_ADMIN' }">
 						<span class="label label-info"><c:out value="ADMIN" /></span>
@@ -72,7 +72,7 @@ $.get("http://freegeoip.net/json/", function (response) {
 					<c:if test="${role.authority == 'ROLE_SUPPORT' }">
 						<div class="welcomeText">Destek Personeli Sayfasına Hoş Geldiniz!</div>
 					</c:if>
-				</c:forEach>
+		</c:forEach>
     </div>
     <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
 </body>

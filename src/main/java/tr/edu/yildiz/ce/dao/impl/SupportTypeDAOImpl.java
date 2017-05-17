@@ -16,6 +16,7 @@ import tr.edu.yildiz.ce.entity.SupportType;
 import tr.edu.yildiz.ce.entity.UserRole;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
+import tr.edu.yildiz.ce.model.UserRoleInfo;
 
 public class SupportTypeDAOImpl implements SupportTypeDAO {
     @Autowired
@@ -102,16 +103,14 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<SupportTypeInfo> listSupportTypeInfosPagination(Integer offset, Integer maxResults) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(SupportType.class);
-        crit.setFirstResult(offset!=null?offset:0);
-        crit.setMaxResults(maxResults!=null?maxResults:10);
-        List<SupportType> supportTypes=(List<SupportType>)crit.list();
-        List<SupportTypeInfo> supportTypeInfos=new ArrayList<SupportTypeInfo>();
-        for(SupportType s:supportTypes){
-        	supportTypeInfos.add((SupportTypeInfo)findSupportTypeInfo(s.getId()));
+		List<SupportTypeInfo> fullList=listSupportTypeInfos();
+        List<SupportTypeInfo> offsetList=new ArrayList<SupportTypeInfo>();
+        maxResults = maxResults!=null?maxResults:10;
+        offset = (offset!=null?offset:0);
+        for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+        	offsetList.add(fullList.get(offset+i));
         }
-        return supportTypeInfos;
+        return offsetList;
 	}
 	
 	@Override

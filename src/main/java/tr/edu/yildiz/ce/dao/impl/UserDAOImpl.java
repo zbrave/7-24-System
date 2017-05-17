@@ -27,6 +27,7 @@ import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 import tr.edu.yildiz.ce.model.UserInfo;
+import tr.edu.yildiz.ce.model.UserRoleInfo;
 import tr.edu.yildiz.ce.entity.User;
  
 @Service
@@ -233,16 +234,14 @@ public class UserDAOImpl implements UserDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserInfo> listUserInfosPagination(Integer offset, Integer maxResults) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(User.class);
-        crit.setFirstResult(offset!=null?offset:0);
-        crit.setMaxResults(maxResults!=null?maxResults:10);
-        List<User> users =(List<User>) crit.list();
-        List<UserInfo> userInfos=new ArrayList<UserInfo>();
-        for(User u : users){
-        	userInfos.add((UserInfo)findUserInfo(u.getId()));
+		List<UserInfo> fullList=listUserInfos();
+        List<UserInfo> offsetList=new ArrayList<UserInfo>();
+        maxResults = maxResults!=null?maxResults:10;
+        offset = (offset!=null?offset:0);
+        for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+        	offsetList.add(fullList.get(offset+i));
         }
-        return userInfos;
+        return offsetList;
 	}
 	
 	@Override

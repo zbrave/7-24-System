@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.entity.UserRole;
+import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
 
 @Service
@@ -108,16 +109,14 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserRoleInfo> listUserRoleInfosPagination(Integer offset, Integer maxResults) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(UserRole.class);
-        crit.setFirstResult(offset!=null?offset:0);
-        crit.setMaxResults(maxResults!=null?maxResults:10);
-        List<UserRole> userRoles =(List<UserRole>) crit.list();
-        List<UserRoleInfo> userRoleInfos=new ArrayList<UserRoleInfo>();
-        for(UserRole u : userRoles){
-        	userRoleInfos.add((UserRoleInfo)findUserRoleInfo(u.getId()));
+        List<UserRoleInfo> fullList=listUserRoleInfos();
+        List<UserRoleInfo> offsetList=new ArrayList<UserRoleInfo>();
+        maxResults = maxResults!=null?maxResults:10;
+        offset = (offset!=null?offset:0);
+        for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+        	offsetList.add(fullList.get(offset+i));
         }
-        return userRoleInfos;
+        return offsetList;
 	}
 	
 	@Override
