@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="tag" uri="/WEB-INF/taglibs/customTaglib.tld"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +30,7 @@
       <div class="container">
       	
       		<div class="col-md-12">
-      			<div class="form"> <!-- for background transparent color -->
+      			<div class="form" style="max-width: 600px;"> <!-- for background transparent color -->
       			
       			<form:form action="saveSupporter" method="POST" modelAttribute="supporterForm">
 					<div class="form-group">
@@ -87,14 +88,16 @@
       				<div class="panel-heading">Destek Ekibi:</div>
       				<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      				<tr>
-				      		<th style="width: 10%;">ID</th>
-				      		<th style="width: 25%;">Destek Personeli</th>
-				      		<th style="width: 25%;">Tipi</th>
-				      		<th style="width: 20%;">İlgili Konum</th>
+				      		<th style="width: 5%;">ID</th>
+				      		<th style="width: 20%;">Destek Personeli</th>
+				      		<th style="width: 15%;">Tipi</th>
+				      		<th style="width: 30%;">İlgili Konum</th>
+				      		<th style="width: 10%;">Eylem</th>
 				      	</tr>
-				      <c:forEach items="${supporterInfos }" var="data">
+				      <c:forEach items="${supporterInfos }" var="data" varStatus="itr">
 				      	<tr>
-				      		<td>${data.id }</td>
+				      		<td>${offset + itr.index +1 }</td>
+						    <!--  <td>${data.id }</td> -->
 				      		<td>${data.userInfo.username }</td>
 				      		<td>${data.supportTypeInfo.type }</td>
 				      		<td>${data.locationInfo.description }</td>
@@ -106,6 +109,8 @@
 				  	</table>
 				</div>
 				  <!-- TABLE >>> -->
+				  <tag:paginate max="15" offset="${offset}" count="${count}"
+						uri="supporterEdit" next="&raquo;" previous="&laquo;" />
 			</div>
 			</div>
       	

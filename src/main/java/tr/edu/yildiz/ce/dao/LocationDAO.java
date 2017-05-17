@@ -18,4 +18,6 @@ public interface LocationDAO {
 	public List<LocationInfo> listLocationInfoByProximity(Integer id);
 	public List<LocationInfo> findLocationInfoUpperTree(Integer id);
 	public List<LocationInfo> reportLocationInfos();
+	public List<LocationInfo> listLocationInfosPagination(Integer offset, Integer maxResults);
+    public Long count();
 }

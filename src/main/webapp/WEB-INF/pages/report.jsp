@@ -85,7 +85,7 @@ function getalldata2(id,id2,id3,id4,id5) {
  	<ul class="nav nav-tabs">
  		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').show(); $('#supporterSetTab').hide()">Konum/Hizmet tipi şikayetleri</a></li>
   		<li role="presentation"><a href="#" onclick="$('#locationTab').show(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').hide()">Tüm bölümlerin şikayet istatistikleri</a></li>
-  		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').show(); $('#userRoleTab').hide(); $('#supporterSetTab').hide()">Şikayet detayları (progress bar)</a></li>
+  		<!-- <li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').show(); $('#userRoleTab').hide(); $('#supporterSetTab').hide()">Şikayet detayları (progress bar)</a></li> -->
   		<li role="presentation"><a href="#" onclick="$('#locationTab').hide(); $('#supporterTypeTab').hide(); $('#userRoleTab').hide(); $('#supporterSetTab').show()">Personel şikayet yoğunluğu</a></li>
 	</ul>
  	</br>
@@ -94,11 +94,11 @@ function getalldata2(id,id2,id3,id4,id5) {
  	<div class="collapse" id="locationTab">
       <div class="container">
       	<div class="row justify-content-center">
-      		<div class="col-md-6 offset-md-3">
-      			<div class="form"> <!-- for background transparent color -->
+      		<div class="col-md-12">
+      			<div class="form" style="max-width: 900px;"> <!-- for background transparent color -->
       			
       			<div class="input-group">
-		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Konum</span>         
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konum</span>         
 		        <select id="loc2" class="form-control" name="loc2" >
 		        	<option id="0" value="0">Konum seçin.</option>
 			        <c:forEach items="${loc }" var="data">
@@ -107,7 +107,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 		        </select>
 	        </div>
 	        <div class="input-group">
-		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i>Destek tipi</span>         
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Destek tipi</span>         
 		        <select id="sup2" class="form-control" name="sup2" >
 		        	<option id="0" value="0">Destek tipi seçin.</option>
 			        <c:forEach items="${sup }" var="data">
@@ -175,8 +175,8 @@ function getalldata2(id,id2,id3,id4,id5) {
      <div class="collapse" id="supporterTypeTab">
       <div class="container">
       	<div class="row justify-content-center">
-      		<div class="col-md-6 offset-md-3">
-      			<div class="form"> <!-- for background transparent color -->
+      		<div class="col-md-12">
+      			<div class="form" style="max-width: 900px;"> <!-- for background transparent color -->
       			
       			
       			<!-- TABLE <<< -->
@@ -209,13 +209,13 @@ function getalldata2(id,id2,id3,id4,id5) {
       <div class="collapse" id="userRoleTab">
       <div class="container">
       	<div class="row justify-content-center">
-      		<div class="col-md-6 offset-md-3">
-      		<div class="form"> <!-- for background transparent color -->
+      		<div class="col-md-12">
+      		<div class="form" style="max-width: 900px;"> <!-- for background transparent color -->
       		
       		
       		<!-- TABLE <<< -->
       		<div class="input-group">
-		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Konum</span>         
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konum</span>         
 		        <select id="loc" class="form-control" name="loc" >
 		        	<option id="0" value="0">Konum seçin.</option>
 			        <c:forEach items="${loc }" var="data">
@@ -224,7 +224,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 		        </select>
 	        </div>
 	        <div class="input-group">
-		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i>Destek tipi</span>         
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Destek tipi</span>         
 		        <select id="sup" class="form-control" name="sup" >
 		        	<option id="0" value="0">Destek tipi seçin.</option>
 			        <c:forEach items="${sup }" var="data">
@@ -261,14 +261,14 @@ function getalldata2(id,id2,id3,id4,id5) {
       <div class="collapse" id="supporterSetTab">
       <div class="container">
       	<div class="row justify-content-center">
-      		<div class="col-md-6 offset-md-3">
-      			<div class="form"> <!-- for background transparent color -->
+      		<div class="col-md-12">
+      			<div class="form" style="max-width: 900px;"> <!-- for background transparent color -->
       			
       			
       			
      		<!-- TABLE <<< -->
      		<div class="input-group">
-		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Konum</span>         
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konum</span>         
 		        <select id="loc3" class="form-control" name="loc3" >
 		        	<option id="0" value="0">Konum seçin.</option>
 			        <c:forEach items="${loc }" var="data">
@@ -277,7 +277,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 		        </select>
 	        </div>
 	        <div class="input-group">
-		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i>Destek tipi</span>         
+		    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Destek tipi</span>         
 		        <select id="sup3" class="form-control" name="sup3" >
 		        	<option id="0" value="0">Destek tipi seçin.</option>
 			        <c:forEach items="${sup }" var="data">

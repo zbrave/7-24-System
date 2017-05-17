@@ -8,6 +8,7 @@ import java.util.Random;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -227,5 +228,28 @@ public class UserDAOImpl implements UserDAO {
 			}
 		}
 		return userInfos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UserInfo> listUserInfosPagination(Integer offset, Integer maxResults) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(User.class);
+        crit.setFirstResult(offset!=null?offset:0);
+        crit.setMaxResults(maxResults!=null?maxResults:10);
+        List<User> users =(List<User>) crit.list();
+        List<UserInfo> userInfos=new ArrayList<UserInfo>();
+        for(User u : users){
+        	userInfos.add((UserInfo)findUserInfo(u.getId()));
+        }
+        return userInfos;
+	}
+	
+	@Override
+	public Long count() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(User.class);
+        crit.setProjection(Projections.rowCount());
+        return (Long) crit.uniqueResult();
 	}
 }

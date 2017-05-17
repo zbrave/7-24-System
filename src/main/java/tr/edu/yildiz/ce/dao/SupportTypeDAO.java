@@ -13,4 +13,6 @@ public interface SupportTypeDAO {
     public void deleteSupportType (Integer id);
     public List<SupportTypeInfo> listSupportTypeInfos();
     public List<SupportTypeInfo> reportSupportTypeInfos();
+    public List<SupportTypeInfo> listSupportTypeInfosPagination(Integer offset, Integer maxResults);
+    public Long count();
 }

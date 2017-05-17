@@ -17,4 +17,6 @@ public interface SupporterDAO {
     public List<SupporterInfo> listSupporterInfosBySupportType(Integer supportTypeId);
     public List<UserInfo> listSupporterUserInfos();
     public List<SupporterInfo> reportSupporterInfos();
+    public List<SupporterInfo> listSupporterInfosPagination(Integer offset, Integer maxResults);
+    public Long count();
 }

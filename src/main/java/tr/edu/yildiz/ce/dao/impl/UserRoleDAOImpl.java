@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,6 +103,29 @@ public class UserRoleDAOImpl implements UserRoleDAO {
         	userRoleInfos.add((UserRoleInfo)findUserRoleInfo(u.getId()));
         }
         return userRoleInfos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UserRoleInfo> listUserRoleInfosPagination(Integer offset, Integer maxResults) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(UserRole.class);
+        crit.setFirstResult(offset!=null?offset:0);
+        crit.setMaxResults(maxResults!=null?maxResults:10);
+        List<UserRole> userRoles =(List<UserRole>) crit.list();
+        List<UserRoleInfo> userRoleInfos=new ArrayList<UserRoleInfo>();
+        for(UserRole u : userRoles){
+        	userRoleInfos.add((UserRoleInfo)findUserRoleInfo(u.getId()));
+        }
+        return userRoleInfos;
+	}
+	
+	@Override
+	public Long count() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(UserRole.class);
+        crit.setProjection(Projections.rowCount());
+        return (Long) crit.uniqueResult();
 	}
 
 }

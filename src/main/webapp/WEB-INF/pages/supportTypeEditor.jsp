@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="tag" uri="/WEB-INF/taglibs/customTaglib.tld"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,11 +64,13 @@
       					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 					      	<tr>
 					      		<th style="width: 10%;">ID</th>
-					      		<th style="width: 50%;">Tip</th>
+					      		<th style="width: 30%;">Tip</th>
+					      		<th style="width: 10%;">Eylem</th>
 					      	</tr>
-					      <c:forEach items="${supportTypeInfos }" var="data">
+					      <c:forEach items="${supportTypeInfos }" var="data" varStatus="itr">
 					      	<tr>
-					      		<td>${data.id }</td>
+					      		<td>${offset + itr.index +1 }</td>
+						      	<!--  <td>${data.id }</td> -->
 					      		<td>${data.type }</td>
 					      		<td>
 						      		<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteSupportType?id=${data.id}" role="button">Sil</a>
@@ -76,6 +79,8 @@
 					      </c:forEach>
 					     </table>
       			</div> <!-- TABLE >>> -->
+      			<tag:paginate max="15" offset="${offset}" count="${count}"
+						uri="supporterTypeEdit" next="&raquo;" previous="&laquo;" />
       		</div>
       		</div>
       	</div>

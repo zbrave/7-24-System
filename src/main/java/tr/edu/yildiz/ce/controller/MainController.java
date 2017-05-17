@@ -102,12 +102,14 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/supporterEdit", method = RequestMethod.GET)
-	public String supporterEditPage(Model model) {
+	public String supporterEditPage(Model model, Integer offset, Integer maxResults) {
 		
 		List<LocationInfo> listLoc = locationDAO.listLocationInfos();
 		model.addAttribute("locationInfos", listLoc);
 		
 		List<SupporterInfo> list = supporterDAO.listSupporterInfos();
+		model.addAttribute("count", supporterDAO.count());
+		model.addAttribute("offset", offset);
 		model.addAttribute("supporterInfos", list);
 		for (SupporterInfo l : list) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
@@ -124,28 +126,34 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/supporterTypeEdit", method = RequestMethod.GET)
-	public String supporterTypeEditPage(Model model) {
+	public String supporterTypeEditPage(Model model,Integer offset, Integer maxResults) {
 		
 		
-		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
+		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfosPagination(offset, maxResults);
+		model.addAttribute("count", supportTypeDAO.count());
+		model.addAttribute("offset", offset);
 		model.addAttribute("supportTypeInfos", list2);
 		
 		return "supportTypeEditor";
 	}
 	
 	@RequestMapping(value = "/locationEdit", method = RequestMethod.GET)
-	public String locationEditPage(Model model) {
+	public String locationEditPage(Model model, Integer offset, Integer maxResults) {
 		
-		List<LocationInfo> listLoc = locationDAO.listLocationInfos();
+		List<LocationInfo> listLoc = locationDAO.listLocationInfosPagination(offset, maxResults);
+		model.addAttribute("count", locationDAO.count());
+		model.addAttribute("offset", offset);
 		model.addAttribute("locationInfos", listLoc);
 		
 		return "location";
 	}
 	
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
-	public String ban(Model model) {
+	public String ban(Model model, Integer offset, Integer maxResults) {
 		
-		List<UserInfo> user = userDAO.listUserInfos();
+		List<UserInfo> user = userDAO.listUserInfosPagination(offset, maxResults);
+		model.addAttribute("count", userDAO.count());
+		model.addAttribute("offset", offset);
 		for (UserInfo u : user) {
 			u.setBanned(banDAO.isBanned(u.getId()));
 		}
@@ -308,9 +316,11 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/userRoleEdit", method = RequestMethod.GET)
-	public String userRoleEditPage(Model model) {
+	public String userRoleEditPage(Model model, Integer offset, Integer maxResults) {
 		
-		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfos();
+		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfosPagination(offset, maxResults);
+		model.addAttribute("count", userRoleDAO.count());
+		model.addAttribute("offset", offset);
 		model.addAttribute("userRoleInfos", list3);
 		
 		List<UserInfo> list5 = userDAO.listUserInfos();
@@ -320,13 +330,15 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/addManager", method = RequestMethod.GET)
-	public String addManager(Model model) {
+	public String addManager(Model model, Integer offset, Integer maxResults) {
 		
-		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfos();
+		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfosPagination(offset, maxResults);
+		model.addAttribute("count", userRoleDAO.count());
+		model.addAttribute("offset", offset);
 		model.addAttribute("userRoleInfos", list3);
-		
-		List<UserInfo> list5 = userDAO.listUserInfos();
-		model.addAttribute("userInfos", list5);
+
+		List<UserInfo> user = userDAO.listUserInfos();
+		model.addAttribute("userInfos", user);
 		
 		List<LocationInfo> list6 = locationDAO.listLocationInfos();
 		model.addAttribute("locInfos", list6);

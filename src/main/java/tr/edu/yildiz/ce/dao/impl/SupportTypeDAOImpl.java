@@ -6,12 +6,14 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.entity.SupportType;
+import tr.edu.yildiz.ce.entity.UserRole;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
 
@@ -95,6 +97,29 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
 			s.setReported(complaintDAO.listReportedComplaintInfos(null,s.getId(),null,null).size());
 		}
 		return supportTypeInfos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SupportTypeInfo> listSupportTypeInfosPagination(Integer offset, Integer maxResults) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(SupportType.class);
+        crit.setFirstResult(offset!=null?offset:0);
+        crit.setMaxResults(maxResults!=null?maxResults:10);
+        List<SupportType> supportTypes=(List<SupportType>)crit.list();
+        List<SupportTypeInfo> supportTypeInfos=new ArrayList<SupportTypeInfo>();
+        for(SupportType s:supportTypes){
+        	supportTypeInfos.add((SupportTypeInfo)findSupportTypeInfo(s.getId()));
+        }
+        return supportTypeInfos;
+	}
+	
+	@Override
+	public Long count() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(SupportType.class);
+        crit.setProjection(Projections.rowCount());
+        return (Long) crit.uniqueResult();
 	}
 
 }

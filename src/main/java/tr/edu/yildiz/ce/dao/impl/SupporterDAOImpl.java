@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +14,7 @@ import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Complaint;
 import tr.edu.yildiz.ce.entity.Supporter;
+import tr.edu.yildiz.ce.entity.UserRole;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 import tr.edu.yildiz.ce.model.UserInfo;
@@ -197,6 +199,29 @@ public class SupporterDAOImpl implements SupporterDAO {
 			
 		}
 		return supporterInfos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SupporterInfo> listSupporterInfosPagination(Integer offset, Integer maxResults) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Supporter.class);
+        crit.setFirstResult(offset!=null?offset:0);
+        crit.setMaxResults(maxResults!=null?maxResults:10);
+        List<Supporter> supporters=(List<Supporter>) crit.list();
+        List<SupporterInfo> supporterInfos= new ArrayList<SupporterInfo>();
+        for(Supporter s: supporters){
+        	supporterInfos.add((SupporterInfo)findSupporterInfo(s.getId()));
+        }
+        return supporterInfos;
+	}
+	
+	@Override
+	public Long count() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Supporter.class);
+        crit.setProjection(Projections.rowCount());
+        return (Long) crit.uniqueResult();
 	}
 
 }

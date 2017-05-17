@@ -17,4 +17,6 @@ public interface UserDAO {
     public List<UserInfo> listUserInfos();
     public List<UserInfo> listUserInfosForAssignment(Integer complaintId);
     public List<UserInfo> reportSupportUserInfos();
+    public List<UserInfo> listUserInfosPagination(Integer offset, Integer maxResults);
+    public Long count();
 }

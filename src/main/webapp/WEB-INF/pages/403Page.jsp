@@ -12,7 +12,7 @@
 	<link href="${bootstrapCSS}" rel="stylesheet" />
 	<link href="${bootstrapThemeCSS}" rel="stylesheet" />
 	<link href="${styleCSS}" rel="stylesheet" />	
-	<title>Access Denied</title>
+	<title>Erişim yasaklandı</title>
 </head>
 <body>
 	<style>
@@ -32,6 +32,5 @@
  			<span><i class="glyphicon glyphicon-log-out"></i> Çıkış yap</span>
  		</a>
  	</p>
-    <h3 style="color:red;">${message}</h3>
 </body>
 </html>

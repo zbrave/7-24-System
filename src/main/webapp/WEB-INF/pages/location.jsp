@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="tag" uri="/WEB-INF/taglibs/customTaglib.tld"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,10 +74,12 @@
 					      		<th style="width: 10%;">ID</th>
 					      		<th style="width: 40%;">Konum adı</th>
 					      		<th style="width: 20%;">Üst konum</th>
+					      		<th style="width: 10%;">Eylem</th>
       						</tr>
-						      <c:forEach items="${locationInfos }" var="data">
+						      <c:forEach items="${locationInfos }" var="data" varStatus="itr">
 						      	<tr>
-						      		<td>${data.id }</td>
+						      		<td>${offset + itr.index +1 }</td>
+						      		<!--  <td>${data.id }</td> -->
 						      		<td>${data.description }</td>
 						      		<td><c:forEach items="${locationInfos }" var="data2"><c:if test="${data.parentId == data2.id }">${data2.description }</c:if></c:forEach></td>
 						      		<td>
@@ -86,6 +89,9 @@
 						      </c:forEach>
       					</table>
       			</div>  <!-- TABLE >>> -->
+      			<tag:paginate max="15" offset="${offset}" count="${count}"
+						uri="locationEdit" next="&raquo;" previous="&laquo;" />
+      			
       		</div>
       	</div>
       </div>

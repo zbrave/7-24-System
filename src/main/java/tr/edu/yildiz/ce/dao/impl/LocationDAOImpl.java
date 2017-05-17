@@ -6,12 +6,14 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.entity.Location;
+import tr.edu.yildiz.ce.entity.UserRole;
 import tr.edu.yildiz.ce.model.LocationInfo;
 
 public class LocationDAOImpl implements LocationDAO {
@@ -194,5 +196,28 @@ public class LocationDAOImpl implements LocationDAO {
 			l.setReported(complaintDAO.listReportedComplaintInfos(l.getId(),null,null,null).size());
 		}
 		return locationInfos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<LocationInfo> listLocationInfosPagination(Integer offset, Integer maxResults) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Location.class);
+        crit.setFirstResult(offset!=null?offset:0);
+        crit.setMaxResults(maxResults!=null?maxResults:10);
+		List<Location> locations =(List<Location>) crit.list();
+        List<LocationInfo> locationInfos= new ArrayList<LocationInfo>();
+        for(Location l :locations ){
+        	locationInfos.add((LocationInfo) findLocationInfo(l.getId()));
+        }
+        return locationInfos;
+	}
+	
+	@Override
+	public Long count() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Location.class);
+        crit.setProjection(Projections.rowCount());
+        return (Long) crit.uniqueResult();
 	}
 }

@@ -1,6 +1,7 @@
 <%@page session="true"%>
 <%@ page pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tag" uri="/WEB-INF/taglibs/customTaglib.tld"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
@@ -84,12 +85,14 @@
       				<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      				<tr>
 					      	<th style="width: 10%;">ID</th>
-					      	<th style="width: 10%;">UserId</th>
-					      	<th style="width: 30%;">Role</th>
+					      	<th style="width: 20%;">Kullanıcı Adı</th>
+					      	<th style="width: 30%;">Rolü</th>
+					      	<th style="width: 10%;">Eylem</th>
 					    </tr>
-	      				<c:forEach items="${userRoleInfos }" var="data">
+	      				<c:forEach items="${userRoleInfos }" var="data" varStatus="itr">
 							<tr>
-						      <td>${data.id }</td>
+						      <!--  <td>${data.id }</td> -->
+						      <td>${offset + itr.index +1 }</td>
 						      <td><c:forEach items="${userInfos }" var="data2">
         							<c:if test="${data2.id == data.userId }">${data2.username }</c:if>
        							</c:forEach></td>
@@ -101,7 +104,8 @@
 						</c:forEach>
 					</table>
 				</div> <!-- TABLE >>> -->
-     
+      					<tag:paginate max="15" offset="${offset}" count="${count}"
+						uri="addManager" next="&raquo;" previous="&laquo;" />
 			</div>
 			</div>
       	</div>

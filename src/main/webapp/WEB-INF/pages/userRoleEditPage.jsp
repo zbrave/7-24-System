@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="tag" uri="/WEB-INF/taglibs/customTaglib.tld"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>
-	<title>7/24 Servisi | Kullanıcı Yönetimi</title>
+	<title>7/24 Servisi | Kullanıcı Rolü Yönetimi</title>
 </head>
 <body>
     <%@include file="navbar2.jsp" %>
@@ -76,12 +77,14 @@
       				<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      				<tr>
 					      	<th style="width: 10%;">ID</th>
-					      	<th style="width: 10%;">UserId</th>
-					      	<th style="width: 30%;">Role</th>
+					      	<th style="width: 20%;">Kullanıcı adı</th>
+					      	<th style="width: 30%;">Rolü</th>
+					      	<th style="width: 10%;">Eylem</th>
 					    </tr>
-	      				<c:forEach items="${userRoleInfos }" var="data">
+	      				<c:forEach items="${userRoleInfos }" var="data" varStatus="itr">
 							<tr>
-						      <td>${data.id }</td>
+						      <td>${offset + itr.index +1 }</td>
+						      <!--  <td>${data.id }</td> -->
 						      <td><c:forEach items="${userInfos }" var="data2">
         							<c:if test="${data2.id == data.userId }">${data2.username }</c:if>
        							</c:forEach></td>
@@ -93,7 +96,8 @@
 						</c:forEach>
 					</table>
 				</div> <!-- TABLE >>> -->
-     
+     			<tag:paginate max="15" offset="${offset}" count="${count}"
+						uri="userRoleEdit" next="&raquo;" previous="&laquo;" />
 			</div>
 			</div>
       	</div>

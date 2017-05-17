@@ -1,6 +1,7 @@
 <%@page session="true"%>
 <%@ page pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tag" uri="/WEB-INF/taglibs/customTaglib.tld"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
@@ -25,27 +26,26 @@
     <%@include file="navbar2.jsp" %>
       <div style="padding:50px;">
       
- 	<!-- Location -->
- 	<div id="locationTab">
       <div class="container">
       		<div class="col-md-12">
-      			<div class="form"> <!-- for background transparent color -->
+      			<div class="form" style="max-width: 600px;"> <!-- for background transparent color -->
 				<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteInactiveUsers" role="button">İnaktifleri sil</a>
       			<!-- TABLE <<< -->
       			<div class="panel panel-default">
       				<div class="panel-heading">Kullanıcılar:</div>
       					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
       						<tr>
-					      		<th style="width: 10%;">ID</th>
-					      		<th style="width: 40%;">Kullanıcı adı</th>
+					      		<th style="width: 5%;">ID</th>
+					      		<th style="width: 20%;">Kullanıcı adı</th>
 					      		<th style="width: 20%;">E-mail</th>
-					      		<th>Enabled</th>
-					      		<th>Banlı mı ?</th>
-					      		<th>Eylem</th>
+					      		<th style="width: 10%;">Enabled</th>
+					      		<th style="width: 10%;">Banlı mı ?</th>
+					      		<th style="width: 15%;">Eylem</th>
       						</tr>
-						      <c:forEach items="${users }" var="data">
+						      <c:forEach items="${users }" var="data" varStatus="itr">
 						      	<tr>
-						      		<td>${data.id }</td>
+						      		<!--  <td>${data.id }</td> -->
+						      		<td>${offset + itr.index +1 }</td>
 						      		<td>${data.username }</td>
 						      		<td>${data.email }</td>
 						      		<td>${data.enabled }</td>
@@ -58,10 +58,11 @@
 						      </c:forEach>
       					</table>
       			</div>  <!-- TABLE >>> -->
+      			<tag:paginate max="15" offset="${offset}" count="${count}"
+						uri="users" next="&raquo;" previous="&laquo;" />
       		</div>
       	</div>
       </div>
-     </div>  <!-- LocationTab -->
      
      </div><!-- style padding -->
      <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>

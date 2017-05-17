@@ -14,4 +14,6 @@ public interface UserRoleDAO {
 	
 	public List<String> getUserRoles(Integer userId);
 	public List<UserRoleInfo> listUserRoleInfos();
+	public List<UserRoleInfo> listUserRoleInfosPagination(Integer offset, Integer maxResults);
+	public Long count();
 }
