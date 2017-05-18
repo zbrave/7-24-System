@@ -19,7 +19,8 @@ public class Complaint {
 	private Integer supportTypeId;
 	private Integer parentId;
 	private Integer complainantUserId;
-	private Byte[] photo;
+	private Byte[] complaintFile;
+	private Byte[] responseFile;
 	
 	private Date complaintTime;
 	private Date assignTime;
@@ -132,13 +133,6 @@ public class Complaint {
 	public void setEnded(boolean ended) {
 		this.ended = ended;
 	}
-	@Column(name = "photo")
-	public Byte[] getPhoto() {
-		return photo;
-	}
-	public void setPhoto(Byte[] photo) {
-		this.photo = photo;
-	}
 	
 	@Column(name = "ack")
 	public boolean isAck() {
@@ -173,6 +167,22 @@ public class Complaint {
 
 	public void setAssignTime(Date assignTime) {
 		this.assignTime = assignTime;
+	}
+	
+	@Column(name = "complaint_file")
+	public Byte[] getComplaintFile() {
+		return complaintFile;
+	}
+	public void setComplaintFile(Byte[] complaintFile) {
+		this.complaintFile = complaintFile;
+	}
+	
+	@Column(name = "response_file")
+	public Byte[] getResponseFile() {
+		return responseFile;
+	}
+	public void setResponseFile(Byte[] responseFile) {
+		this.responseFile = responseFile;
 	}
 	
 }

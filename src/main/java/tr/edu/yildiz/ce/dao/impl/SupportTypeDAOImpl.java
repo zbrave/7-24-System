@@ -14,6 +14,7 @@ import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.entity.SupportType;
 import tr.edu.yildiz.ce.entity.UserRole;
+import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
@@ -89,18 +90,63 @@ public class SupportTypeDAOImpl implements SupportTypeDAO {
 	@Override
 	public List<SupportTypeInfo> reportSupportTypeInfos() {
 		List<SupportTypeInfo> supportTypeInfos= this.listSupportTypeInfos();
+		List<SupportTypeInfo> list=new ArrayList<SupportTypeInfo>();
 		for(SupportTypeInfo s:supportTypeInfos){
-			s.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(null,s.getId(),null,null).size());
-			s.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(null,s.getId(),null,null).size());
-			s.setActive(complaintDAO.listActiveComplaintInfos(null,s.getId(),null,null).size());
-			s.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(null,s.getId(),null,null).size());
-			s.setTotal(complaintDAO.listComplaintInfos(null,s.getId(),null,null).size());
-			s.setReported(complaintDAO.listReportedComplaintInfos(null,s.getId(),null,null).size());
+			List<ComplaintInfo> complaintInfos =complaintDAO.listComplaintInfos(null,s.getId(),null,null);
+			if(complaintInfos.size()!=0){
+				long totalAssignTime=0;
+			    long totalAwarenessTime=0;
+			    long totalResponseTime=0;
+			    long numAssignTime=0;
+			    long numAwarenessTime=0;
+			    long numResponseTime=0;
+			    long time=0;
+			    s.setTotal(complaintInfos.size());
+				s.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(null,s.getId(),null,null).size());
+				s.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(null,s.getId(),null,null).size());
+				s.setActive(complaintDAO.listActiveComplaintInfos(null,s.getId(),null,null).size());
+				s.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(null,s.getId(),null,null).size());
+				s.setReported(complaintDAO.listReportedComplaintInfos(null,s.getId(),null,null).size());
+				//times
+				for(ComplaintInfo c:complaintInfos){
+					if(c.getComplaintTime()!=null&&c.getAssignTime()!=null){
+						time=c.getAssignTime().getTime()-c.getComplaintTime().getTime();
+						if(time!=0){
+							totalAssignTime+=time;
+							numAssignTime++;
+						}
+					}
+					if(c.getAssignTime()!=null&&c.getAckTime()!=null){
+						time=c.getAckTime().getTime()-c.getAssignTime().getTime();
+						if(time!=0){
+							totalAwarenessTime+=time;
+							numAwarenessTime++;
+						}
+					}
+					if(c.getAckTime()!=null&&c.getResponseTime()!=null){
+						time=c.getResponseTime().getTime()-c.getAckTime().getTime();
+						if(time!=0){
+							totalResponseTime+=time;
+							numResponseTime++;	
+						}
+					}
+				}
+				if(numAssignTime!=0){
+					s.setAvgAssignTime(totalAssignTime/numAssignTime);
+				}
+				if(numAwarenessTime!=0){
+					s.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
+				}
+				if(numResponseTime!=0){
+					s.setAvgResponseTime(totalResponseTime/numResponseTime);
+				}
+				list.add(s);
+			}
 		}
-		return supportTypeInfos;
+		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public List<SupportTypeInfo> listSupportTypeInfosPagination(Integer offset, Integer maxResults) {
 		List<SupportTypeInfo> fullList=listSupportTypeInfos();

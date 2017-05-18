@@ -14,6 +14,7 @@ import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.entity.Location;
 import tr.edu.yildiz.ce.entity.UserRole;
+import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocationInfo;
 
 public class LocationDAOImpl implements LocationDAO {
@@ -187,18 +188,63 @@ public class LocationDAOImpl implements LocationDAO {
 	@Override
 	public List<LocationInfo> reportLocationInfos() {
 		List<LocationInfo> locationInfos= this.listLocationInfos();
+		List<LocationInfo> list=new ArrayList<LocationInfo>();
 		for(LocationInfo l:locationInfos){
-			l.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(),null,null,null).size());
-			l.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(),null,null,null).size());
-			l.setActive(complaintDAO.listActiveComplaintInfos(l.getId(),null,null,null).size());
-			l.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(),null,null,null).size());
-			l.setTotal(complaintDAO.listComplaintInfos(l.getId(),null,null,null).size());
-			l.setReported(complaintDAO.listReportedComplaintInfos(l.getId(),null,null,null).size());
+			List<ComplaintInfo> complaintInfos =complaintDAO.listComplaintInfos(l.getId(), null, null, null);
+			if(complaintInfos.size()!=0){
+				long totalAssignTime=0;
+			    long totalAwarenessTime=0;
+			    long totalResponseTime=0;
+			    long numAssignTime=0;
+			    long numAwarenessTime=0;
+			    long numResponseTime=0;
+			    long time=0;
+			    l.setTotal(complaintInfos.size());
+				l.setWaitingAssign(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(),null,null,null).size());
+				l.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(),null,null,null).size());
+				l.setActive(complaintDAO.listActiveComplaintInfos(l.getId(),null,null,null).size());
+				l.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(),null,null,null).size());
+				l.setReported(complaintDAO.listReportedComplaintInfos(l.getId(),null,null,null).size());
+				//times
+				for(ComplaintInfo c:complaintInfos){
+					if(c.getComplaintTime()!=null&&c.getAssignTime()!=null){
+						time=c.getAssignTime().getTime()-c.getComplaintTime().getTime();
+						if(time!=0){
+							totalAssignTime+=time;
+							numAssignTime++;
+						}
+					}
+					if(c.getAssignTime()!=null&&c.getAckTime()!=null){
+						time=c.getAckTime().getTime()-c.getAssignTime().getTime();
+						if(time!=0){
+							totalAwarenessTime+=time;
+							numAwarenessTime++;
+						}
+					}
+					if(c.getAckTime()!=null&&c.getResponseTime()!=null){
+						time=c.getResponseTime().getTime()-c.getAckTime().getTime();
+						if(time!=0){
+							totalResponseTime+=time;
+							numResponseTime++;	
+						}
+					}
+				}
+				if(numAssignTime!=0){
+					l.setAvgAssignTime(totalAssignTime/numAssignTime);
+				}
+				if(numAwarenessTime!=0){
+					l.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
+				}
+				if(numResponseTime!=0){
+					l.setAvgResponseTime(totalResponseTime/numResponseTime);
+				}
+				list.add(l);
+			}
+				
 		}
-		return locationInfos;
+		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<LocationInfo> listLocationInfosPagination(Integer offset, Integer maxResults) {
         List<LocationInfo>listLocationInfos=listLocationInfos();

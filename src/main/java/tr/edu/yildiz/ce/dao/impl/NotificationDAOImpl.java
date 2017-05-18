@@ -65,7 +65,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 		}
 	
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<NotificationInfo> listNotificationInfos() {
@@ -85,6 +85,37 @@ public class NotificationDAOImpl implements NotificationDAO {
 		Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Notification.class);
         crit.add(Restrictions.eq("complaintId",complaintId));
+        List<Notification> notifications =(List<Notification>)crit.list();
+        List<NotificationInfo> notificationInfos =new ArrayList<NotificationInfo>();
+        for(Notification n:notifications){
+        	notificationInfos.add((NotificationInfo)findNotificationInfo(n.getId()));
+        }
+        return notificationInfos;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean doesExist(Integer userId, Integer complaintId) {
+		Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Notification.class);
+        crit.add(Restrictions.eq("complaintId",complaintId));
+        crit.add(Restrictions.eq("userId",userId));
+        List<Notification> notifications =(List<Notification>)crit.list();
+        if(notifications.size()==0){
+        	return false;
+        }else{
+        	return true;
+        }
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<NotificationInfo> listNotificationInfosForUser(Integer userId) {
+		Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Notification.class);
+        crit.add(Restrictions.eq("userId",userId));
         List<Notification> notifications =(List<Notification>)crit.list();
         List<NotificationInfo> notificationInfos =new ArrayList<NotificationInfo>();
         for(Notification n:notifications){

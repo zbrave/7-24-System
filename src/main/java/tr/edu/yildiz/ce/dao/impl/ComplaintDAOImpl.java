@@ -20,6 +20,7 @@ import tr.edu.yildiz.ce.dao.NotificationDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Complaint;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
+import tr.edu.yildiz.ce.model.LocSupTypeInt;
 import tr.edu.yildiz.ce.model.LocationInfo;
 import tr.edu.yildiz.ce.model.ManagerInfo;
 import tr.edu.yildiz.ce.model.NotificationInfo;
@@ -94,7 +95,8 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
         return new ComplaintInfo(complaint.getId(), complaint.getLocationId() ,complaint.getSupportTypeId() ,complaint.getParentId(),
         		complaint.getComplainantUserId(),complaint.getComplaintTime(), complaint.getComplaintText(),complaint.getSupportUserId(),
-        		complaint.getResponseTime(),complaint.getResponseText(),complaint.getChildId() ,complaint.isEnded(),complaint.getAckTime(),complaint.isAck(),complaint.isReported(),complaint.getAssignTime());
+        		complaint.getResponseTime(),complaint.getResponseText(),complaint.getChildId() ,complaint.isEnded(),complaint.getAckTime(),
+        		complaint.isAck(),complaint.isReported(),complaint.getAssignTime(),complaint.getComplaintFile(),complaint.getResponseFile());
 	}
 
 	@Override
@@ -107,7 +109,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@Override
 	public void recordComplaint(Integer locationId, Integer supportTypeId, Integer complainantUserId,
-			String complaintText,Integer parentId ) {
+			String complaintText,Integer parentId,Byte[] complaintFile ) {
 		//notifications
 		ComplaintInfo complaintInfo = new ComplaintInfo();
 		complaintInfo.setLocationId(locationId);
@@ -118,8 +120,11 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		complaintInfo.setAck(false);
 		complaintInfo.setParentId(parentId);
 		complaintInfo.setReported(false);
+		complaintInfo.setComplaintFile(complaintFile);
+		
 		Date dateNow=new Date();
 		complaintInfo.setComplaintTime(dateNow);
+		
 		saveComplaint(complaintInfo);
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
@@ -129,6 +134,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         crit.add(Restrictions.eq("complaintText", complaintText));
         crit.add(Restrictions.eq("complaintTime", complaintInfo.getComplaintTime()));
         Complaint complaint=(Complaint) crit.uniqueResult();
+        
 		NotificationInfo notificationInfo =new NotificationInfo();
 		notificationInfo.setUserId(complaint.getComplainantUserId());
 		notificationInfo.setComplaintId(complaint.getId());
@@ -199,7 +205,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	
 	@Override
 	public void transferComplaint(Integer id,  String responseText, Integer newLocationId,
-		Integer newSupportTypeId, String newComplaintText,boolean ended) {
+		Integer newSupportTypeId, String newComplaintText,boolean ended,Byte[] complaintFile,Byte[] responseFile) {
 		//notifications
 		Integer parentComplaintId=id;
 		Integer childComplaintId;
@@ -210,7 +216,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 			complaintInfo.setResponseTime(dateNow);
 		}
 		complaintInfo.setEnded(ended);
-		
+		complaintInfo.setResponseFile(responseFile);
 		if(complaintInfo.getAckTime()==null){
 			complaintInfo.setAckTime(dateNow);
 		}
@@ -224,7 +230,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		complaintInfo.setReported(false);
 		
 		this.recordComplaint(newLocationId,newSupportTypeId,complaintInfo.getComplainantUserId(),
-				newComplaintText,complaintInfo.getId() );
+				newComplaintText,complaintInfo.getId(),complaintFile);
 		complaintInfo.setChildId(this.findChildInfo(id).getId());
 		childComplaintId=findChildInfo(id).getId();
 		this.saveComplaint(complaintInfo);
@@ -238,18 +244,22 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	}
 
 	@Override
-	public void endComplaint(Integer id, String responseText) {
+	public void endComplaint(Integer id, String responseText,Byte[] responseFile) {
 		boolean sendEmail=false;
 		ComplaintInfo complaintInfo = this.findComplaintInfo(id);
 		complaintInfo.setResponseText(responseText);
+		
 		Date dateNow =new Date();
-		complaintInfo.setResponseTime(dateNow);
+		if(complaintInfo.getResponseTime()==null){
+			complaintInfo.setResponseTime(dateNow);
+		}
 		if(complaintInfo.getAckTime()==null){
 			complaintInfo.setAckTime(dateNow);
 		}
 		if(complaintInfo.getAssignTime()==null){
 			complaintInfo.setAssignTime(dateNow);
 		}
+		complaintInfo.setResponseFile(responseFile);
 		complaintInfo.setEnded(true);
 		complaintInfo.setReported(false);
 		saveComplaint(complaintInfo);
@@ -263,7 +273,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 				notComplete.setEnded(true);
 				saveComplaint(notComplete);
 				transferComplaint(id, responseText,notComplete.getLocationId(),
-						notComplete.getSupportTypeId(), notComplete.getComplaintText(),true);
+						notComplete.getSupportTypeId(), notComplete.getComplaintText(),true,notComplete.getComplaintFile(),responseFile);
 			}else{
 				sendEmail=true;
 			}
@@ -300,10 +310,18 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 			c=this.findComplaintInfo(c.getChildId());
 			uniteTo = c.getId();
 		}
+		List<Integer> deleteList=new ArrayList<Integer>();
 		List<NotificationInfo> notificationInfos = notificationDAO.listNotificationInfosForComplaint(delete);
 		for(NotificationInfo n : notificationInfos){
-			n.setComplaintId(uniteTo);
-			notificationDAO.saveNotification(n);
+			if(notificationDAO.doesExist(n.getUserId(),uniteTo)){
+				deleteList.add(n.getId());
+			}else{
+				n.setComplaintId(uniteTo);
+				notificationDAO.saveNotification(n);
+			}
+		}
+		for(Integer id:deleteList){
+			notificationDAO.deleteNotification(id);
 		}
 		for(ComplaintInfo d:del){
 			deleteComplaint(d.getId());
@@ -403,6 +421,8 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		long totalTime;
 		long beginTime;
 		long endTime;
+		long div;
+		long parentEnd;
 		if(c==null){
 			return null;
 		}
@@ -418,16 +438,21 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		child=complaintInfos.get(complaintInfos.size()-1);
 		parent=complaintInfos.get(0);
 		beginTime=parent.getComplaintTime().getTime();
+		parentEnd=beginTime;
 		if(child.getResponseTime()!=null){
 			endTime=child.getResponseTime().getTime();
+			div=100;
 		}else{
 			endTime=new Date().getTime();
+			div=60;
 		}
 		totalTime=endTime-beginTime;
 		for(ComplaintInfo com:complaintInfos){
 			long assign;
 			long ack;
 			long response;
+			long reported;
+			reported=parentEnd-com.getComplaintTime().getTime();
 			if(com.getAssignTime()!=null){
 				assign=com.getAssignTime().getTime()-com.getComplaintTime().getTime();
 			}else{
@@ -440,12 +465,15 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 			}
 			if(com.getResponseTime()!=null){
 				response=com.getResponseTime().getTime()-com.getAckTime().getTime();
+				parentEnd=com.getResponseTime().getTime();
 			}else{
 				response=0;
 			}
-			com.setPercentAssign((float)(assign*100)/totalTime);
-			com.setPercentAck((float)(ack*100)/totalTime);
-			com.setPercentResponse((float)(response*100)/totalTime);
+			com.setPercentAssign((assign*div)/totalTime);
+			com.setPercentAck((ack*div)/totalTime);
+			com.setPercentResponse((response*div)/totalTime);
+			com.setPercentReported((reported*div)/totalTime);
+			
 		}
 		return complaintInfos;
 	}
@@ -669,6 +697,11 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ComplaintInfo> listComplaintInfosByComplainantUserId(Integer complainantUserId) {
+		List<NotificationInfo>notificationInfos=notificationDAO.listNotificationInfosForUser(complainantUserId);
+		List<Integer>notificationComplaintIds=new ArrayList<Integer>();
+		for(NotificationInfo n:notificationInfos){
+			notificationComplaintIds.add(n.getComplaintId());
+		}
 		Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
         crit.add(Restrictions.eq("complainantUserId",complainantUserId));
@@ -676,7 +709,81 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
         for(Complaint c:complaints){
         	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        	if(notificationComplaintIds.contains(c.getId())){
+        		notificationComplaintIds.remove(c.getId());
+        	}
+        }
+        for(Integer i:notificationComplaintIds){
+        	complaintInfos.add((ComplaintInfo)findComplaintInfo(i));
         }
         return complaintInfos;
+	}
+
+	@Override
+	public List<LocSupTypeInt> listLocSupTypeInt() {
+		List<LocationInfo> loc = this.locationDAO.listLocationInfos();
+		
+		List<SupportTypeInfo> sup = this.supportTypeDAO.listSupportTypeInfos();
+		
+		List<LocSupTypeInt> list = new ArrayList<LocSupTypeInt>();
+		
+		for (LocationInfo l : loc) {
+			for (SupportTypeInfo s : sup) {
+				List<ComplaintInfo> complaintInfos =this.listComplaintInfos(l.getId(), s.getId(),null,null);
+				if (complaintInfos.size() != 0) {
+					long totalAssignTime=0;
+				    long totalAwarenessTime=0;
+				    long totalResponseTime=0;
+				    long numAssignTime=0;
+				    long numAwarenessTime=0;
+				    long numResponseTime=0;
+				    long time=0;
+					LocSupTypeInt x = new LocSupTypeInt();
+					x.setLocationInfo(l);
+					x.setSupportTypeInfo(s);
+					x.setTotal(complaintInfos.size());
+					x.setActive(this.listActiveComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setReport(this.listReportedComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setWaitAck(this.listWaitingAckComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setWaitAsg(this.listWaitingAssingnComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setWaitChild(this.listWaitingChildComplaintInfos(l.getId(), s.getId(),null,null).size());
+					x.setEnded(this.listEndedComplaintInfos(l.getId(), s.getId(),null,null).size());
+					for(ComplaintInfo c:complaintInfos){
+						if(c.getComplaintTime()!=null&&c.getAssignTime()!=null){
+							time=c.getAssignTime().getTime()-c.getComplaintTime().getTime();
+							if(time!=0){
+								totalAssignTime+=time;
+								numAssignTime++;
+							}
+						}
+						if(c.getAssignTime()!=null&&c.getAckTime()!=null){
+							time=c.getAckTime().getTime()-c.getAssignTime().getTime();
+							if(time!=0){
+								totalAwarenessTime+=time;
+								numAwarenessTime++;
+							}
+						}
+						if(c.getAckTime()!=null&&c.getResponseTime()!=null){
+							time=c.getResponseTime().getTime()-c.getAckTime().getTime();
+							if(time!=0){
+								totalResponseTime+=time;
+								numResponseTime++;	
+							}
+						}
+					}
+					if(numAssignTime!=0){
+						x.setAvgAssignTime(totalAssignTime/numAssignTime);
+					}
+					if(numAwarenessTime!=0){
+						x.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
+					}
+					if(numResponseTime!=0){
+						x.setAvgResponseTime(totalResponseTime/numResponseTime);
+					}
+					list.add(x);
+				}
+			}
+		}
+		return list;
 	}
 }

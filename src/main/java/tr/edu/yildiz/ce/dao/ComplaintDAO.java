@@ -4,6 +4,7 @@ import java.util.List;
 
 import tr.edu.yildiz.ce.entity.Complaint;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
+import tr.edu.yildiz.ce.model.LocSupTypeInt;
 
 public interface ComplaintDAO {
 	public Complaint findComplaint (Integer id); 
@@ -11,13 +12,15 @@ public interface ComplaintDAO {
     public ComplaintInfo findComplaintInfo (Integer id);  
     public void deleteComplaint (Integer id);
     
-    public void recordComplaint (Integer locationId,Integer supportTypeId,Integer complainantUserId,String complaintText,Integer parentId);
+    public void recordComplaint (Integer locationId,Integer supportTypeId,Integer complainantUserId,String complaintText,Integer parentId,Byte[] complaintFile);
     public void assingComplaint(Integer id,Integer supportUserId);//manager assign edicek+
     public void ackComplaint(Integer id);// support+
     public void reportComplaint(Integer id);// support un her yerine ekle -ack olanlar ona ait değilse report edebilsin+
-    public void transferComplaint (Integer id,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended);
-    public void endComplaint(Integer id,String responseText);
+    public void transferComplaint (Integer id,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended,Byte[] complaintFile,Byte[] responseFile);
+    public void endComplaint(Integer id,String responseText,Byte[] responseFile);
     public void uniteComplaints(Integer uniteTo,Integer delete);// manager report edilenler ve assigndan önce+
+    
+    
     public List<ComplaintInfo> listComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);// report için hepsini gösteriyor+
     public List<ComplaintInfo> listWaitingAssingnComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);// report için
     public List<ComplaintInfo> listWaitingAckComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
@@ -27,6 +30,7 @@ public interface ComplaintDAO {
     public List<ComplaintInfo> listEndedComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
     public List<ComplaintInfo> listComplaintInfosByUserId (Integer supportUserId);// buraya kadar report
     public List<ComplaintInfo> listComplaintInfosBySupporterId (Integer supporterId);
+    public List<LocSupTypeInt> listLocSupTypeInt();
     
     public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId);//ack yapılanlar+
     public List<ComplaintInfo> listComplaintInfosForSupportAck(Integer userId);// ack yapılmayanlar+
@@ -35,5 +39,5 @@ public interface ComplaintDAO {
     public List<ComplaintInfo> listReportedComplaintInfosForManager(Integer userId);//manager report edilenler+
     public List<ComplaintInfo> listActiveComplaintInfosForUnification(Integer id);// unify edilecekler+
     public List<ComplaintInfo> listComplaintInfosByComplainantUserId(Integer complainantUserId);
-    public Integer numOfProcess();//kaç tane aktif işlem var
+    public Integer numOfProcess();//kaç tane işlem ağacı var
 }

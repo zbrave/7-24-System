@@ -17,7 +17,7 @@ public class UserInfo {
 	private Integer waitingChild;
 	private Integer total;
 	private Integer reported;
-	
+	private Integer ended;
     public UserInfo() {
     	
     }
@@ -146,6 +146,20 @@ public class UserInfo {
 	 */
 	public void setReported(Integer reported) {
 		this.reported = reported;
+	}
+
+	/**
+	 * @return the ended
+	 */
+	public Integer getEnded() {
+		return ended;
+	}
+
+	/**
+	 * @param ended the ended to set
+	 */
+	public void setEnded(Integer ended) {
+		this.ended = ended;
 	}
     
     

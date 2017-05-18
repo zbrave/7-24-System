@@ -143,66 +143,50 @@ public class SupporterDAOImpl implements SupporterDAO {
 	@Override
 	public List<SupporterInfo> reportSupporterInfos() {
 		List<SupporterInfo> supporterInfos = listSupporterInfos();
+		List<SupporterInfo> list =new ArrayList<SupporterInfo>();
 		for(SupporterInfo s:supporterInfos){
-	        long totalAwarenessTime=0;
-			long numAwarenessTime=0;
-			long totalResponseTime=0;
-			long numResponseTime=0;
-			Integer waitingAck=0;
-			Integer active=0;
-			Integer waitingChild=0;
-			Integer total=0;
-			Integer reported=0;
-			Integer ended=0;
 			List<ComplaintInfo> complaintInfos =complaintDAO.listComplaintInfos(null, null, s.getId(), null);
-			total=complaintInfos.size();
-			for(ComplaintInfo c:complaintInfos){
-				if(c.getAssignTime()!=null&&c.getAckTime()!=null){
-					totalAwarenessTime+=c.getAckTime().getTime()-c.getAssignTime().getTime();
-					if(c.getAckTime().getTime()-c.getAssignTime().getTime()!=0){
-						numAwarenessTime++;
+			if(complaintInfos.size()!=0){
+				long totalAwarenessTime=0;
+				long numAwarenessTime=0;
+				long totalResponseTime=0;
+				long numResponseTime=0;
+				long time=0;
+				s.setTotal(complaintInfos.size());
+				s.setWaitingAck(complaintDAO.listWaitingAckComplaintInfos(null, null, s.getId(), null).size());
+				s.setActive(complaintDAO.listActiveComplaintInfos(null, null, s.getId(), null).size());
+				s.setWaitingChild(complaintDAO.listWaitingChildComplaintInfos(null, null, s.getId(), null).size());
+				s.setReported(complaintDAO.listReportedComplaintInfos(null, null, s.getId(), null).size());
+				s.setEnded(complaintDAO.listEndedComplaintInfos(null, null, s.getId(), null).size());
+				for(ComplaintInfo c:complaintInfos){
+					if(c.getAssignTime()!=null&&c.getAckTime()!=null){
+						time=c.getAckTime().getTime()-c.getAssignTime().getTime();
+						if(time!=0){
+							totalAwarenessTime+=time;
+							numAwarenessTime++;
+						}
+					}
+					if(c.getAckTime()!=null&&c.getResponseTime()!=null){
+						time=c.getResponseTime().getTime()-c.getAckTime().getTime();
+						if(time!=0){
+							totalResponseTime+=time;
+							numResponseTime++;	
+						}
 					}
 				}
-				if(c.getAckTime()!=null&&c.getResponseTime()!=null){
-					totalResponseTime+=c.getResponseTime().getTime()-c.getAckTime().getTime();
-					if(c.getResponseTime().getTime()-c.getAckTime().getTime()!=0){
-						numResponseTime++;	
-					}
+				if(numAwarenessTime!=0){
+					s.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
 				}
-				if(c.isAck()==false&&c.getSupportUserId()!=null){
-					waitingAck++;
+				if(numResponseTime!=0){
+					s.setAvgResponseTime(totalResponseTime/numResponseTime);
 				}
-				if(c.isAck()==true&&c.isEnded()==false&&c.getChildId()==null&&c.isReported()==false){
-					active++;
-				}
-				if(c.isAck()==true&&c.isEnded()==false&&c.getChildId()!=null&&c.isReported()==false){
-					waitingChild++;
-				}
-				if(c.isReported()==true){
-					reported++;
-				}
-				if(c.isEnded()==true){
-					ended++;
-				}
-			}
-			s.setWaitingAck(waitingAck);
-			s.setActive(active);
-			s.setWaitingChild(waitingChild);
-			s.setReported(reported);
-			s.setTotal(total);
-			s.setEnded(ended);
-			if(numAwarenessTime!=0){
-				s.setAvgAwarenessTime(totalAwarenessTime/numAwarenessTime);
-			}
-			if(numResponseTime!=0){
-				s.setAvgResponseTime(totalResponseTime/numResponseTime);
-			}
-			
+				list.add(s);
+			}	
 		}
-		return supporterInfos;
+		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
+
 	@Override
 	public List<SupporterInfo> listSupporterInfosPagination(Integer offset, Integer maxResults) {
 		List<SupporterInfo> fullList=listSupporterInfos();

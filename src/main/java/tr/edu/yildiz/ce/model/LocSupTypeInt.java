@@ -11,6 +11,9 @@ public class LocSupTypeInt {
 	private Integer active;
 	private Integer report;
 	private Integer ended;
+	private long avgAssignTime;
+    private long avgAwarenessTime;
+    private long avgResponseTime;
 	public LocationInfo getLocationInfo() {
 		return locationInfo;
 	}
@@ -81,4 +84,23 @@ public class LocSupTypeInt {
 	public void setEnded(Integer ended) {
 		this.ended = ended;
 	}
+	public long getAvgAssignTime() {
+		return avgAssignTime;
+	}
+	public void setAvgAssignTime(long avgAssignTime) {
+		this.avgAssignTime = avgAssignTime;
+	}
+	public long getAvgAwarenessTime() {
+		return avgAwarenessTime;
+	}
+	public void setAvgAwarenessTime(long avgAwarenessTime) {
+		this.avgAwarenessTime = avgAwarenessTime;
+	}
+	public long getAvgResponseTime() {
+		return avgResponseTime;
+	}
+	public void setAvgResponseTime(long avgResponseTime) {
+		this.avgResponseTime = avgResponseTime;
+	}
+	
 }

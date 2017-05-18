@@ -12,6 +12,9 @@ public class LocationInfo {
 	private Integer waitingChild;
 	private Integer total;
 	private Integer reported;
+	private long avgAssignTime;
+    private long avgAwarenessTime;
+    private long avgResponseTime;
 	public LocationInfo(){
 		
 	}
@@ -88,6 +91,24 @@ public class LocationInfo {
 	 */
 	public void setReported(Integer reported) {
 		this.reported = reported;
+	}
+	public long getAvgAssignTime() {
+		return avgAssignTime;
+	}
+	public void setAvgAssignTime(long avgAssignTime) {
+		this.avgAssignTime = avgAssignTime;
+	}
+	public long getAvgAwarenessTime() {
+		return avgAwarenessTime;
+	}
+	public void setAvgAwarenessTime(long avgAwarenessTime) {
+		this.avgAwarenessTime = avgAwarenessTime;
+	}
+	public long getAvgResponseTime() {
+		return avgResponseTime;
+	}
+	public void setAvgResponseTime(long avgResponseTime) {
+		this.avgResponseTime = avgResponseTime;
 	}
 
 	
