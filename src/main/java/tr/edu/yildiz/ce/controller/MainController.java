@@ -336,17 +336,17 @@ public class MainController {
 	
 	@RequestMapping(value = "/addManager", method = RequestMethod.GET)
 	public String addManager(Model model, Integer offset, Integer maxResults) {
-		
-		List<UserRoleInfo> list3 = userRoleDAO.listUserRoleInfosPagination(offset, maxResults);
-		model.addAttribute("count", userRoleDAO.count());
-		model.addAttribute("offset", offset);
-		model.addAttribute("userRoleInfos", list3);
 
 		List<UserInfo> user = userDAO.listUserInfos();
 		model.addAttribute("userInfos", user);
 		
 		List<LocationInfo> list6 = locationDAO.listLocationInfos();
 		model.addAttribute("locInfos", list6);
+		
+		List<ManagerInfo> listManager = managerDAO.listManagerInfosPagination(offset, maxResults);
+		model.addAttribute("count", managerDAO.count());
+		model.addAttribute("offset", offset);
+		model.addAttribute("managerInfos", listManager);
 		
 		return "addManager";
 	}
