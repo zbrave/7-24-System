@@ -72,11 +72,13 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 	}
 
 	@Override
-	public void deleteUserRole(Integer id) {
+	public boolean deleteUserRole(Integer id) {
 		UserRole userRole = this.findUserRole(id);
         if (userRole != null) {
         	this.sessionFactory.getCurrentSession().delete(userRole);
+        	return true;
         }
+        return false;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -90,7 +90,7 @@
        							</c:forEach></td>
 						      <td>${data.role }</td>
 						      <td>
-						      	  <a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUserRole?id=${data.id}" role="button">Sil</a>
+						      	  <a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUserRole?id=${data.id}" role="button" onclick="confirmDelete()">Sil</a>
 							  </td>
 						    </tr>
 						</c:forEach>
@@ -106,5 +106,9 @@
      </div><!-- style padding -->
      <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>
-  	
+  	<script>
+		function confirmDelete() {
+		    confirm("Silmek istediğinize emin misiniz?");
+		}
+	</script>
 </html>

@@ -88,7 +88,7 @@ public class UserController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("signupMsg", "Hatalı giriş!");
+			model.addAttribute("signupMsgError", "Hatalı giriş!");
 			System.out.println("Hata!");
 		}
 		String decodedToUTF8;
@@ -100,17 +100,17 @@ public class UserController {
 			e.printStackTrace();
 		}
 		if (!userInfo.getPassword().equals(userInfo.getPasswordConf())) {
-			model.addAttribute("signupMsg", "Parola eşleşmedi.");
+			model.addAttribute("signupMsgError", "Parola eşleşmedi.");
 			System.out.println("Parola eşleşmedi.");
 			return "loginPage";
 		}
 		if (!validate(userInfo.getEmail())) {
-			model.addAttribute("signupMsg", "Email onaylanmadı.");
+			model.addAttribute("signupMsgError", "Email onaylanmadı.");
 			System.out.println("Email onaylanmadı.");
 			return "loginPage";
 		}
 		if (this.userDAO.findLoginUser(userInfo.getUsername()) != null) {
-			model.addAttribute("signupMsg", "Kullanıcı mevcut.");
+			model.addAttribute("signupMsgError", "Kullanıcı mevcut.");
 			System.out.println("Kullanıcı mevcut.");
 			return "loginPage";
 		}
@@ -121,7 +121,7 @@ public class UserController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("signupMsg", "Hesabınızı mailize gelen aktivasyon linki ile aktive edin.");
+		redirectAttributes.addFlashAttribute("signupMsgSuccess", "Hesabınızı mailize gelen aktivasyon linki ile aktive edin.");
 
 //		return "redirect:/deptList";
 		return "redirect:/login";
@@ -140,7 +140,7 @@ public class UserController {
 			user2.setUserInfo(user);
 			user2.setRole("USER");
 			userRoleDAO.saveUserRole(user2);
-			redirectAttributes.addFlashAttribute("signupMsg", "Hesabınız aktif edildi.");
+			redirectAttributes.addFlashAttribute("signupMsgSuccess", "Hesabınız aktif edildi.");
 			return "redirect:/login";
 		}
 		else {

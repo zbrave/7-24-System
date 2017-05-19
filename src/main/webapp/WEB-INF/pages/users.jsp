@@ -29,9 +29,19 @@
       <div class="container">
       		<div class="col-md-12">
       			<div class="form" style="max-width: 600px;"> <!-- for background transparent color -->
+				 <c:if test="${not empty message}">
+					<div class="alert alert-success alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								${message}
+					</div>
+				</c:if>
+				
 				<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteInactiveUsers" role="button">İnaktifleri sil</a>
       			<!-- TABLE <<< -->
       			<div class="panel panel-default">
+      			
+
+      			
       				<div class="panel-heading">Kullanıcılar:</div>
       					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
       						<tr>
@@ -52,7 +62,7 @@
 						      		<td>${data.banned }</td>
 						      		<td>
 						      		<a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.id}" role="button">Banla</a>
-						      		<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUser?id=${data.id}" role="button">Sil</a>
+						      		<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUser?id=${data.id}" role="button" onclick="confirmDelete()">Sil</a>
 									</td>
 						      	</tr>
 						      </c:forEach>
@@ -67,5 +77,9 @@
      </div><!-- style padding -->
      <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>
-  	
+  	  	  	<script>
+		function confirmDelete() {
+		    confirm("Silmek istediğinize emin misiniz?");
+		}
+	</script>
 </html>

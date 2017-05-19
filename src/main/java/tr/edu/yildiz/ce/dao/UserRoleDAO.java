@@ -10,7 +10,7 @@ public interface UserRoleDAO {
 	public UserRole findUserRole (Integer id);
 	public void saveUserRole (UserRoleInfo userRoleInfo );
 	public UserRoleInfo findUserRoleInfo (Integer id);
-	public void deleteUserRole(Integer id);
+	public boolean deleteUserRole(Integer id);
 	
 	public List<String> getUserRoles(Integer userId);
 	public List<UserRoleInfo> listUserRoleInfos();

@@ -77,8 +77,12 @@ public class UserRoleController {
 		if (id == null) {
 			return "redirect:/userRoleEdit";
 		}
-		this.userRoleDAO.deleteUserRole(id);
-
+		
+		if (this.userRoleDAO.deleteUserRole(id)) {
+			redirectAttributes.addFlashAttribute("userRoleMsgSuccess", "Silindi");
+			return "redirect:/userRoleEdit";
+		}
+		redirectAttributes.addFlashAttribute("userRoleMsgError", "Hata oluştu!");
 		return "redirect:/userRoleEdit";
 	}
 	

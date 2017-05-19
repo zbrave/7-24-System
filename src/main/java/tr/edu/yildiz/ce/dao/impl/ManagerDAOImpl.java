@@ -6,14 +6,17 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import tr.edu.yildiz.ce.dao.ManagerDAO;
 import tr.edu.yildiz.ce.entity.Manager;
 import tr.edu.yildiz.ce.entity.Supporter;
+import tr.edu.yildiz.ce.entity.User;
 import tr.edu.yildiz.ce.model.ManagerInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
+import tr.edu.yildiz.ce.model.UserInfo;
 
 public class ManagerDAOImpl implements ManagerDAO {
 	@Autowired
@@ -90,6 +93,27 @@ public class ManagerDAOImpl implements ManagerDAO {
         	managerInfos.add((ManagerInfo)findManagerInfo(m.getId()));
         }
         return managerInfos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ManagerInfo> listManagerInfosPagination(Integer offset, Integer maxResults) {
+		List<ManagerInfo> fullList=listManagerInfos();
+        List<ManagerInfo> offsetList=new ArrayList<ManagerInfo>();
+        maxResults = maxResults!=null?maxResults:10;
+        offset = (offset!=null?offset:0);
+        for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+        	offsetList.add(fullList.get(offset+i));
+        }
+        return offsetList;
+	}
+	
+	@Override
+	public Long count() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Manager.class);
+        crit.setProjection(Projections.rowCount());
+        return (Long) crit.uniqueResult();
 	}
 
 }

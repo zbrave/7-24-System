@@ -24,6 +24,7 @@ import tr.edu.yildiz.ce.dao.BanDAO;
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
 import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.MailSend;
+import tr.edu.yildiz.ce.dao.ManagerDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
@@ -32,6 +33,7 @@ import tr.edu.yildiz.ce.model.BanInfo;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocSupTypeInt;
 import tr.edu.yildiz.ce.model.LocationInfo;
+import tr.edu.yildiz.ce.model.ManagerInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 import tr.edu.yildiz.ce.model.SupporterRepInt;
@@ -47,6 +49,9 @@ public class MainController {
 
 	/*	@Autowired
 	private UniValidator uniValidator;*/
+	
+	@Autowired
+	private ManagerDAO managerDAO;
 	
 	@Autowired
 	private LocationDAO locationDAO;

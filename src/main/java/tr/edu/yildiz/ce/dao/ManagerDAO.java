@@ -14,5 +14,7 @@ public interface ManagerDAO {
     
     public List<ManagerInfo> listManagerInfosById(Integer userId);
     public List<ManagerInfo> listManagerInfos();
+    public List<ManagerInfo> listManagerInfosPagination(Integer offset, Integer maxResults);
+    public Long count();
 
 }

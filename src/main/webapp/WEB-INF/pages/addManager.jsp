@@ -29,7 +29,7 @@
       <div id="userRoleTab">
       <div class="container">
       		<div class="col-md-12">
-      		<div class="form"> <!-- for background transparent color -->
+      		<div class="form" style="max-width: 600px;"> <!-- for background transparent color -->
       		<!-- form -->
       			<form:form action="saveUserRole" method="POST" modelAttribute="userRoleForm">
 					<div class="form-group">
@@ -81,24 +81,26 @@
       		
       		<!-- TABLE <<< -->
       			<div class="panel panel-default">
-      				<div class="panel-heading">Kullanıcı ID ve Rolleri:</div>
+      				<div class="panel-heading">Mevcut Yöneticiler:</div>
       				<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      				<tr>
-					      	<th style="width: 10%;">ID</th>
+					      	<th style="width: 5%;">ID</th>
 					      	<th style="width: 20%;">Kullanıcı Adı</th>
-					      	<th style="width: 30%;">Rolü</th>
+					      	<th style="width: 30%;">Yer</th>
 					      	<th style="width: 10%;">Eylem</th>
 					    </tr>
-	      				<c:forEach items="${userRoleInfos }" var="data" varStatus="itr">
+	      				<c:forEach items="${managerInfos }" var="data" varStatus="itr">
 							<tr>
 						      <!--  <td>${data.id }</td> -->
 						      <td>${offset + itr.index +1 }</td>
 						      <td><c:forEach items="${userInfos }" var="data2">
         							<c:if test="${data2.id == data.userId }">${data2.username }</c:if>
        							</c:forEach></td>
-						      <td>${data.role }</td>
+						      <td><c:forEach items="${locInfos }" var="data3">
+        							<c:if test="${data3.id == data.locationId }">${data3.description }</c:if>
+       							</c:forEach></td>
 						      <td>
-						      	  <a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUserRole?id=${data.id}" role="button">Sil</a>
+						      	  <a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUserRole?id=${data.id}" role="button" onclick="confirmDelete()">Sil</a>
 							  </td>
 						    </tr>
 						</c:forEach>
@@ -114,5 +116,9 @@
      </div><!-- style padding -->
      <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>
-  	
+  	  	<script>
+		function confirmDelete() {
+		    confirm("Silmek istediğinize emin misiniz?");
+		}
+	</script>
 </html>
