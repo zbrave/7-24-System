@@ -12,4 +12,5 @@ public interface PassactivationDAO {
 	public void savePassactivation(Passactivation act);
 	public void deletePassactivation(Integer id);
 	public List<PassactivationInfo> listPassactivations();
+	void deletePassactivationWithUser(Integer id);
 }

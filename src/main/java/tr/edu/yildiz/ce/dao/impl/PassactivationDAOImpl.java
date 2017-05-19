@@ -88,6 +88,14 @@ public class PassactivationDAOImpl implements PassactivationDAO {
 		}
 	}
 	
+	@Override
+	public void deletePassactivationWithUser(Integer id) {
+		Passactivation act = this.findPassactivationWithUser(id);
+		if(act!=null){
+			this.sessionFactory.getCurrentSession().delete(act);
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PassactivationInfo> listPassactivations() {

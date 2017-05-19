@@ -113,6 +113,7 @@ public class UserController {
 			user.setPassword(encoder.encode(userInfo.getPassword()));
 			userDAO.saveUser(user);
 			model.addAttribute("msg", "Şifreniz değiştirildi.");
+			passactivationDAO.deletePassactivationWithUser(userInfo.getId());
 		}
 		return "loginPage";
 	}

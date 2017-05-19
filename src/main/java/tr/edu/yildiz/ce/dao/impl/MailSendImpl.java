@@ -1,8 +1,11 @@
 package tr.edu.yildiz.ce.dao.impl;
 
+import java.util.Properties;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import tr.edu.yildiz.ce.dao.MailSend;
 
@@ -20,4 +23,7 @@ public class MailSendImpl implements MailSend {
         System.out.println("to: "+to+subject+text);
         emailSender.send(message);
     }
+	 
+	
+	
 }
