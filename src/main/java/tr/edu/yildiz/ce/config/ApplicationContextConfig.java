@@ -29,6 +29,7 @@ import tr.edu.yildiz.ce.dao.LocationDAO;
 import tr.edu.yildiz.ce.dao.MailSend;
 import tr.edu.yildiz.ce.dao.ManagerDAO;
 import tr.edu.yildiz.ce.dao.NotificationDAO;
+import tr.edu.yildiz.ce.dao.PassactivationDAO;
 import tr.edu.yildiz.ce.dao.SupportTypeDAO;
 import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
@@ -40,6 +41,7 @@ import tr.edu.yildiz.ce.dao.impl.LocationDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.MailSendImpl;
 import tr.edu.yildiz.ce.dao.impl.ManagerDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.NotificationDAOImpl;
+import tr.edu.yildiz.ce.dao.impl.PassactivationDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.SupportTypeDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.SupporterDAOImpl;
 import tr.edu.yildiz.ce.dao.impl.UserDAOImpl;
@@ -116,6 +118,11 @@ public class ApplicationContextConfig {
   @Bean(name = "ManagerDAO")
   public ManagerDAO getManagerDAO() {
 	  return new ManagerDAOImpl();
+  }
+  
+  @Bean(name = "PassactivationDAO")
+  public PassactivationDAO getPassactivationDAO() {
+	  return new PassactivationDAOImpl();
   }
   
   @Bean(name = "mailSend")

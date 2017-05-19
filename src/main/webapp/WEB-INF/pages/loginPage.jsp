@@ -72,7 +72,7 @@
 								</label>
 								<input type="password" id="password" name='password'/>
 							</div>
-							<p class="forgot"><a href="#">Şifremi Unuttum?</a></p>
+							<p class="forgot"><a href="${pageContext.request.contextPath}/mailForgot">Şifremi Unuttum?</a></p>
 							<button class="button button-block" type="submit" name="go">Giriş Yap</button>
 						</form>
 					</div>

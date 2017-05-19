@@ -74,7 +74,7 @@ public class ComplaintController {
 			e.printStackTrace();
 		}
 		System.out.println(complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getComplainantUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getFile());
-		this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText(), complaintInfo.getParentId());
+		this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText(), complaintInfo.getParentId(),complaintInfo.getComplaintFile());
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
@@ -149,7 +149,7 @@ public class ComplaintController {
 			e.printStackTrace();
 		}
 		System.out.println("detay: "+complaintInfo.getId()+" "+complaintInfo.getSupportUserId()+" "+complaintInfo.getResponseText());
-		this.complaintDAO.endComplaint(complaintInfo.getId(),complaintInfo.getResponseText());
+		this.complaintDAO.endComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),complaintInfo.getResponseFile());
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
@@ -394,7 +394,7 @@ public class ComplaintController {
 			e.printStackTrace();
 		}
 		System.out.println("detay: "+complaintInfo.getId()+" "+complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getSupportUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getResponseText()+" "+complaintInfo.isEnded());
-		this.complaintDAO.transferComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),complaintInfo.getLocationId(),complaintInfo.getSupportTypeId(),complaintInfo.getComplaintText(),complaintInfo.isEnded());
+		this.complaintDAO.transferComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),complaintInfo.getLocationId(),complaintInfo.getSupportTypeId(),complaintInfo.getComplaintText(),complaintInfo.isEnded(),complaintInfo.getComplaintFile(),complaintInfo.getResponseFile());
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope

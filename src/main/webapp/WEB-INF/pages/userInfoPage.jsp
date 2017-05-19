@@ -23,65 +23,30 @@
 <body>
 	<%@include file="navbar2.jsp" %>	
  
- 	<c:if test="${not empty message}">
-    	<h1>Message : ${message}</h1>
-    </c:if>
-    
-    <!-- Complaint set -->
-    <div class="container">
-      	<div class="row justify-content-center">
-      		<div class="col-md-6 offset-md-3">
-      			<div class="form"> <!-- for background transparent color -->
-      				<form:form action="saveComplaint" method="POST" modelAttribute="complaintForm">
-						<div class="form-group">
-						
-							<div class="input-group">
-								<input id="id" name="id" type="hidden" value=""/>
-								<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konumu:&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</span>	 			
-						   		<select id="locationId" class="form-control" name="locationId" >
-						   			<c:forEach items="${locationInfos }" var="data">
-						        		<option id="${data.id }" value="${data.id }">${data.description }</option>
-						        	</c:forEach>
-						        </select>
-					    	</div>
-					    	
-					    	<div class="input-group">
-						    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Destek Personeli Tipi:</span>         
-						        <select id="supportTypeId" class="form-control" name="supportTypeId" >
-							        <c:forEach items="${supportTypeInfos }" var="data">
-							        	<option id="${data.id }" value="${data.id }">${data.type }</option>
-							        </c:forEach>
-						        </select>
-					        </div>
-					        
-					        <div class="input-group">
-					        	<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i> Şikayeti gönderen(id):</span>
-					        	<input id="complainantUserId" class="form-control" name="complainantUserId" value="${userInfo.id }" />
-					        </div>
-					        
-					        <div class="input-group">
-					        	<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i> Şikayet ile ilgili açıklama:</span>
-					        	<textarea id="complaintText" class="form-control" name="complaintText" rows="5"></textarea>
-					        </div>
-							
-							<div class="input-group">
-							  	<span class="input-group-addon" ><i class="glyphicon glyphicon-paperclip"></i> Ek:</span>
-							  	<input type="file" class="form-control" placeholder="Resim veya video ekleyebilirsiniz">
-							</div>
-							</br>
-					        <button type="submit" class="button button-block" value="Ekle" > Ekle</button>
-			        		</br>
-				        	<c:if test="${not empty compMsg}">
-						   		<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsg}
-						   		</div>
-							</c:if>
-							
-				       </div>
-      				</form:form>
-      			</div>
-      		</div>
-      	</div>
-      </div>
+ 	Kullanıcı adı: ${userInfo.username }
+ 	E-mail: ${userInfo.email }
+ 	Şifre : ${userInfo.password }
+ 	Yapılan toplam şikayet : 
+ 	<form:form action="changePass" method="POST" modelAttribute="userForm">
+		<div class="form-group">
+			<div class="input-group">
+				<input id="id" name="id" type="hidden" value=""/>
+				<span class="input-group-addon">Şifre:</span>
+							<input id="password" name="password" type="password" />
+     				</div>
+     				<div class="input-group">
+				<input id="id" name="id" type="hidden" value=""/>
+				<span class="input-group-addon">Şifre tekrar:</span>
+							<input id="passwordConf" name="passwordConf" type="password" />
+     				</div>
+ 					<div class="input-group">
+ 					
+		        <span class="input-group-btn">
+     						<button type="submit" class="btn btn-default" value="Ekle" >Değiştir</button>
+     					</span>
+       				</div>
+       			</div> <!-- form-group -->
+    </form:form>
 </body>
 	
 </html>

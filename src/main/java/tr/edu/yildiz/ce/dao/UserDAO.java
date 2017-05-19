@@ -19,4 +19,5 @@ public interface UserDAO {
     public List<UserInfo> reportSupportUserInfos();
     public List<UserInfo> listUserInfosPagination(Integer offset, Integer maxResults);
     public Long count();
+	UserInfo findLoginUserInfoWithEmail(String username);
 }

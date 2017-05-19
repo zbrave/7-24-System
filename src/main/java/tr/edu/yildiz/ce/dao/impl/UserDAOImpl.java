@@ -141,6 +141,18 @@ public class UserDAOImpl implements UserDAO {
         }
         return new UserInfo(user.getId(),user.getEmail(),user.getUsername(),user.getPassword(),user.isEnabled());
 	}
+	
+	@Override
+	public UserInfo findLoginUserInfoWithEmail(String email) {
+		Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(User.class);
+        crit.add(Restrictions.eq("email", email));
+        User user = (User) crit.uniqueResult();
+        if (user == null) {
+            return null;
+        }
+        return new UserInfo(user.getId(),user.getEmail(),user.getUsername(),user.getPassword(),user.isEnabled());
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

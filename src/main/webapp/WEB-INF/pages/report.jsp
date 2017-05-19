@@ -340,8 +340,8 @@ function getalldata2(id,id2,id3,id4,id5) {
 				      		<td>${data.locationInfo.description }</td>
 				      		<td>${data.supportTypeInfo.type }</td>
 				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 1)">${data.total }</td>
-				      		<td>${data.avgAwarenessTime/3600000 }</td>
-				      		<td>${data.avgResponseTime/3600000 }</td>
+				      		<td><fmt:formatNumber value="${data.avgAwarenessTime/3600000 }" minFractionDigits="0" maxFractionDigits="2"/></td>
+				      		<td><fmt:formatNumber value="${data.avgResponseTime/3600000 }" minFractionDigits="0" maxFractionDigits="2"/></td>
 				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 2)">${data.waitingAck }</td>
 				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 5)">${data.active }</td>
 				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 4)">${data.waitingChild }</td>
