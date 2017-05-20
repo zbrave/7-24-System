@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/admin", "/addManager", "/adminPage", "/listCompProcess", "/location", "/supporterEdit", "/supporterTypeEdit", "/users", "/userRoleEdit", "/banUser", "/supporterTypeEdit", "/report").access("hasAnyRole('ROLE_ADMIN')");
         http.authorizeRequests().antMatchers("/manager", "/assignComplaint", "/transferComplaint", "/unifyComplaints", "/endComplaint", "/listCompProcess", "/reportedComplaints", "/savedComplaint", "/banUser" ).access("hasAnyRole('ROLE_ADMIN' , 'ROLE_MANAGER')");
         http.authorizeRequests().antMatchers("/supporter", "/endComplaint", "/transferComplaint", "/supporterAck", "/supporterPast").access("hasAnyRole('ROLE_SUPPORT' , 'ROLE_MANAGER')");
-        http.authorizeRequests().antMatchers("/", "/welcome", "/userInfo", "/complaintPage").access("hasAnyRole('ROLE_USER' , 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SUPPORT')");
+        http.authorizeRequests().antMatchers("/", "/welcome", "/userInfo","/listCompProcess", "/complaintPage").access("hasAnyRole('ROLE_USER' , 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SUPPORT')");
 //        http.authorizeRequests().antMatchers("/", "/welcome", "/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
         // For ADMIN only.
 //        http.authorizeRequests().antMatchers("/admin").access("hasRole('ROLE_ADMIN')");

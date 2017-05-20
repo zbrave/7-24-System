@@ -48,6 +48,7 @@
 			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
+			      	<td>${data.percentReported }</td>
 			    </tr>
 			</c:forEach>
       	</table>
@@ -66,6 +67,11 @@
 		  <div class="progress-bar progress-bar-info progress-bar-striped" style="width: ${data.percentResponse }%">
 		    <span class="sr-only">${data.percentResponse }% Complete (response)</span><a href="#myModal${data.id}" data-toggle="modal">
 		    <fmt:formatNumber value="${data.percentResponse }" minFractionDigits="0" maxFractionDigits="0"/>%
+		    </a>
+		  </div>
+		  <div class="progress-bar progress-bar-success progress-bar-striped" style="width: ${data.percentReported }%">
+		    <span class="sr-only">${data.percentReported }% Complete (reported)</span><a href="#myModal${data.id}" data-toggle="modal">
+		    <fmt:formatNumber value="${data.percentReported }" minFractionDigits="0" maxFractionDigits="0"/>%
 		    </a>
 		  </div>
 		  </c:forEach>

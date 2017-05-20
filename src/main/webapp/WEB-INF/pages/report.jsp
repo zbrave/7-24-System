@@ -209,6 +209,15 @@ function getalldata2(id,id2,id3,id4,id5) {
 						            <th>Destek tipi</th>
 						            <th>Sorumlu kişi</th>
 						            <th>Kayıt tarihi</th>
+						            <th>Şikayet açıklaması</th>
+						            <th>Şikayet eden kişi</th>
+						            <th>Çözüm tarihi</th>
+						            <th>Çözüm açıklaması</th>
+						            <th>Farkedilme tarihi</th>
+						            <th>Atanma Zamanı</th>
+						            <th>Çözüldü mü</th>
+						            <th>Kabul edildi mi</th>
+						            <th>Raporlandı mı</th>
 						            <th>Eylem</th>
 						        </tr>
 						 </thead>
@@ -272,6 +281,15 @@ function getalldata2(id,id2,id3,id4,id5) {
 				            <th>Destek tipi</th>
 				            <th>Sorumlu kişi</th>
 				            <th>Kayıt tarihi</th>
+				            <th>Şikayet açıklaması</th>
+				            <th>Şikayet eden kişi</th>
+				            <th>Çözüm tarihi</th>
+				            <th>Çözüm açıklaması</th>
+				            <th>Farkedilme tarihi</th>
+				            <th>Atanma Zamanı</th>
+				            <th>Çözüldü mü</th>
+				            <th>Kabul edildi mi</th>
+				            <th>Raporlandı mı</th>
 				            <th>Eylem</th>
 				        </tr>
 				    </thead>
@@ -362,6 +380,15 @@ function getalldata2(id,id2,id3,id4,id5) {
 	            <th>Destek tipi</th>
 	            <th>Sorumlu kişi</th>
 	            <th>Kayıt tarihi</th>
+	            <th>Şikayet açıklaması</th>
+	            <th>Şikayet eden kişi</th>
+				            <th>Çözüm tarihi</th>
+				            <th>Çözüm açıklaması</th>
+				            <th>Farkedilme tarihi</th>
+				            <th>Atanma Zamanı</th>
+				            <th>Çözüldü mü</th>
+				            <th>Kabul edildi mi</th>
+				            <th>Rapolandı mı</th>
 	            <th>Eylem</th>
 	        </tr>
 	    </thead>

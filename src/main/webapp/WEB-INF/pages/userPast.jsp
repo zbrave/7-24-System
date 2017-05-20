@@ -55,6 +55,7 @@
 			      	<td>${data.complaintText }</td>
 			      	<td>${data.responseTime }</td>
 			      	<td>${data.responseText }</td>
+			      	<td><a href="listCompProcess?id=${data.id }" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> Şikayet geçmişi</a></td>
 			    </tr>
 			</c:forEach>
       	</table>
