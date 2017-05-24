@@ -54,26 +54,33 @@
       	</table>
       	<div class="progress">
       	<c:forEach items="${tree }" var="data">
+      		<c:if test = "${data.percentReported > 0}">
+		  <div class="progress-bar progress-bar-success progress-bar-striped" style="width: ${data.percentReported }%">
+		    <span class="sr-only">${data.percentReported }% Complete (reported)</span>
+		    <fmt:formatNumber value="${data.percentReported }" minFractionDigits="0" maxFractionDigits="0"/>%
+		  </div>
+		  </c:if>
+		  <c:if test = "${data.percentAssign > 0}">
 		  <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: ${data.percentAssign }%">
 		    <span class="sr-only">${data.percentAssign }% Complete (assign)</span><a href="#myModal${data.id}" data-toggle="modal">
 		    <fmt:formatNumber value="${data.percentAssign }" minFractionDigits="0" maxFractionDigits="0"/>% 
 		    </a>
 		  </div>
+		  </c:if>
+		  <c:if test = "${data.percentAck > 0}">
 		  <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: ${data.percentAck }%">
 		    <span class="sr-only">${data.percentAck }% Complete (ack)</span><a href="#myModal${data.id}" data-toggle="modal">
 		    <fmt:formatNumber value="${data.percentAck }" minFractionDigits="0" maxFractionDigits="0"/>% 
 		    </a>
 		  </div>
+		  </c:if>
+		  <c:if test = "${data.percentResponse > 0}">
 		  <div class="progress-bar progress-bar-info progress-bar-striped" style="width: ${data.percentResponse }%">
 		    <span class="sr-only">${data.percentResponse }% Complete (response)</span><a href="#myModal${data.id}" data-toggle="modal">
 		    <fmt:formatNumber value="${data.percentResponse }" minFractionDigits="0" maxFractionDigits="0"/>%
 		    </a>
 		  </div>
-		  <div class="progress-bar progress-bar-success progress-bar-striped" style="width: ${data.percentReported }%">
-		    <span class="sr-only">${data.percentReported }% Complete (reported)</span><a href="#myModal${data.id}" data-toggle="modal">
-		    <fmt:formatNumber value="${data.percentReported }" minFractionDigits="0" maxFractionDigits="0"/>%
-		    </a>
-		  </div>
+		  </c:if>
 		  </c:forEach>
 		</div>
    </div>
