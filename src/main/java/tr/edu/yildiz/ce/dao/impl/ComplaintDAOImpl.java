@@ -134,21 +134,22 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         crit.add(Restrictions.eq("complaintText", complaintText));
         crit.add(Restrictions.eq("complaintTime", complaintInfo.getComplaintTime()));
         Complaint complaint=(Complaint) crit.uniqueResult();
-        
-		NotificationInfo notificationInfo =new NotificationInfo();
-		notificationInfo.setUserId(complaint.getComplainantUserId());
-		notificationInfo.setComplaintId(complaint.getId());
-		notificationDAO.saveNotification(notificationInfo);
-		complaintInfo=findComplaintInfo(complaint.getId());
+        if(parentId==null){
+			NotificationInfo notificationInfo =new NotificationInfo();
+			notificationInfo.setUserId(complaint.getComplainantUserId());
+			notificationInfo.setComplaintId(complaint.getId());
+			notificationDAO.saveNotification(notificationInfo);
+			complaintInfo=findComplaintInfo(complaint.getId());
 		
-		String to=userDAO.findUserInfo(complainantUserId).getEmail();
-		String subject="Complaint Recorded";
-		String text="  Merhaba "+userDAO.findUserInfo(complainantUserId).getUsername()+",\n"+
-		"Location : "+locationDAO.findLocationInfo(locationId).getDescription()+",\n"+
-		"Support Type : "+supportTypeDAO.findSupportTypeInfo( supportTypeId).getType() + ",\n"+
-		"Complaint Text : "+complaintText+ ",\n"+
-		"Complaint Time : "+ dateNow.toString()+ ",\n";
-		mailSend.sendSimpleMessage(to, subject, text);
+			String to=userDAO.findUserInfo(complainantUserId).getEmail();
+			String subject="Complaint Recorded";
+			String text="  Merhaba "+userDAO.findUserInfo(complainantUserId).getUsername()+",\n"+
+					"Location : "+locationDAO.findLocationInfo(locationId).getDescription()+",\n"+
+					"Support Type : "+supportTypeDAO.findSupportTypeInfo( supportTypeId).getType() + ",\n"+
+					"Complaint Text : "+complaintText+ ",\n"+
+					"Complaint Time : "+ dateNow.toString()+ ",\n";
+			mailSend.sendSimpleMessage(to, subject, text);
+        }
 	}
 
 	@Override
@@ -297,7 +298,6 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 				String subject="Complaint Resulted";
 				String text="	Merhaba "+userDAO.findUserInfo(n.getUserId()).getUsername()+",\n"+past;
 				mailSend.sendSimpleMessage(to, subject, text);
-				notificationDAO.deleteNotification(n.getId());
 			}
 		}
 	}
@@ -441,18 +441,19 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		parentEnd=beginTime;
 		if(child.getResponseTime()!=null){
 			endTime=child.getResponseTime().getTime();
-			div=100;
 		}else{
 			endTime=new Date().getTime();
-			div=60;
 		}
+		div=100;
 		totalTime=endTime-beginTime;
+		long totalFinal=0;
+		long numOfPer=0;
 		for(ComplaintInfo com:complaintInfos){
 			long assign;
 			long ack;
 			long response;
 			long reported;
-			reported=parentEnd-com.getComplaintTime().getTime();
+			reported=com.getComplaintTime().getTime()-parentEnd;
 			if(com.getAssignTime()!=null){
 				assign=com.getAssignTime().getTime()-com.getComplaintTime().getTime();
 			}else{
@@ -469,11 +470,72 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 			}else{
 				response=0;
 			}
-			com.setPercentAssign((assign*div)/totalTime);
-			com.setPercentAck((ack*div)/totalTime);
-			com.setPercentResponse((response*div)/totalTime);
-			com.setPercentReported((reported*div)/totalTime);
-			
+			long assignFinal=(assign*div)/totalTime;
+			totalFinal+=assignFinal;
+			if(assignFinal!=0){
+				numOfPer++;
+			}
+			long ackFinal=(ack*div)/totalTime;
+			totalFinal+=ackFinal;
+			if(ackFinal!=0){
+				numOfPer++;
+			}
+			long responseFinal=(response*div)/totalTime;
+			totalFinal+=responseFinal;
+			if(responseFinal!=0){
+				numOfPer++;
+			}
+			long reportedFinal=(reported*div)/totalTime;
+			totalFinal+=reportedFinal;
+			if(reportedFinal!=0){
+				numOfPer++;
+			}
+			com.setPercentAssign(assignFinal);
+			com.setPercentAck(ackFinal);
+			com.setPercentResponse(responseFinal);
+			com.setPercentReported(reportedFinal);
+		}
+		if(totalFinal<100){
+			long inc=1+(100-totalFinal)/numOfPer;;
+			long amount=100-totalFinal;
+			for(ComplaintInfo com:complaintInfos){
+				if(com.getPercentAssign()!=0&&amount>0){
+					if(amount>inc){
+						com.setPercentAssign(com.getPercentAssign()+inc);
+						amount=amount-inc;
+					}else{
+						com.setPercentAssign(com.getPercentAssign()+amount);
+						amount=0;
+					}
+				}
+				if(com.getPercentAck()!=0&&amount>0){
+					if(amount>inc){
+						com.setPercentAck(com.getPercentAck()+inc);
+						amount=amount-inc;
+					}else{
+						com.setPercentAck(com.getPercentAck()+amount);
+						amount=0;
+					}
+				}
+				if(com.getPercentResponse()!=0&&amount>0){
+					if(amount>inc){
+						com.setPercentResponse(com.getPercentResponse()+inc);
+						amount=amount-inc;
+					}else{
+						com.setPercentResponse(com.getPercentResponse()+amount);
+						amount=0;
+					}
+				}
+				if(com.getPercentReported()!=0&&amount>0){
+					if(amount>inc){
+						com.setPercentReported(com.getPercentReported()+inc);
+						amount=amount-inc;
+					}else{
+						com.setPercentReported(com.getPercentReported()+amount);
+						amount=0;
+					}
+				}
+			}
 		}
 		return complaintInfos;
 	}
@@ -708,7 +770,9 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		List<Complaint> complaints = (List<Complaint>)crit.list();
 		List<ComplaintInfo> complaintInfos =new ArrayList<ComplaintInfo>();
         for(Complaint c:complaints){
-        	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        	if(c.getChildId()==null){
+            	complaintInfos.add((ComplaintInfo)findComplaintInfo(c.getId()));
+        	}
         	if(notificationComplaintIds.contains(c.getId())){
         		notificationComplaintIds.remove(c.getId());
         	}
