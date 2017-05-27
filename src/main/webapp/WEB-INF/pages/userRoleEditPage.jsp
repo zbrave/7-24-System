@@ -14,12 +14,14 @@
 	<spring:url value="/resources/ico724.png" var="ico" />
 	<spring:url value="/resources/js/jquery.min.js" var="jqueryJS" />
 	<spring:url value="/resources/js/bootstrap.min.js" var="bootstrapJS" />
+	<spring:url value="/resources/js/bootstrap-confirmation.js" var="bootstrapConfirmationJS" />
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 	<link href="${bootstrapCSS}" rel="stylesheet" />
 	<link href="${bootstrapThemeCSS}" rel="stylesheet" />
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>
+	<script src="${bootstrapConfirmationJS}"></script>
 	<title>7/24 Servisi | Kullanıcı Rolü Yönetimi</title>
 </head>
 <body>
@@ -35,7 +37,7 @@
 					<div class="form-group">
 						<div class="input-group">
 							<input id="id" name="id" type="hidden" value=""/>
-							<span class="input-group-addon">Kullanıcı:</span>
+							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i> Kullanıcı:</span>
    							<select id="userId" class="form-control" name="userId" >
    								<option id="" value="">Seçin.</option>
    								<c:forEach items="${userInfos }" var="data">
@@ -44,7 +46,7 @@
         					</select>
         				</div>
     					<div class="input-group">
-    						<span class="input-group-addon">Rolü: &ensp;&ensp;&ensp;</span>
+    						<span class="input-group-addon"><i class="glyphicon glyphicon-briefcase"></i> Rolü: &ensp;&ensp;&ensp;</span>
 					        <select id="role" class="form-control" name="role" >
 					        	<option value="ADMIN">ADMIN</option>
 					        	<option value="USER">USER</option>
@@ -83,14 +85,16 @@
 					    </tr>
 	      				<c:forEach items="${userRoleInfos }" var="data" varStatus="itr">
 							<tr>
-						      <td>${offset + itr.index +1 }</td>
-						      <!--  <td>${data.id }</td> -->
+						      <td>${data.id }</td>
 						      <td><c:forEach items="${userInfos }" var="data2">
         							<c:if test="${data2.id == data.userId }">${data2.username }</c:if>
        							</c:forEach></td>
 						      <td>${data.role }</td>
 						      <td>
-						      	  <a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUserRole?id=${data.id}" role="button" onclick="confirmDelete()">Sil</a>
+						      	  <a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUserRole?id=${data.id}" 
+						      		data-toggle="confirmation" data-btn-ok-label="Onaylıyorum" data-btn-ok-icon="glyphicon glyphicon-share-alt"
+        							data-btn-ok-class="btn-success" data-btn-cancel-label="Hayır" data-btn-cancel-icon="glyphicon glyphicon-ban-circle"
+        							data-btn-cancel-class="btn-danger" data-title="Silmeyi onaylıyor musunuz?">Sil</a>
 							  </td>
 						    </tr>
 						</c:forEach>
@@ -106,9 +110,10 @@
      </div><!-- style padding -->
      <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>
-  	<script>
-		function confirmDelete() {
-		    confirm("Silmek istediğinize emin misiniz?");
-		}
+  	 <script>
+  	  	$('[data-toggle=confirmation]').confirmation({
+  	  	  rootSelector: '[data-toggle=confirmation]',
+  	  	  // other options
+  	  	});
 	</script>
 </html>

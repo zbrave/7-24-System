@@ -25,6 +25,7 @@ import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
+import tr.edu.yildiz.ce.model.SupportTypeInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
 
@@ -60,9 +61,10 @@ public class SupporterController {
 	private MailSend mailSend;
 	
 	@RequestMapping(value = "/supporter", method = RequestMethod.GET)
-	public String supporter(Model model, Principal principal) {
-		
-		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForSupport(userDAO.findLoginUserInfo(principal.getName()).getId());
+	public String supporter(Model model, Principal principal, Integer offset, Integer maxResults) {
+		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForSupportPagination(userDAO.findLoginUserInfo(principal.getName()).getId(),offset, maxResults);
+		model.addAttribute("count", complaintDAO.countComplaintInfosForSupportPagination(userDAO.findLoginUserInfo(principal.getName()).getId()));
+		model.addAttribute("offset", offset);
 		for (ComplaintInfo l : list) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
@@ -73,9 +75,10 @@ public class SupporterController {
 	}
 	
 	@RequestMapping(value = "/supporterAck", method = RequestMethod.GET)
-	public String supporterAck(Model model, Principal principal) {
-		
-		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForSupportAck(userDAO.findLoginUserInfo(principal.getName()).getId());
+	public String supporterAck(Model model, Principal principal, Integer offset, Integer maxResults) {
+		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForSupportAckPagination(userDAO.findLoginUserInfo(principal.getName()).getId(),offset, maxResults);
+		model.addAttribute("count", complaintDAO.countComplaintInfosForSupportAckPagination(userDAO.findLoginUserInfo(principal.getName()).getId()));
+		model.addAttribute("offset", offset);
 		for (ComplaintInfo l : list) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
@@ -86,8 +89,10 @@ public class SupporterController {
 	}
 	
 	@RequestMapping(value = "/supporterPast", method = RequestMethod.GET)
-	public String supporterPast(Model model, Principal principal) {
-		List<ComplaintInfo> list = complaintDAO.listEndedComplaintInfos(null, null, null, userDAO.findLoginUserInfo(principal.getName()).getId());
+	public String supporterPast(Model model, Principal principal, Integer offset, Integer maxResults) {
+		List<ComplaintInfo> list = complaintDAO.listEndedComplaintInfosPagination(null, null, null, userDAO.findLoginUserInfo(principal.getName()).getId(),offset,maxResults);
+		model.addAttribute("count", complaintDAO.countListEndedComplaintInfosPagination(null, null, null, userDAO.findLoginUserInfo(principal.getName()).getId()));
+		model.addAttribute("offset", offset);
 		for (ComplaintInfo l : list) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
@@ -162,10 +167,11 @@ public class SupporterController {
 	@RequestMapping(value = "/deleteSupporter", method = RequestMethod.GET)
 	public String deleteSupporter(Model model, @RequestParam(value = "id") Integer id, final RedirectAttributes redirectAttributes) {
 		if (id == null) {
+			redirectAttributes.addFlashAttribute("supMsgError", "Destek silinemedi.");
 			return "redirect:/supporterEdit";
 		}
 		this.supporterDAO.deleteSupporter(id);
-		redirectAttributes.addFlashAttribute("message", "Destek silindi.");
+		redirectAttributes.addFlashAttribute("supMsgSuccess", "Destek silindi.");
 		return "redirect:/supporterEdit";
 	}
 }

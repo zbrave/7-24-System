@@ -142,7 +142,7 @@ public class ComplaintController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("compMsg", "Hatalı giriş.");
+			model.addAttribute("compMsgError", "Hatalı giriş.");
 			System.out.println("Hata!");
 		}
 		String decodedToUTF8;
@@ -158,7 +158,7 @@ public class ComplaintController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("compMsg", "Şikayet kapatıldı.");
+		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet kapatıldı.");
 
 //		return "redirect:/deptList";
 		if (userRoleDAO.getUserRoles(userDAO.findLoginUserInfo(principal.getName()).getId()).contains("MANAGER")) {
@@ -368,7 +368,7 @@ public class ComplaintController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("compMsg", "Hatalı giriş.");
+			model.addAttribute("compMsgError", "Hatalı giriş.");
 			System.out.println("Hata!");
 		}
 		
@@ -376,7 +376,7 @@ public class ComplaintController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("compMsg", "Şikayet atandı.");
+		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet atandı.");
 
 //		return "redirect:/deptList";
 		return "redirect:/assignComplaints";
@@ -389,7 +389,7 @@ public class ComplaintController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("compMsg", "Hatalı giriş.");
+			model.addAttribute("compMsgError", "Hatalı giriş.");
 			System.out.println("Hata!");
 		}
 		String decodedToUTF8;
@@ -408,7 +408,7 @@ public class ComplaintController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("compMsg", "Şikayet yönlendirildi.");
+		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet yönlendirildi.");
 
 //		return "redirect:/deptList";
 		if (userRoleDAO.getUserRoles(userDAO.findLoginUserInfo(principal.getName()).getId()).contains("MANAGER")) {

@@ -62,10 +62,11 @@ public class SupportTypeController {
 	@RequestMapping(value = "/deleteSupportType", method = RequestMethod.GET)
 	public String deleteSupportType(Model model, @RequestParam(value = "id") Integer id, final RedirectAttributes redirectAttributes) {
 		if (id == null) {
+			redirectAttributes.addFlashAttribute("supTypeMsgError", "Destek tipi silinemedi.");
 			return "redirect:/supporterTypeEdit";
 		}
 		this.supportTypeDAO.deleteSupportType(id);
-		redirectAttributes.addFlashAttribute("message", "Destek tipi silindi.");
+		redirectAttributes.addFlashAttribute("supTypeMsgSuccess", "Destek tipi silindi.");
 		return "redirect:/supporterTypeEdit";
 	}
 }

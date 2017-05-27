@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +20,7 @@ import tr.edu.yildiz.ce.dao.SupporterDAO;
 import tr.edu.yildiz.ce.dao.NotificationDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.entity.Complaint;
+import tr.edu.yildiz.ce.entity.User;
 import tr.edu.yildiz.ce.model.ComplaintInfo;
 import tr.edu.yildiz.ce.model.LocSupTypeInt;
 import tr.edu.yildiz.ce.model.LocationInfo;
@@ -26,6 +28,7 @@ import tr.edu.yildiz.ce.model.ManagerInfo;
 import tr.edu.yildiz.ce.model.NotificationInfo;
 import tr.edu.yildiz.ce.model.SupportTypeInfo;
 import tr.edu.yildiz.ce.model.SupporterInfo;
+import tr.edu.yildiz.ce.model.UserInfo;
 
 public class ComplaintDAOImpl implements ComplaintDAO {
 	
@@ -399,6 +402,25 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<ComplaintInfo> listComplaintInfosForSupportPagination(Integer userId,Integer offset, Integer maxResults) {
+		List<ComplaintInfo> fullList=listComplaintInfosForSupport(userId);
+        List<ComplaintInfo> offsetList=new ArrayList<ComplaintInfo>();
+        maxResults = maxResults!=null?maxResults:10;
+        offset = (offset!=null?offset:0);
+        for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+        	offsetList.add(fullList.get(offset+i));
+        }
+        return offsetList;
+	}
+	
+	@Override
+	public Long countComplaintInfosForSupportPagination(Integer userId) {
+		List<ComplaintInfo> fullList=listComplaintInfosForSupport(userId);
+        return Integer.toUnsignedLong(fullList.size()) ;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<ComplaintInfo> listComplaintInfosForSupportAck(Integer userId) {
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Complaint.class);
@@ -413,6 +435,27 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
         return complaintInfos;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listComplaintInfosForSupportAckPagination(Integer userId,Integer offset, Integer maxResults) {
+		List<ComplaintInfo> fullList=listComplaintInfosForSupportAck(userId);
+        List<ComplaintInfo> offsetList=new ArrayList<ComplaintInfo>();
+        maxResults = maxResults!=null?maxResults:10;
+        offset = (offset!=null?offset:0);
+        for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+        	offsetList.add(fullList.get(offset+i));
+        }
+        return offsetList;
+	}
+	
+	@Override
+	public Long countComplaintInfosForSupportAckPagination(Integer userId) {
+		List<ComplaintInfo> fullList=listComplaintInfosForSupportAck(userId);
+        return Integer.toUnsignedLong(fullList.size()) ;
+	}
+	
+	
 	@Override
 	public List<ComplaintInfo> listComplaintProcess(Integer id) {
 		ComplaintInfo c=this.findComplaintInfo(id);
@@ -573,6 +616,26 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
         return complaintInfos;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listComplaintInfosForAssignmentPagination(Integer userId,Integer offset, Integer maxResults){
+		List<ComplaintInfo> fullList=listComplaintInfosForAssignment( userId);
+	    List<ComplaintInfo> offsetList=new ArrayList<ComplaintInfo>();
+	    maxResults = maxResults!=null?maxResults:10;
+	    offset = (offset!=null?offset:0);
+	    for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+	    	offsetList.add(fullList.get(offset+i));
+	    }
+	    return offsetList;
+	}
+	
+	@Override
+	public Long countListComplaintInfosForAssignmentPagination(Integer userId){
+		List<ComplaintInfo> fullList=listComplaintInfosForAssignment( userId);
+		return Integer.toUnsignedLong(fullList.size()) ;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ComplaintInfo> listReportedComplaintInfosForManager(Integer userId) {
@@ -606,7 +669,26 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         }
         return complaintInfos;
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listReportedComplaintInfosForManagerPagination(Integer userId,Integer offset, Integer maxResults){
+		List<ComplaintInfo> fullList=listReportedComplaintInfosForManager( userId);
+	    List<ComplaintInfo> offsetList=new ArrayList<ComplaintInfo>();
+	    maxResults = maxResults!=null?maxResults:10;
+	    offset = (offset!=null?offset:0);
+	    for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+	    	offsetList.add(fullList.get(offset+i));
+	    }
+	    return offsetList;
+	}
+	
+	@Override
+	public Long countListReportedComplaintInfosForManagerPagination(Integer userId){
+		List<ComplaintInfo> fullList=listReportedComplaintInfosForManager( userId);
+		return Integer.toUnsignedLong(fullList.size()) ;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ComplaintInfo> listActiveComplaintInfosForUnification(Integer id) {
@@ -739,6 +821,24 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		}
 		return retComplaintInfos;
 	}
+	
+	@Override
+	public List<ComplaintInfo> listEndedComplaintInfosPagination(Integer locationId, Integer supportTypeId,Integer supporterId,Integer supportUserId,Integer offset, Integer maxResults) {
+		List<ComplaintInfo> fullList=listEndedComplaintInfos( locationId,  supportTypeId, supporterId, supportUserId);
+        List<ComplaintInfo> offsetList=new ArrayList<ComplaintInfo>();
+        maxResults = maxResults!=null?maxResults:10;
+        offset = (offset!=null?offset:0);
+        for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+        	offsetList.add(fullList.get(offset+i));
+        }
+        return offsetList;
+	}
+	
+	@Override
+	public Long countListEndedComplaintInfosPagination(Integer locationId, Integer supportTypeId,Integer supporterId,Integer supportUserId) {
+		List<ComplaintInfo> fullList=listEndedComplaintInfos( locationId,  supportTypeId, supporterId, supportUserId);
+        return Integer.toUnsignedLong(fullList.size()) ;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -850,4 +950,25 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 		}
 		return list;
 	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComplaintInfo> listComplaintInfosByComplainantUserIdPagination(Integer complainantUserId,Integer offset, Integer maxResults) {
+		List<ComplaintInfo> fullList=listComplaintInfosByComplainantUserId( complainantUserId);
+	    List<ComplaintInfo> offsetList=new ArrayList<ComplaintInfo>();
+	    maxResults = maxResults!=null?maxResults:10;
+	    offset = (offset!=null?offset:0);
+	    for(int i=0; i<maxResults && offset+i<fullList.size(); i++){
+	    	offsetList.add(fullList.get(offset+i));
+	    }
+	    return offsetList;
+	}
+	
+	@Override
+	public Long countListComplaintInfosByComplainantUserIdPagination(Integer complainantUserId){
+		List<ComplaintInfo> fullList=listComplaintInfosByComplainantUserId( complainantUserId);
+		return Integer.toUnsignedLong(fullList.size()) ;
+	}
+
 }

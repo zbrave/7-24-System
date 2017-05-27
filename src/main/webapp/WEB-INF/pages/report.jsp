@@ -80,35 +80,32 @@ function getalldata2(id,id2,id3,id4,id5) {
     <%@include file="navbar2.jsp" %>	
  	<link href="${tabStyleCSS}" rel="stylesheet" />
     
-  <div style="padding:50px;">
+  <div style="padding:30px;">
     <!-- *******  TAB MENU   ******* -->
  	<ul class="nav nav-tabs">
  		<li role="presentation">
- 			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#locationServiceComplaints').show(); $('#supportPersonnelDensity').hide()">
+ 			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#allDepartmentStatisticsCHILD').hide(); $('#locationServiceComplaints').show(); $('#supportPersonnelDensity').hide();$('#supportPersonnelDensityCHILD').hide()">
  				Konum/Hizmet tipi şikayetleri
  			</a>
  		</li>
   		<li role="presentation">
-  			<a href="#" onclick="$('#allDepartmentStatistics').show(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').hide()">
+  			<a href="#" onclick="$('#allDepartmentStatistics').show(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').hide(); $('#supportPersonnelDensityCHILD').hide()">
   			Tüm bölümlerin şikayet istatistikleri
   			</a>
   		</li>
   		<li role="presentation">
-  			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').show()">
+  			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#allDepartmentStatisticsCHILD').hide(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').show();">
   		Personel şikayet yoğunluğu
   			</a>
   		</li>
 	</ul>
 	<!-- *******  TAB MENU END HERE   ******* -->
 	
- 	</br>
  	
  	<!---- Tüm bölümlerin şikayet istatistikleri ---->
  	<div class="collapse" id="allDepartmentStatistics">
-      <div class="container">
-      	<div class="row justify-content-center">
       		<div class="col-md-12">
-      			<div class="form" style="max-width: 900px;"> <!-- for background transparent color -->
+      			<div class="form" style="max-width: 1300px;"> <!-- for background transparent color -->
       				<div class="input-group">
 		    			<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konum</span>         
 		        		<select id="loc2" class="form-control" name="loc2" >
@@ -152,31 +149,31 @@ function getalldata2(id,id2,id3,id4,id5) {
 						      		<td>${data.locationInfo.description }</td>
 						      		<td>${data.supportTypeInfo.type }</td>
 						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 1)">
-						      			<c:if test="${data.total != 0 }"><a data-toggle="modal" data-target="#childTable"> <!--  onclick="$('#tab').show();"--> ${data.total }</a></c:if>
+						      			<c:if test="${data.total != 0 }"><a onclick="$('#allDepartmentStatisticsCHILD').show();" > ${data.total }</a></c:if>
 						      			<c:if test="${data.total == 0 }">${data.total }</c:if>
 						      		</td>
 						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 2)">
-						      			<c:if test="${data.waitAck != 0 }"><a data-toggle="modal" data-target="#childTable">${data.waitAck }</a></c:if>
+						      			<c:if test="${data.waitAck != 0 }"><a onclick="$('#allDepartmentStatisticsCHILD').show();" >${data.waitAck }</a></c:if>
 						      			<c:if test="${data.waitAck == 0 }">${data.waitAck }</c:if>
 						      		</td>
 						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 3)">
-						      			<c:if test="${data.waitAsg != 0 }"><a data-toggle="modal" data-target="#childTable">${data.waitAsg }</a></c:if>
+						      			<c:if test="${data.waitAsg != 0 }"><a onclick="$('#allDepartmentStatisticsCHILD').show();" >${data.waitAsg }</a></c:if>
 						      			<c:if test="${data.waitAsg == 0 }">${data.waitAsg }</c:if>
 						      		</td>
 						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 4)">
-						      			<c:if test="${data.waitChild != 0 }"><a data-toggle="modal" data-target="#childTable">${data.waitChild }</a></c:if>
+						      			<c:if test="${data.waitChild != 0 }"><a onclick="$('#allDepartmentStatisticsCHILD').show();" >${data.waitChild }</a></c:if>
 						      			<c:if test="${data.waitChild == 0 }">${data.waitChild }</c:if>
 						      		</td>
 						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 5)">
-						      			<c:if test="${data.active != 0 }"><a data-toggle="modal" data-target="#childTable">${data.active }</a></c:if>
+						      			<c:if test="${data.active != 0 }"><a onclick="$('#allDepartmentStatisticsCHILD').show();" >${data.active }</a></c:if>
 						      			<c:if test="${data.active == 0 }">${data.active }</c:if>
 						      		</td>
 						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 6)">
-						      			<c:if test="${data.ended != 0 }"><a data-toggle="modal" data-target="#childTable">${data.ended }</a></c:if>
+						      			<c:if test="${data.ended != 0 }"><a onclick="$('#allDepartmentStatisticsCHILD').show();" >${data.ended }</a></c:if>
 						      			<c:if test="${data.ended == 0 }">${data.ended }</c:if>
 						      		</td>
 						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 7)">
-						      			<c:if test="${data.report != 0 }"><a data-toggle="modal" data-target="#childTable">${data.report }</a></c:if>
+						      			<c:if test="${data.report != 0 }"><a onclick="$('#allDepartmentStatisticsCHILD').show();" >${data.report }</a></c:if>
 						      			<c:if test="${data.report == 0 }">${data.report }</c:if>
 						      		</td>
 						      	</tr>
@@ -185,22 +182,10 @@ function getalldata2(id,id2,id3,id4,id5) {
       					</table>
 
       			</div>
-      			<!-- <<< TABLE >>> -->
-      			
-      			  <!-- Modal  **POP** -->
-				  <div class="modal fade" id="childTable" role="dialog">
-				    <div class="modal-dialog">
-				    
-				      <!-- Modal content-->
-				      <div class="modal-content">
-				        <div class="modal-header">
-				          <button type="button" class="close" data-dismiss="modal">&times;</button>
-				          <h4 class="modal-title">Detaylı Liste</h4>
-				        </div>
-				        <div class="modal-body">
-				        
-      			
-      			
+      			<!-- <<< TABLE CHILD >>> -->
+      			<div class="collapse" id="allDepartmentStatisticsCHILD">
+      			<div class="panel panel-default">
+      				<div class="panel-heading"><p>Detaylı liste</p> </div>
 	      			<table id="comps5" class="table table-striped custab" style="background-color: #FFF;">
 						<thead>
 						        <tr>
@@ -225,31 +210,19 @@ function getalldata2(id,id2,id3,id4,id5) {
 						   		
 						   	</tbody>
 					</table>
-				
-				</div>
-				        <div class="modal-footer">
-				          <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
-				        </div>
+					</div>
 				      </div>
-				      
-				    </div>
-				  </div>
-				
-				
+
       			</div><!-- div-form -->
       		</div>
-      	</div>
-      </div>
      </div>  <!-- Tüm bölümlerin şikayet istatistikleri -->
       
       
      
       <!---- Konum/Hizmet tipi şikayetleri ---->
       <div class="collapse" id="locationServiceComplaints">
-      <div class="container">
-      	<div class="row justify-content-center">
-      		<div class="col-md-12">
-      		<div class="form" style="max-width: 900px;"> <!-- for background transparent color -->
+      
+      		<div class="form" style="max-width: 1300px;"> <!-- for background transparent color -->
       		
       		
       		<!-- TABLE <<< -->
@@ -300,20 +273,14 @@ function getalldata2(id,id2,id3,id4,id5) {
 				</div> <!-- TABLE >>> -->
      
 			</div>
-			</div>
-      	</div>
-      </div>
+      
      </div>
      
       <!---- Personel şikayet yoğunluğu ---->
       <div class="collapse" id="supportPersonnelDensity">
-      <div class="container">
-      	<div class="row justify-content-center">
       		<div class="col-md-12">
-      			<div class="form" style="max-width: 900px;"> <!-- for background transparent color -->
-      			
-      			
-      			
+      			<div class="form" style="max-width: 1300px;"> <!-- for background transparent color -->
+
      		<!-- TABLE <<< -->
      		<div class="input-group">
 		    	<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konum</span>         
@@ -338,17 +305,17 @@ function getalldata2(id,id2,id3,id4,id5) {
       				<table id="comps4" class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
       				<thead>
 	      				<tr>
-				      		<th>Personel adı</th>
-				      		<th>Çalıştığı konum</th>
-				      		<th>Görevi</th>
-				      		<th>Toplam şikayet sayısı</th>
-				      		<th>Ort. farkındalık süresi</th>
-				      		<th>Ort. cevap süresi</th>
-				      		<th>Onay bekleyen şikayet sayısı</th>
-				      		<th>Aktif şikayet sayısı</th>
-				      		<th>Çocuğunu bekleyen şikayet sayısı</th>
-				      		<th>Raporlanan şikayet sayısı</th>
-				      		<th>Tamamlanan şikayet sayısı</th>
+				      		<th style="width: 5%;">Personel adı</th>
+				      		<th style="width: 5%;">Çalıştığı konum</th>
+				      		<th style="width: 5%;">Görevi</th>
+				      		<th style="width: 5%;">Toplam şikayet sayısı</th>
+				      		<th style="width: 5%;">Ort. farkındalık süresi</th>
+				      		<th style="width: 5%;">Ort. cevap süresi</th>
+				      		<th style="width: 5%;">Onay bekleyen şikayet sayısı</th>
+				      		<th style="width: 5%;">Aktif şikayet sayısı</th>
+				      		<th style="width: 5%;">Çocuğunu bekleyen şikayet sayısı</th>
+				      		<th style="width: 5%;">Raporlanan şikayet sayısı</th>
+				      		<th style="width: 5%;">Tamamlanan şikayet sayısı</th>
 				      	</tr>
 			      	</thead>
 			      	<tbody>
@@ -357,18 +324,36 @@ function getalldata2(id,id2,id3,id4,id5) {
 				      		<td>${data.userInfo.username }</td>
 				      		<td>${data.locationInfo.description }</td>
 				      		<td>${data.supportTypeInfo.type }</td>
-				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 1)">${data.total }</td>
-				      		<td><fmt:formatNumber value="${data.avgAwarenessTime/86400000 }" minFractionDigits="0" maxFractionDigits="2"/></td>
-				      		<td><fmt:formatNumber value="${(data.avgAwarenessTime/3600000)%24}" minFractionDigits="0" maxFractionDigits="2"/></td>
-				      		<td><fmt:formatNumber value="${(data.avgAwarenessTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="2"/></td>
-				      		<td><fmt:formatNumber value="${data.avgResponseTime/86400000 }" minFractionDigits="0" maxFractionDigits="2"/></td>
-				      		<td><fmt:formatNumber value="${(data.avgResponseTime/3600000)%24 }" minFractionDigits="0" maxFractionDigits="2"/></td>
-				      		<td><fmt:formatNumber value="${(data.avgResponseTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="2"/></td>
-				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 2)">${data.waitingAck }</td>
-				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 5)">${data.active }</td>
-				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 4)">${data.waitingChild }</td>
-				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 7)">${data.reported }</td>
-				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 6)">${data.ended }</td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 1)">
+						      	<c:if test="${data.total != 0 }"><a onclick="$('#supportPersonnelDensityCHILD').show();"> ${data.total }</a></c:if>
+						      	<c:if test="${data.total == 0 }">${data.total }</c:if>
+						    </td>
+				      		<td><fmt:formatNumber value="${data.avgAwarenessTime/86400000 }" minFractionDigits="0" maxFractionDigits="2"/> gün<br/>
+				      		<fmt:formatNumber value="${(data.avgAwarenessTime/3600000)%24}" minFractionDigits="0" maxFractionDigits="2"/> saat<br/>
+				      		<fmt:formatNumber value="${(data.avgAwarenessTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="2"/> dakika<br/>
+				      		<td><fmt:formatNumber value="${data.avgResponseTime/86400000 }" minFractionDigits="0" maxFractionDigits="2"/> gün<br/>
+				      		<fmt:formatNumber value="${(data.avgResponseTime/3600000)%24 }" minFractionDigits="0" maxFractionDigits="2"/> saat<br/>
+				      		<fmt:formatNumber value="${(data.avgResponseTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="2"/> dakika</td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 2)">
+				      		  	<c:if test="${data.waitingAck != 0 }"><a onclick="$('#supportPersonnelDensityCHILD').show();"> ${data.waitingAck }</a></c:if>
+						      	<c:if test="${data.waitingAck == 0 }">${data.waitingAck }</c:if>
+						    </td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 5)">
+				      			<c:if test="${data.active != 0 }"><a onclick="$('#supportPersonnelDensityCHILD').show();"> ${data.active }</a></c:if>
+						      	<c:if test="${data.active == 0 }">${data.active }</c:if>
+						    </td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 4)">
+				      			<c:if test="${data.waitingChild != 0 }"><a onclick="$('#supportPersonnelDensityCHILD').show();"> ${data.waitingChild }</a></c:if>
+						      	<c:if test="${data.waitingChild == 0 }">${data.waitingChild }</c:if>
+						    </td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 7)">
+				      			<c:if test="${data.reported != 0 }"><a onclick="$('#supportPersonnelDensityCHILD').show();"> ${data.reported }</a></c:if>
+						      	<c:if test="${data.reported == 0 }">${data.reported }</c:if>
+						    </td>
+				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 6)">
+				      			<c:if test="${data.ended != 0 }"><a onclick="$('#supportPersonnelDensityCHILD').show();"> ${data.ended }</a></c:if>
+						      	<c:if test="${data.ended == 0 }">${data.ended }</c:if>
+						    </td>
 				      		
 						</tr>
 				      </c:forEach>
@@ -376,6 +361,9 @@ function getalldata2(id,id2,id3,id4,id5) {
 				  	</table>
 				</div>
 				  <!-- TABLE >>> -->
+				<div class="collapse" id="supportPersonnelDensityCHILD">
+      			<div class="panel panel-default">
+      				<div class="panel-heading"><p>Detaylı liste</p> </div>
 				  <table id="comps2"  class="table table-striped custab" style="background-color: #FFF;">
 	    <thead>
 	        <tr>
@@ -386,13 +374,13 @@ function getalldata2(id,id2,id3,id4,id5) {
 	            <th>Kayıt tarihi</th>
 	            <th>Şikayet açıklaması</th>
 	            <th>Şikayet eden kişi</th>
-				            <th>Çözüm tarihi</th>
-				            <th>Çözüm açıklaması</th>
-				            <th>Farkedilme tarihi</th>
-				            <th>Atanma Zamanı</th>
-				            <th>Çözüldü mü</th>
-				            <th>Kabul edildi mi</th>
-				            <th>Rapolandı mı</th>
+				<th>Çözüm tarihi</th>
+				<th>Çözüm açıklaması</th>
+				<th>Farkedilme tarihi</th>
+				<th>Atanma Zamanı</th>
+				<th>Çözüldü mü</th>
+				<th>Kabul edildi mi</th>
+				<th>Rapolandı mı</th>
 	            <th>Eylem</th>
 	        </tr>
 	    </thead>
@@ -400,16 +388,10 @@ function getalldata2(id,id2,id3,id4,id5) {
 	   		
 	   	</tbody>
 	    </table>
-			</div>
-			</div>
-      	</div>
+		</div>
       </div>
      </div>
-     
-      <!--  
-    <h3>Welcome : ${pageContext.request.userPrincipal.name}</h3>
- 
-    <b>This is protected page! Just admins can reach this page.</b>  -->
+
   </div>
 <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>

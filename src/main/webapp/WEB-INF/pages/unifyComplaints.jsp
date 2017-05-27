@@ -18,7 +18,7 @@
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>	
-	<title>${title}</title>
+	<title>Şikayetleri birleştir</title>
 </head>
 <body>
 	<%@include file="navbar2.jsp" %>
@@ -29,6 +29,14 @@
     </div>
     <div style="padding: 50px;">
     <div class="panel panel-default">
+    				 <c:if test="${not empty message}">
+					<div class="alert alert-success alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								${message}
+					</div>
+				</c:if>
+    
+    
       	<div class="panel-heading">Şikayetler</div>
       	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      	<tr>

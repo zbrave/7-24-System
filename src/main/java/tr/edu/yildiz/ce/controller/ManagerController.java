@@ -38,8 +38,11 @@ public class ManagerController {
 	private SupportTypeDAO supportTypeDAO;
 	
 	@RequestMapping(value = "/reportedComplaints", method = RequestMethod.GET)
-	public String reportedComplaints(Model model, Principal principal ) {
-		List<ComplaintInfo> list = complaintDAO.listReportedComplaintInfosForManager(userDAO.findLoginUserInfo(principal.getName()).getId());
+	public String reportedComplaints(Model model, Principal principal, Integer offset, Integer maxResults ) {
+		List<ComplaintInfo> list = complaintDAO.listReportedComplaintInfosForManagerPagination(userDAO.findLoginUserInfo(principal.getName()).getId(),offset,maxResults);
+		model.addAttribute("count", complaintDAO.countListReportedComplaintInfosForManagerPagination(userDAO.findLoginUserInfo(principal.getName()).getId()));
+		model.addAttribute("offset", offset);
+		
 		for (ComplaintInfo l : list) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
@@ -51,8 +54,11 @@ public class ManagerController {
 	}
 	
 	@RequestMapping(value = "/assignComplaints", method = RequestMethod.GET)
-	public String assignComplaints(Model model, Principal principal ) {
-		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForAssignment(userDAO.findLoginUserInfo(principal.getName()).getId());
+	public String assignComplaints(Model model, Principal principal, Integer offset, Integer maxResults ) {
+		List<ComplaintInfo> list = complaintDAO.listComplaintInfosForAssignmentPagination(userDAO.findLoginUserInfo(principal.getName()).getId(),offset,maxResults);
+		model.addAttribute("count", complaintDAO.countListComplaintInfosForAssignmentPagination(userDAO.findLoginUserInfo(principal.getName()).getId()));
+		model.addAttribute("offset", offset);
+		
 		for (ComplaintInfo l : list) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));

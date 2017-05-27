@@ -65,9 +65,18 @@ $(document).ready(function(){
 							</br>
 					        <button type="submit" class="button button-block" value="Ekle" > Atama yap</button>
 			        		</br>
-				        	<c:if test="${not empty compMsg}">
-						   		<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsg}
-						   		</div>
+				        				      			<c:if test="${not empty compMsgSuccess}">
+								<div class="alert alert-success alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									${compMsgSuccess}
+								</div>
+							</c:if>
+							
+							<c:if test="${not empty compMsgError}">
+								<div class="alert alert-danger alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									${compMsgError}
+								</div>
 							</c:if>
 							
 				       </div>

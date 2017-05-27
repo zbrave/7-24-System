@@ -112,7 +112,7 @@ public class MainController {
 		List<LocationInfo> listLoc = locationDAO.listLocationInfos();
 		model.addAttribute("locationInfos", listLoc);
 		
-		List<SupporterInfo> list = supporterDAO.listSupporterInfos();
+		List<SupporterInfo> list = supporterDAO.listSupporterInfosPagination( offset,  maxResults);
 		model.addAttribute("count", supporterDAO.count());
 		model.addAttribute("offset", offset);
 		model.addAttribute("supporterInfos", list);
@@ -416,11 +416,7 @@ public class MainController {
 		// After user login successfully.
 		UserInfo user = userDAO.findLoginUserInfo(principal.getName());
 		model.addAttribute("userInfo", user);
-		List<LocationInfo> list = locationDAO.listLocationInfos();
-		model.addAttribute("locationInfos", list);
-		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
-		model.addAttribute("supportTypeInfos", list2);
-		//		model.addAttribute("message", userName);
+		model.addAttribute("count", complaintDAO.countListComplaintInfosByComplainantUserIdPagination(userDAO.findLoginUserInfo(principal.getName()).getId()));
 		return "userInfoPage";
 	}
 

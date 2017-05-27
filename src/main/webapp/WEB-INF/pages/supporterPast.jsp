@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="tag" uri="/WEB-INF/taglibs/customTaglib.tld"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,9 +46,9 @@
 		      	<th style="width: 15%;">Çözüm Tarihi</th>
 		      	<th style="width: 15%;">Çözüm</th>
 		    </tr>
-      		<c:forEach items="${complaintInfos }" var="data">
+      		<c:forEach items="${complaintInfos }" var="data" varStatus="itr">
       			<tr>
-      				<td>${data.id }</td>
+      				<td>${offset + itr.index +1 }</td>
 			      	<td>${data.locationInfo.description }</td>
 			      	<td>${data.supportTypeInfo.type }</td>
 			      	<td>${data.complainantUserInfo.username }</td>
@@ -58,6 +59,8 @@
 			    </tr>
 			</c:forEach>
       	</table>
+      	<tag:paginate max="15" offset="${offset}" count="${count}"
+						uri="supporterPast" next="&raquo;" previous="&laquo;" />
    </div>
    </div>
 <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>

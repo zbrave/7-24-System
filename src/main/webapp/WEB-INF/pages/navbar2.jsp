@@ -92,7 +92,7 @@ $(document).ready(function(){
 	          		
 	          		<ul class="dropdown-menu">
 		            	<li><a href="${pageContext.request.contextPath}/userInfo">
-		            		<span><i class="glyphicon glyphicon-user"></i> Ayarlar</span>
+		            		<span><i class="glyphicon glyphicon-user"></i> Kullanıcı bilgileri</span>
 		            		</a>
 		            	</li>
 		            	<li role="separator" class="divider"></li>

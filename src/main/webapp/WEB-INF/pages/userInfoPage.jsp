@@ -18,35 +18,83 @@
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>	
-	<title>${title}</title>
+	<title>Kullanıcı bilgileri</title>
 </head>
 <body>
 	<%@include file="navbar2.jsp" %>	
- 
- 	Kullanıcı adı: ${userInfo.username }
- 	E-mail: ${userInfo.email }
- 	Şifre : ${userInfo.password }
- 	Yapılan toplam şikayet : 
- 	<form:form action="changePass" method="POST" modelAttribute="userForm">
+	
+	<div class="text-center">	
+    	<p style="font-size: 30px; color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
+    		Kullanıcı Bilgileri
+    	</p>
+    </div>
+	
+ <div class="col-md-12">
+     <div class="form" style="max-width: 600px;"> <!-- for background transparent color -->
+ 	<div class="form-group">
+ 	<div class="input-group">
+	    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i> Kullanıcı Adı:</span>
+    	<li class="list-group-item">${userInfo.username }</li>
+    </div>
+ 	<div class="input-group">
+	    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i> E-mail:</span>
+    	<li class="list-group-item">${userInfo.email }</li>
+    </div>
+    <div class="input-group">
+	    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i> Şifre :</span>
+    	<li class="list-group-item">********** </li>
+    	<span class="input-group-btn"> <button type="button" class="btn btn-info" data-toggle="modal" data-target="#passwordChange">Yeni Şifre Oluştur</button></span>
+    </div>
+    <div class="input-group">
+	    <span class="input-group-addon"><i class="glyphicon glyphicon-th-list"></i> Yapılan toplam şikayet :</span>
+    	<li class="list-group-item">${count}</li>
+    </div>
+    </div>
+ 	<c:if test="${not empty msg}">
+		<div class="alert alert-info alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${msg}
+		</div>
+	</c:if> 
+ 	
+ 	<!-- Modal -->
+	<div id="passwordChange" class="modal fade" role="dialog">
+	  <div class="modal-dialog" role="document">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Şifre değiştirme</h4>
+	      </div>
+	      <div class="modal-body">
+	      
+	        <form:form action="changePass" method="POST" modelAttribute="userForm">
 		<div class="form-group">
 			<div class="input-group">
 				<input id="id" name="id" type="hidden" value=""/>
-				<span class="input-group-addon">Şifre:</span>
-							<input id="password" name="password" type="password" />
-     				</div>
+				<span class="input-group-addon">Yeni şifre:</span>
+				<input class="form-control" id="password" name="password" type="password" />
+     		</div>
      				<div class="input-group">
 				<input id="id" name="id" type="hidden" value=""/>
-				<span class="input-group-addon">Şifre tekrar:</span>
-							<input id="passwordConf" name="passwordConf" type="password" />
+				<span class="input-group-addon">Yeni şifre tekrar:</span>
+							<input class="form-control" id="passwordConf" name="passwordConf" type="password" />
      				</div>
- 					<div class="input-group">
- 					
-		        <span class="input-group-btn">
-     						<button type="submit" class="btn btn-default" value="Ekle" >Değiştir</button>
-     					</span>
-       				</div>
+     				<button type="submit" class="btn btn-default" value="" >Değiştir</button>
        			</div> <!-- form-group -->
     </form:form>
+    
+	      </div>
+	      <div class="modal-footer">
+	      	
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div><!-- modal end -->
+    
+  </div>
+ </div>
 </body>
 	
 </html>

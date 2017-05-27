@@ -61,10 +61,11 @@ public class LocationController {
 	@RequestMapping(value = "/deleteLocation", method = RequestMethod.GET)
 	public String deleteLocation(Model model, @RequestParam(value = "id") Integer id, final RedirectAttributes redirectAttributes) {
 		if (id == null) {
+			redirectAttributes.addFlashAttribute("locMsgError", "Lokasyon silinemedi.");
 			return "redirect:/locationEdit";
 		}
 		this.locationDAO.deleteLocation(id);
-		redirectAttributes.addFlashAttribute("message", "Lokasyon silindi.");
+		redirectAttributes.addFlashAttribute("locMsgSuccess", "Lokasyon silindi.");
 		return "redirect:/locationEdit";
 	}
 }

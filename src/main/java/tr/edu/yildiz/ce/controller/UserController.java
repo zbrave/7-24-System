@@ -80,8 +80,10 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/userPast", method = RequestMethod.GET)
-	public String userPast(Model model, Principal principal) {
-		List<ComplaintInfo> list = complaintDAO.listComplaintInfosByComplainantUserId(userDAO.findLoginUserInfo(principal.getName()).getId());
+	public String userPast(Model model, Principal principal, Integer offset, Integer maxResults) {
+		List<ComplaintInfo> list = complaintDAO.listComplaintInfosByComplainantUserIdPagination(userDAO.findLoginUserInfo(principal.getName()).getId(),offset,maxResults);
+		model.addAttribute("count", complaintDAO.countListComplaintInfosByComplainantUserIdPagination(userDAO.findLoginUserInfo(principal.getName()).getId()));
+		model.addAttribute("offset", offset);
 		for (ComplaintInfo l : list) {
 			l.setLocationInfo(locationDAO.findLocationInfo(l.getLocationId()));
 			l.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(l.getSupportTypeId()));
@@ -92,16 +94,17 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/changePass", method = RequestMethod.POST)
-	public String changePass(Model model, Principal principal, @ModelAttribute("userForm") @Validated UserInfo userInfo) {
+	public String changePass(Model model, Principal principal, @ModelAttribute("userForm") @Validated UserInfo userInfo,final RedirectAttributes redirectAttributes) {
 		if(userInfo.getPassword().equals(userInfo.getPasswordConf())) {
 			System.out.println("Pass equals");
 			UserInfo user = userDAO.findLoginUserInfo(principal.getName());
 			PasswordEncoder encoder = new BCryptPasswordEncoder();
 			user.setPassword(encoder.encode(userInfo.getPassword()));
 			userDAO.saveUser(user);
-			model.addAttribute("msg", "Şifreniz değiştirildi.");
+			redirectAttributes.addFlashAttribute("msg", "Şifreniz değiştirildi.");
 		}
-		return "userInfo";
+		redirectAttributes.addFlashAttribute("msg", "Şifre eşleşmedi. Girdileri kontrol edin");
+		return "redirect:/userInfo";
 	}
 	
 	@RequestMapping(value = "/refreshPass", method = RequestMethod.POST)
@@ -115,7 +118,7 @@ public class UserController {
 			model.addAttribute("msg", "Şifreniz değiştirildi.");
 			passactivationDAO.deletePassactivationWithUser(userInfo.getId());
 		}
-		return "loginPage";
+		return "redirect:/login";
 	}
 	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
@@ -217,14 +220,14 @@ public class UserController {
 	@RequestMapping(value = "/forgotPass", method = RequestMethod.POST)
 	public String forgotPass(Model model, @ModelAttribute ("userForm") @Validated UserInfo userInfo,	final RedirectAttributes redirectAttributes) {
 		if (userDAO.findLoginUserInfoWithEmail(userInfo.getEmail()) == null) {
-			model.addAttribute("msg", "E-mail bulunamadı.");
+			redirectAttributes.addFlashAttribute("msg", "E-mail bulunamadı.");
 			return "redirect:/login";
 		}
 		else {
 			String code = getSaltString();
 			passactivationDAO.savePassactivation(new Passactivation(null, userDAO.findLoginUserInfoWithEmail(userInfo.getEmail()).getId(), code ));
 			mailSend.sendSimpleMessage(userInfo.getEmail(), "Şifre yenileme", "http://localhost:8080/sysprog/repass?code="+code);
-			model.addAttribute("msg", "Şifre yenileme linki yollandı.");
+			redirectAttributes.addFlashAttribute("msg", "Şifre yenileme linki yollandı.");;
 			return "redirect:/login";
 		}
 	}

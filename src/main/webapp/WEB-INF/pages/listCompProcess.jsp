@@ -48,7 +48,7 @@
 			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
-			      	<td>${data.percentReported }</td>
+			      	<!--  <td>${data.percentReported }</td> -->
 			    </tr>
 			</c:forEach>
       	</table>

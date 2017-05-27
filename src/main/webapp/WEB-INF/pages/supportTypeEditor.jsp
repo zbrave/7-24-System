@@ -14,12 +14,14 @@
 	<spring:url value="/resources/ico724.png" var="ico" />
 	<spring:url value="/resources/js/jquery.min.js" var="jqueryJS" />
 	<spring:url value="/resources/js/bootstrap.min.js" var="bootstrapJS" />
+	<spring:url value="/resources/js/bootstrap-confirmation.js" var="bootstrapConfirmationJS" />
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 	<link href="${bootstrapCSS}" rel="stylesheet" />
 	<link href="${bootstrapThemeCSS}" rel="stylesheet" />
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>
+	<script src="${bootstrapConfirmationJS}"></script>
 	<title>7/24 Servisi | Destek Personeli Tipi Yönetimi</title>
 </head>
 <body>
@@ -35,7 +37,7 @@
 					<div class="form-group">
 						<div class="input-group">
 							<input id="id" name="id" type="hidden" value=""/>
-							<span class="input-group-addon">Tipi</span>
+							<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Tipi</span>
    							<input id="type" type="text" class="form-control" name="type" placeholder="Destekçi tipini belirleyiniz"/>
         					<span class="input-group-btn">
         						<button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
@@ -69,11 +71,13 @@
 					      	</tr>
 					      <c:forEach items="${supportTypeInfos }" var="data" varStatus="itr">
 					      	<tr>
-					      		<td>${offset + itr.index +1 }</td>
-						      	<!--  <td>${data.id }</td> -->
+						      	<td>${data.id }</td>
 					      		<td>${data.type }</td>
 					      		<td>
-						      		<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteSupportType?id=${data.id}" role="button">Sil</a>
+									<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteSupportType?id=${data.id}" 
+						      		data-toggle="confirmation" data-btn-ok-label="Onaylıyorum" data-btn-ok-icon="glyphicon glyphicon-share-alt"
+        							data-btn-ok-class="btn-success" data-btn-cancel-label="Hayır" data-btn-cancel-icon="glyphicon glyphicon-ban-circle"
+        							data-btn-cancel-class="btn-danger" data-title="Silmeyi onaylıyor musunuz?">Sil</a>
 								</td>
 					      	</tr>
 					      </c:forEach>
@@ -89,5 +93,11 @@
      </div><!-- style padding -->
      <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>
+    	 <script>
+  	  	$('[data-toggle=confirmation]').confirmation({
+  	  	  rootSelector: '[data-toggle=confirmation]',
+  	  	  // other options
+  	  	});
+	</script>
   	
 </html>

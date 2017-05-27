@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="tag" uri="/WEB-INF/taglibs/customTaglib.tld"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,16 +19,36 @@
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>	
-	<title>${title}</title>
+	<title>Raporlanan şikayetler | Yönetici</title>
 </head>
 <body>
 	<%@include file="navbar2.jsp" %>
 	<div class="text-center">	
     	<p style="font-size: 30px; color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
-    		Yönetici sayfası
+    		Raporlanan Şikayetler
     	</p>
     </div>
     <div style="padding: 50px;">
+    <c:if test="${not empty message}">
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			${message}
+		</div>
+	</c:if>
+				      			<c:if test="${not empty compMsgSuccess}">
+								<div class="alert alert-success alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									${compMsgSuccess}
+								</div>
+							</c:if>
+							
+							<c:if test="${not empty compMsgError}">
+								<div class="alert alert-danger alert-dismissible" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									${compMsgError}
+								</div>
+							</c:if>
+							
     <div class="panel panel-default">
       	<div class="panel-heading">Şikayetler</div>
       	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -59,6 +80,8 @@
 			    </tr>
 			</c:forEach>
       	</table>
+      	<tag:paginate max="15" offset="${offset}" count="${count}"
+						uri="reportedComplaints" next="&raquo;" previous="&laquo;" />
    </div>
    </div>
 <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>

@@ -40,7 +40,7 @@
     				</div>
     				<div class="input-group">
     					<span class="input-group-addon">Kaç gün banlanacak</span>
-        				<input id="banDay" type="text" name="banDay" >
+        				<input id="banDay" class="form-control" type="text" name="banDay" />
         				<span class="input-group-btn">
         					<button type="submit" class="btn btn-default" value="Ekle" >Banla</button>
         				</span>

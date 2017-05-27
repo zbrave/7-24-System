@@ -28,16 +28,28 @@ public interface ComplaintDAO {
     public List<ComplaintInfo> listWaitingChildComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
     public List<ComplaintInfo> listReportedComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
     public List<ComplaintInfo> listEndedComplaintInfos (Integer locationId,Integer supportTypeId,Integer supporterId,Integer supportUserId);
+    public List<ComplaintInfo> listEndedComplaintInfosPagination(Integer locationId, Integer supportTypeId,Integer supporterId,Integer supportUserId,Integer offset, Integer maxResults);
+    public Long countListEndedComplaintInfosPagination(Integer locationId, Integer supportTypeId,Integer supporterId,Integer supportUserId);
     public List<ComplaintInfo> listComplaintInfosByUserId (Integer supportUserId);// buraya kadar report
     public List<ComplaintInfo> listComplaintInfosBySupporterId (Integer supporterId);
     public List<LocSupTypeInt> listLocSupTypeInt();
     
     public List<ComplaintInfo> listComplaintInfosForSupport(Integer userId);//ack yapılanlar+
+    public List<ComplaintInfo> listComplaintInfosForSupportPagination(Integer userId,Integer offset, Integer maxResults);
+    public Long countComplaintInfosForSupportPagination(Integer userId);
     public List<ComplaintInfo> listComplaintInfosForSupportAck(Integer userId);// ack yapılmayanlar+
+    public List<ComplaintInfo> listComplaintInfosForSupportAckPagination(Integer userId,Integer offset, Integer maxResults);
+    public Long countComplaintInfosForSupportAckPagination(Integer userId);
     public List<ComplaintInfo> listComplaintProcess(Integer id);// tüm tree çekiyor listeleme için // report için-compl listleenn yerlerede konulabilir
     public List<ComplaintInfo> listComplaintInfosForAssignment(Integer userId);//manager assign edecekleri+
+    public List<ComplaintInfo> listComplaintInfosForAssignmentPagination(Integer userId,Integer offset, Integer maxResults);
+    public Long countListComplaintInfosForAssignmentPagination(Integer userId);
     public List<ComplaintInfo> listReportedComplaintInfosForManager(Integer userId);//manager report edilenler+
+    public List<ComplaintInfo> listReportedComplaintInfosForManagerPagination(Integer userId,Integer offset, Integer maxResults);
+    public Long countListReportedComplaintInfosForManagerPagination(Integer userId);
     public List<ComplaintInfo> listActiveComplaintInfosForUnification(Integer id);// unify edilecekler+
     public List<ComplaintInfo> listComplaintInfosByComplainantUserId(Integer complainantUserId);
+    public List<ComplaintInfo> listComplaintInfosByComplainantUserIdPagination(Integer complainantUserId,Integer offset, Integer maxResults);
+    public Long countListComplaintInfosByComplainantUserIdPagination(Integer complainantUserId);
     public Integer numOfProcess();//kaç tane işlem ağacı var
 }

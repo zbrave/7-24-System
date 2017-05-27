@@ -13,14 +13,16 @@
 	<spring:url value="/resources/css/tabStyle.css" var="tabStyleCSS" />
 	<spring:url value="/resources/ico724.png" var="ico" />
 	<spring:url value="/resources/js/jquery.min.js" var="jqueryJS" />
-	<spring:url value="/resources/js/bootstrap.min.js" var="bootstrapJS" />
+	<spring:url value="/resources/js/bootstrap.js" var="bootstrapJS" />
+	<spring:url value="/resources/js/bootstrap-confirmation.js" var="bootstrapConfirmationJS" />
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 	<link href="${bootstrapCSS}" rel="stylesheet" />
 	<link href="${bootstrapThemeCSS}" rel="stylesheet" />
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>
-	<title>7/24 Servisi | Mekan Yönetimi</title>
+	<script src="${bootstrapConfirmationJS}"></script>
+	<title>7/24 Servisi | Kullanıcılar</title>
 </head>
 <body>
     <%@include file="navbar2.jsp" %>
@@ -29,45 +31,45 @@
       <div class="container">
       		<div class="col-md-12">
       			<div class="form" style="max-width: 600px;"> <!-- for background transparent color -->
-				 <c:if test="${not empty message}">
-					<div class="alert alert-success alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								${message}
-					</div>
-				</c:if>
-				
-				<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteInactiveUsers" role="button">İnaktifleri sil</a>
+      			
       			<!-- TABLE <<< -->
       			<div class="panel panel-default">
-      			
-
-      			
       				<div class="panel-heading">Kullanıcılar:</div>
       					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
       						<tr>
 					      		<th style="width: 5%;">ID</th>
 					      		<th style="width: 20%;">Kullanıcı adı</th>
 					      		<th style="width: 20%;">E-mail</th>
-					      		<th style="width: 10%;">Enabled</th>
-					      		<th style="width: 10%;">Banlı mı ?</th>
-					      		<th style="width: 15%;">Eylem</th>
+					      		<th style="width: 10%;">Aktif</th>
+					      		<th style="width: 14%;">Banlı mı?</th>
+					      		<th style="width: 20%;">Eylem</th>
       						</tr>
 						      <c:forEach items="${users }" var="data" varStatus="itr">
 						      	<tr>
-						      		<!--  <td>${data.id }</td> -->
-						      		<td>${offset + itr.index +1 }</td>
+						      		<td>${data.id }</td>
 						      		<td>${data.username }</td>
 						      		<td>${data.email }</td>
-						      		<td>${data.enabled }</td>
-						      		<td>${data.banned }</td>
+						      		<td><c:if test="${data.enabled==true}"><span class="glyphicon glyphicon-ok"></span></c:if>
+						      			<c:if test="${data.enabled==false}"><span class="glyphicon glyphicon-remove"></span></c:if>
+						      		</td>
+						      		<td><c:if test="${data.banned==true}"><span class="glyphicon glyphicon-ok"></span></c:if>
+						      			<c:if test="${data.banned==false}"><span class="glyphicon glyphicon-remove"></span></c:if>
+						      		</td>
 						      		<td>
 						      		<a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.id}" role="button">Banla</a>
-						      		<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUser?id=${data.id}" role="button" onclick="confirmDelete()">Sil</a>
+						      		<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteUser?id=${data.id}" 
+						      		data-toggle="confirmation" data-btn-ok-label="Onaylıyorum" data-btn-ok-icon="glyphicon glyphicon-share-alt"
+        							data-btn-ok-class="btn-success" data-btn-cancel-label="Hayır" data-btn-cancel-icon="glyphicon glyphicon-ban-circle"
+        							data-btn-cancel-class="btn-danger" data-title="Silmeyi onaylıyor musunuz?">Sil</a>
 									</td>
 						      	</tr>
 						      </c:forEach>
       					</table>
       			</div>  <!-- TABLE >>> -->
+      			<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteInactiveUsers" 
+						      		data-toggle="confirmation" data-btn-ok-label="Onaylıyorum" data-btn-ok-icon="glyphicon glyphicon-share-alt"
+        							data-btn-ok-class="btn-success" data-btn-cancel-label="Hayır" data-btn-cancel-icon="glyphicon glyphicon-ban-circle"
+        							data-btn-cancel-class="btn-danger" data-title="Tüm inaktif kullanıcılar silinecek!">İnaktifleri sil</a>
       			<tag:paginate max="15" offset="${offset}" count="${count}"
 						uri="users" next="&raquo;" previous="&laquo;" />
       		</div>
@@ -77,9 +79,10 @@
      </div><!-- style padding -->
      <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>
-  	  	  	<script>
-		function confirmDelete() {
-		    confirm("Silmek istediğinize emin misiniz?");
-		}
+  	 <script>
+  	  	$('[data-toggle=confirmation]').confirmation({
+  	  	  rootSelector: '[data-toggle=confirmation]',
+  	  	  // other options
+  	  	});
 	</script>
 </html>

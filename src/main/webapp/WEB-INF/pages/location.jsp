@@ -14,12 +14,14 @@
 	<spring:url value="/resources/ico724.png" var="ico" />
 	<spring:url value="/resources/js/jquery.min.js" var="jqueryJS" />
 	<spring:url value="/resources/js/bootstrap.min.js" var="bootstrapJS" />
+	<spring:url value="/resources/js/bootstrap-confirmation.js" var="bootstrapConfirmationJS" />
 	<link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 	<link href="${bootstrapCSS}" rel="stylesheet" />
 	<link href="${bootstrapThemeCSS}" rel="stylesheet" />
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>
+	<script src="${bootstrapConfirmationJS}"></script>
 	<title>7/24 Servisi | Mekan Yönetimi</title>
 </head>
 <body>
@@ -30,16 +32,17 @@
  	<div id="locationTab">
       <div class="container">
       		<div class="col-md-12">
-      			<div class="form"> <!-- for background transparent color -->
+      			<div class="form" style="max-width: 600px;"> <!-- for background transparent color -->
       			<!-- form -->
       			<form:form action="saveLocation" method="POST" modelAttribute="locationForm">
+					<div class="form-group">
 					<div class="input-group">
 						<input id="id" name="id" type="hidden" value=""/>
-						<span class="input-group-addon">Konum adı</span>
+						<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konum adı</span>
 						<input id="description" type="text" class="form-control" name="description" placeholder="Mekan giriniz"/>
     				</div>
     				<div class="input-group">
-    					<span class="input-group-addon">Üst konum</span>
+    					<span class="input-group-addon"><i class="glyphicon glyphicon-circle-arrow-up"></i> Üst konum</span>
         				<select id="parentId" class="form-control" name="parentId" >
         					<option id="" value="">Üst konum seçin.</option>
    							<c:forEach items="${locationInfos }" var="data">
@@ -50,6 +53,7 @@
         					<button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
         				</span>
           			</div>
+          			</div> <!-- form-group -->
       			</form:form>
       			
       			<c:if test="${not empty locMsgSuccess}">
@@ -73,17 +77,19 @@
       						<tr>
 					      		<th style="width: 10%;">ID</th>
 					      		<th style="width: 40%;">Konum adı</th>
-					      		<th style="width: 20%;">Üst konum</th>
+					      		<th style="width: 40%;">Üst konum</th>
 					      		<th style="width: 10%;">Eylem</th>
       						</tr>
 						      <c:forEach items="${locationInfos }" var="data" varStatus="itr">
 						      	<tr>
-						      		<td>${offset + itr.index +1 }</td>
-						      		<!--  <td>${data.id }</td> -->
+						      		<td>${data.id }</td>
 						      		<td>${data.description }</td>
 						      		<td><c:forEach items="${locationInfos }" var="data2"><c:if test="${data.parentId == data2.id }">${data2.description }</c:if></c:forEach></td>
 						      		<td>
-						      			<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteLocation?id=${data.id}" role="button">Sil</a>
+						      			<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteLocation?id=${data.id}" 
+						      			data-toggle="confirmation" data-btn-ok-label="Onaylıyorum" data-btn-ok-icon="glyphicon glyphicon-share-alt"
+        								data-btn-ok-class="btn-success" data-btn-cancel-label="Hayır" data-btn-cancel-icon="glyphicon glyphicon-ban-circle"
+        								data-btn-cancel-class="btn-danger" data-title="Silmeyi onaylıyor musunuz?">Sil</a>
 									</td>
 						      	</tr>
 						      </c:forEach>
@@ -100,5 +106,10 @@
      </div><!-- style padding -->
      <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>
   </body>
-  	
+  	 <script>
+  	  	$('[data-toggle=confirmation]').confirmation({
+  	  	  rootSelector: '[data-toggle=confirmation]',
+  	  	  // other options
+  	  	});
+	</script>
 </html>
