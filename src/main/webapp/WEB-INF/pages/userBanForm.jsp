@@ -28,9 +28,27 @@
  	<!-- Location -->
  	<div id="locationTab">
       <div class="container">
+      
+      
+		
       		<div class="col-md-12">
       			<div class="form"> <!-- for background transparent color -->
 				<!-- form -->
+				
+				<c:if test="${not empty banError}">
+					<div class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								${banError}
+					</div>
+				</c:if>
+				
+				<c:if test="${not empty banSuccess}">
+							<div class="alert alert-success alert-dismissible" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										${banSuccess}
+							</div>
+				</c:if>
+				
       			<form:form action="saveBan" method="POST" modelAttribute="banForm">
 					<div class="input-group">
 						<input id="id" name="id" type="hidden" value=""/>
@@ -64,7 +82,9 @@
 						      		<td>${data.explanation }</td>
 						      		<td>${data.banTime }</td>
 						      		<td>${data.endTime }</td>
-						      		<td>${data.banned }</td>
+						      		<td><c:if test="${data.banned==true}"><span class="glyphicon glyphicon-ok"></span></c:if>
+						      			<c:if test="${data.banned==false}"><span class="glyphicon glyphicon-remove"></span></c:if>
+						      		</td>
 						      		<td><a class="btn btn-primary btn-xs" href="${pageContext.request.contextPath}/unban?id=${data.id}" role="button">Banı kaldır</a>
 						      			
 									</td>

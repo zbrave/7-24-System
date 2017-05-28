@@ -35,20 +35,21 @@
 			${message}
 		</div>
 	</c:if>
-				      			<c:if test="${not empty compMsgSuccess}">
-								<div class="alert alert-success alert-dismissible" role="alert">
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									${compMsgSuccess}
-								</div>
-							</c:if>
+	
+    <c:if test="${not empty compMsgSuccess}">
+				<div class="alert alert-success alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					${compMsgSuccess}
+				</div>
+	</c:if>
 							
-							<c:if test="${not empty compMsgError}">
-								<div class="alert alert-danger alert-dismissible" role="alert">
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									${compMsgError}
-								</div>
-							</c:if>
-							
+	<c:if test="${not empty compMsgError}">
+				<div class="alert alert-danger alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				${compMsgError}
+		</div>
+	</c:if>
+	
     <div class="panel panel-default">
       	<div class="panel-heading">Şikayetler</div>
       	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">

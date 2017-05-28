@@ -142,8 +142,14 @@ public class ComplaintController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("compMsgError", "Hatalı giriş.");
+			redirectAttributes.addFlashAttribute("compMsgError", "Şikayet kapatılamadı.");
 			System.out.println("Hata!");
+			if (userRoleDAO.getUserRoles(userDAO.findLoginUserInfo(principal.getName()).getId()).contains("MANAGER")) {
+				return "redirect:/reportedComplaints";
+			}
+			else {
+				return "redirect:/supporter";
+			}
 		}
 		String decodedToUTF8;
 		try {
@@ -368,8 +374,9 @@ public class ComplaintController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("compMsgError", "Hatalı giriş.");
+			redirectAttributes.addFlashAttribute("compMsgSuccess", "Hatalı giriş");
 			System.out.println("Hata!");
+			return "redirect:/assignComplaints";
 		}
 		
 		this.complaintDAO.assingComplaint(complaintInfo.getId(), complaintInfo.getSupportUserId());
@@ -389,8 +396,14 @@ public class ComplaintController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("compMsgError", "Hatalı giriş.");
+			redirectAttributes.addFlashAttribute("compMsgError", "Hatalı giriş");
 			System.out.println("Hata!");
+			if (userRoleDAO.getUserRoles(userDAO.findLoginUserInfo(principal.getName()).getId()).contains("MANAGER")) {
+				return "redirect:/reportedComplaints";
+			}
+			else {
+				return "redirect:/supporter";
+			}
 		}
 		String decodedToUTF8;
 		String decodedToUTF82;

@@ -52,8 +52,8 @@
 		      	<th style="width: 12%;">Şikayet türü</th>
 		      	<th style="width: 12%;">Şikayet eden</th>
 		      	<th style="width: 8%;">Tarih</th>
-		      	<th style="width: 35%;">Açıklama</th>
-		      	<th style="width: 10%;">Eylem</th>
+		      	<th style="width: 34%;">Açıklama</th>
+		      	<th style="width: 33%;">Eylem</th>
 		    </tr>
       		<c:forEach items="${complaintInfos }" var="data">
       			<tr>

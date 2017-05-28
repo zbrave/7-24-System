@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tr.edu.yildiz.ce.dao.BanDAO;
 import tr.edu.yildiz.ce.dao.ComplaintDAO;
@@ -176,10 +179,11 @@ public class MainController {
 	}
 	
 	@RequestMapping(value = "/unban", method = RequestMethod.GET)
-	public String unbanUser(Model model, @RequestParam(value = "id") Integer id) {
+	public String unbanUser(Model model, @RequestParam(value = "id") Integer id,final RedirectAttributes redirectAttributes) {
 		
 		UserInfo user = userDAO.findUserInfo(banDAO.findBanInfo(id).getUserId());
 		banDAO.deleteBan(id);
+		redirectAttributes.addFlashAttribute("banSuccess", "Ban kaldırıldı");
 		return "redirect:/banUser?id="+user.getId();
 	}
 	
@@ -432,4 +436,44 @@ public class MainController {
 		}
 		return "403Page";
 	}
+	
+	@RequestMapping(value = "errors", method = RequestMethod.GET)
+    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
+         
+        ModelAndView errorPage = new ModelAndView("errorPage");
+        String errorMsg = "";
+        int httpErrorCode = getErrorCode(httpRequest);
+ 
+        switch (httpErrorCode) {
+            case 400: {
+                errorMsg = "Http Hata kodu: 400. Geçersiz istek";
+                break;
+            }
+            case 401: {
+                errorMsg = "Http Hata kodu: 401. Yetkilendirme yapılmadı";
+                break;
+            }
+            case 404: {
+                errorMsg = "Http Hata kodu: 404. İçerik bulunamadı";
+                break;
+            }
+            case 500: {
+                errorMsg = "Http Hata kodu: 500. İç sunucu hatası";
+                break;
+            }
+        }
+        errorPage.addObject("errorMsg", errorMsg);
+        return errorPage;
+    }
+     
+    private int getErrorCode(HttpServletRequest httpRequest) {
+        return (Integer) httpRequest
+          .getAttribute("javax.servlet.error.status_code");
+    }
+	
+	@RequestMapping(value = "500Error", method = RequestMethod.GET)
+	public void throwRuntimeException() {
+	    throw new NullPointerException("Throwing a null pointer exception");
+	}
+	
 }

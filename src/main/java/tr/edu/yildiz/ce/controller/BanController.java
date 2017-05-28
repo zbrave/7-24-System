@@ -51,8 +51,9 @@ public class BanController {
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
-			model.addAttribute("compMsgError", "Hatalı giriş.");
+			redirectAttributes.addFlashAttribute("banError", "Ban yapılamadı");
 			System.out.println("Hata!");
+			return "redirect:/banUser?id="+banInfo.getUserId();
 		}
 		String decodedToUTF8;
 		try {
@@ -66,7 +67,7 @@ public class BanController {
 
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
-		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet gönderildi.");
+		redirectAttributes.addFlashAttribute("banSuccess", "Kullanıcı banlandı");
 
 //		return "redirect:/deptList";
 		return "redirect:/banUser?id="+banInfo.getUserId();

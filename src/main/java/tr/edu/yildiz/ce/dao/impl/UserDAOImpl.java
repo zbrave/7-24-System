@@ -79,9 +79,9 @@ public class UserDAOImpl implements UserDAO {
 		    act.setCode(getSaltString());
 		    act.setRecordDate(new Date());
 		    activationDAO.saveActivation(act);
-		    String text = "IYS hesabını aktif etmek için aşağıdaki linke tıklayın.\n\n";
+		    String text = "7/24 Sistem hesabını aktif etmek için aşağıdaki linke tıklayın.\n\n";
 		    text = text.concat("http://localhost:8080/sysprog/activate?code="+act.getCode().toString());
-		    mailSend.sendSimpleMessage(userInfo.getEmail(), "IYS Aktivasyon", text);
+		    mailSend.sendSimpleMessage(userInfo.getEmail(), "7/24 Sistem Aktivasyon", text);
 		}
 		user.setId(userInfo.getId());
 	    user.setEmail(userInfo.getEmail());

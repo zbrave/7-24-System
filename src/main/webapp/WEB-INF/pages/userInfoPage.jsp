@@ -72,12 +72,12 @@
 			<div class="input-group">
 				<input id="id" name="id" type="hidden" value=""/>
 				<span class="input-group-addon">Yeni şifre:</span>
-				<input class="form-control" id="password" name="password" type="password" />
+				<input class="form-control" id="password" name="password"  />
      		</div>
      				<div class="input-group">
 				<input id="id" name="id" type="hidden" value=""/>
 				<span class="input-group-addon">Yeni şifre tekrar:</span>
-							<input class="form-control" id="passwordConf" name="passwordConf" type="password" />
+							<input class="form-control" id="passwordConf" name="passwordConf"  />
      				</div>
      				<button type="submit" class="btn btn-default" value="" >Değiştir</button>
        			</div> <!-- form-group -->

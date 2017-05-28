@@ -29,25 +29,33 @@
 		</div>
 	</header>
 	
+	<div class="container">
+    <div class="col-md-12">
+     <div class="form"> <!-- for background transparent color -->
+	
 	<form:form action="refreshPass" method="POST" modelAttribute="userForm">
 					<input id="id" name="id" type="hidden" value="${user.id }"/>
 					<div class="input-group">
 						<span class="input-group-addon">Yeni şifre</span>
-						<input id="password" name="password" value=""/>
+						<input class="form-control" id="password" name="password" value=""/>
     				</div>
     				<div class="input-group">
 						<span class="input-group-addon">Yeni şifre tekrar</span>
-						<input id="passwordConf" name="passwordConf" value=""/>
+						<input class="form-control" id="passwordConf" name="passwordConf" value=""/>
     				</div>
     				<div class="input-group">
         				<span class="input-group-btn">
-        					<button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
+        					<button type="submit" class="btn btn-default" value="" >Değiştir</button>
         				</span>
           			</div>
         			<c:if test="${not empty msg}">
 		   				<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${message5}
 		   				</div>
 					</c:if> 
-      			</form:form>
+      	</form:form>
+      	
+      	</div>
+      </div>
+     </div>
 </body>
 </html>

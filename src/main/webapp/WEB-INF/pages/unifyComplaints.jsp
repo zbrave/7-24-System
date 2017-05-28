@@ -24,7 +24,7 @@
 	<%@include file="navbar2.jsp" %>
 	<div class="text-center">	
     	<p style="font-size: 30px; color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
-    		Yönetici sayfası
+    		Şikayetleri birleştir
     	</p>
     </div>
     <div style="padding: 50px;">

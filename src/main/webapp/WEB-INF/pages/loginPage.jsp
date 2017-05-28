@@ -66,7 +66,7 @@
 						    
 							<div class="field-wrap">
 								<label>
-									Eposta Adresi<span class="req">*</span>
+									Kullanıcı Adı<span class="req">*</span>
 								</label>
 								
 								<input type="text"  id="username"  name="username"/>
@@ -96,7 +96,7 @@
 							
 							<div class="field-wrap">
 								<label>
-									İsim<span class="req">*</span>
+									Kullanıcı Adı<span class="req">*</span>
 								</label>
 								<input id="username" name='username' type="text" errorContainer="İsminizi Yaziniz" required autocomplete="off" />
 							</div>

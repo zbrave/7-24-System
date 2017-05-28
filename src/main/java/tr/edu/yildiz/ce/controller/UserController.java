@@ -102,22 +102,25 @@ public class UserController {
 			user.setPassword(encoder.encode(userInfo.getPassword()));
 			userDAO.saveUser(user);
 			redirectAttributes.addFlashAttribute("msg", "Şifreniz değiştirildi.");
+			return "redirect:/userInfo";
 		}
 		redirectAttributes.addFlashAttribute("msg", "Şifre eşleşmedi. Girdileri kontrol edin");
 		return "redirect:/userInfo";
 	}
 	
 	@RequestMapping(value = "/refreshPass", method = RequestMethod.POST)
-	public String refreshPass(Model model, Principal principal, @ModelAttribute("userForm") @Validated UserInfo userInfo) {
+	public String refreshPass(Model model, Principal principal, @ModelAttribute("userForm") @Validated UserInfo userInfo,final RedirectAttributes redirectAttributes) {
 		if(userInfo.getPassword().equals(userInfo.getPasswordConf())) {
 			System.out.println("Pass equals");
 			UserInfo user = userDAO.findUserInfo(userInfo.getId());
 			PasswordEncoder encoder = new BCryptPasswordEncoder();
 			user.setPassword(encoder.encode(userInfo.getPassword()));
 			userDAO.saveUser(user);
-			model.addAttribute("msg", "Şifreniz değiştirildi.");
+			redirectAttributes.addFlashAttribute("msg", "Şifreniz değiştirildi.");
 			passactivationDAO.deletePassactivationWithUser(userInfo.getId());
+			return "redirect:/login";
 		}
+		redirectAttributes.addFlashAttribute("msg", "Şifreniz değiştirilemedi.");
 		return "redirect:/login";
 	}
 	

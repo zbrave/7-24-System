@@ -46,12 +46,12 @@ $(document).ready(function(){
 							<div class="input-group">
 								<input id="id" name="id" type="hidden" value="${comp.id }"/>
 								<span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i> Konumu:&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;</span>	 			
-						   		<input type="" name="" value="${comp.locationInfo.description}" readonly>
+						   		<input class="form-control" name="" value="${comp.locationInfo.description}" readonly>
 					    	</div>
 					    	
 					    	<div class="input-group">
 						    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Destek Personeli Tipi:</span>         
-						        <input type="" name="" value="${comp.supportTypeInfo.type}" readonly>
+						        <input class="form-control"  name="" value="${comp.supportTypeInfo.type}" readonly>
 					        </div>
 					        <div class="input-group">
 						    	<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Seçilebilir kişiler</span>         
