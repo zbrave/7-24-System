@@ -84,6 +84,8 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         complaint.setAckTime(complaintInfo.getAckTime());
         complaint.setReported(complaintInfo.isReported());
         complaint.setAssignTime(complaintInfo.getAssignTime());
+        complaint.setComplaintFile(complaintInfo.getComplaintFile());
+        System.out.println(complaintInfo.getComplaintFile());
         if (isNew){
             Session session = this.sessionFactory.getCurrentSession();
             session.persist(complaint);
@@ -112,7 +114,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
 	@Override
 	public void recordComplaint(Integer locationId, Integer supportTypeId, Integer complainantUserId,
-			String complaintText,Integer parentId,Byte[] complaintFile ) {
+			String complaintText,Integer parentId,byte[] complaintFile ) {
 		//notifications
 		ComplaintInfo complaintInfo = new ComplaintInfo();
 		complaintInfo.setLocationId(locationId);
@@ -209,7 +211,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 	
 	@Override
 	public void transferComplaint(Integer id,  String responseText, Integer newLocationId,
-		Integer newSupportTypeId, String newComplaintText,boolean ended,Byte[] complaintFile,Byte[] responseFile) {
+		Integer newSupportTypeId, String newComplaintText,boolean ended,byte[] complaintFile,Byte[] responseFile) {
 		//notifications
 		Integer parentComplaintId=id;
 		Integer childComplaintId;

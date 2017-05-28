@@ -31,7 +31,7 @@
     <div class="container">
       		<div class="col-md-12">
       			<div class="form"> <!-- for background transparent color -->
-      				<form:form action="saveComplaint" method="POST" modelAttribute="complaintForm">
+      				<form:form action="saveComplaint" method="POST" modelAttribute="complaintForm" enctype="multipart/form-data">
 						<div class="form-group">
 						
 							<div class="input-group">
@@ -65,7 +65,7 @@
 							
 							<div class="input-group">
 							  	<span class="input-group-addon" ><i class="glyphicon glyphicon-paperclip"></i> Ek:</span>
-							  	<input type="file" name="file" id="file" class="form-control" placeholder="Resim veya video ekleyebilirsiniz">
+							  	<input type="file" name="file2" id="file2" class="form-control" placeholder="Resim veya video ekleyebilirsiniz">
 							</div>
 							</br>
 					        <button type="submit" class="button button-block" value="Ekle" > Ekle</button>

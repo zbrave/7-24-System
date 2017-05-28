@@ -3,6 +3,9 @@ package tr.edu.yildiz.ce.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -62,9 +66,8 @@ public class ComplaintController {
 	@RequestMapping(value = "/saveComplaint", method = RequestMethod.POST)
 	public String saveComplaint(Model model, HttpServletRequest request, //
 			@ModelAttribute("complaintForm") @Validated ComplaintInfo complaintInfo, //
-			BindingResult result, //
+			@RequestParam("file2") MultipartFile file,BindingResult result, //
 			final RedirectAttributes redirectAttributes) throws IOException, ServletException {
-			
 		if (result.hasErrors()) {
 			model.addAttribute("compMsgError", "Hatalı giriş.");
 			System.out.println("Hata!");
@@ -78,8 +81,34 @@ public class ComplaintController {
 			e.printStackTrace();
 		}
 		System.out.println(complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getComplainantUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getFile());
-		this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText(), complaintInfo.getParentId(),complaintInfo.getComplaintFile());
+		if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+            System.out.println("file empty!");
+            return "redirect:uploadStatus";
+        }
+//		Byte[] bytes2 = new Byte[file.getBytes().length];
+//		byte[] bytes;
+        try {
 
+            // Get the file and save it somewhere
+        	byte[] bytes = file.getBytes();
+        	this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText(), complaintInfo.getParentId(),bytes);
+
+//            int i=0;    
+            // Associating Byte array values with bytes. (byte[] to Byte[])
+//            for(byte b: bytes)
+//               bytes2[i++] = b;  // Autoboxing.
+//            Path path = Paths.get("D://temp//" + file.getOriginalFilename());
+//            Files.write(path, bytes);
+            redirectAttributes.addFlashAttribute("message",
+                        "You successfully uploaded '" + file.getOriginalFilename() + "'");
+            System.out.println("kaydettim");
+            
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
 		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet gönderildi.");

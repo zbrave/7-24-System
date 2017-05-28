@@ -12,11 +12,11 @@ public interface ComplaintDAO {
     public ComplaintInfo findComplaintInfo (Integer id);  
     public void deleteComplaint (Integer id);
     
-    public void recordComplaint (Integer locationId,Integer supportTypeId,Integer complainantUserId,String complaintText,Integer parentId,Byte[] complaintFile);
+    public void recordComplaint (Integer locationId,Integer supportTypeId,Integer complainantUserId,String complaintText,Integer parentId,byte[] complaintFile);
     public void assingComplaint(Integer id,Integer supportUserId);//manager assign edicek+
     public void ackComplaint(Integer id);// support+
     public void reportComplaint(Integer id);// support un her yerine ekle -ack olanlar ona ait değilse report edebilsin+
-    public void transferComplaint (Integer id,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended,Byte[] complaintFile,Byte[] responseFile);
+    public void transferComplaint (Integer id,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended,byte[] complaintFile,Byte[] responseFile);
     public void endComplaint(Integer id,String responseText,Byte[] responseFile);
     public void uniteComplaints(Integer uniteTo,Integer delete);// manager report edilenler ve assigndan önce+
     

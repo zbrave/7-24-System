@@ -18,6 +18,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 
@@ -129,6 +131,19 @@ public class ApplicationContextConfig {
   public MailSend getMailSend() {
       return new MailSendImpl();
   }
+  
+//Bean name must be "multipartResolver", by default Spring uses method name as bean name.
+  @Bean
+  public MultipartResolver multipartResolver() {
+      return new StandardServletMultipartResolver();
+  }
+
+	/*
+	// if the method name is different, you must define the bean name manually like this :
+	@Bean(name = "multipartResolver")
+  public MultipartResolver createMultipartResolver() {
+      return new StandardServletMultipartResolver();
+  }*/
   
   @Bean
   public JavaMailSender javaMailService() {
