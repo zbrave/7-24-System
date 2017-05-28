@@ -12,7 +12,7 @@
 	<link href="${bootstrapCSS}" rel="stylesheet" />
 	<link href="${bootstrapThemeCSS}" rel="stylesheet" />
 	<link href="${styleCSS}" rel="stylesheet" />	
-	<title>404 Sayfa hatası</title>
+	<title>HTTP HATASI - ${errorCode}</title>
 </head>
 <body>
 	<style>
@@ -21,12 +21,12 @@
 		}
 	</style>
 	
-	<h1 style="padding: 70px; font-size: 70px">404</h1>
+	<h1 style="padding: 70px; font-size: 70px">HTTP Hata Kodu: ${errorCode}</h1>
 	<h2>${errorMsg}</h2>
  	</br></br></br>
  	<p align="center">
  		<a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/login" role="button">
- 			<span><i class="glyphicon glyphicon-log-out"></i> Çıkış yap</span>
+ 			<span><i class="glyphicon glyphicon-log-out"></i> Giriş sayfasına git</span>
  		</a>
  	</p>
 </body>

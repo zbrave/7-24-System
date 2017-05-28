@@ -6,7 +6,12 @@
  
  <display-name>System Programming Project</display-name>
  
- <error-page>
+<error-page>
+<location>/errors</location>
+</error-page>
+
+<error-page>
+<exception-type>java.lang.Throwable</exception-type>
 <location>/errors</location>
 </error-page>
  

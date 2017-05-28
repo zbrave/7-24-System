@@ -447,6 +447,41 @@ public class MainController {
  
         switch (httpErrorCode) {
             case 400: {
+                errorMsg = "Geçersiz istek";
+                break;
+            }
+            case 401: {
+                errorMsg = "Yetkilendirme yapılmadı";
+                break;
+            }
+            case 404: {
+                errorMsg = "İçerik bulunamadı";
+                break;
+            }
+            case 500: {
+                errorMsg = "İç sunucu hatası";
+                break;
+            }
+        }
+        errorPage.addObject("errorMsg", errorMsg);
+        errorPage.addObject("errorCode", httpErrorCode);
+        return errorPage;
+    }
+     
+    private int getErrorCode(HttpServletRequest httpRequest) {
+        return (Integer) httpRequest
+          .getAttribute("javax.servlet.error.status_code");
+    }
+	
+	@RequestMapping(value = "errors", method = RequestMethod.POST)
+    public ModelAndView renderErrorPage2(HttpServletRequest httpRequest) {
+        
+        ModelAndView errorPage = new ModelAndView("errorPage");
+        String errorMsg = "";
+        int httpErrorCode = getErrorCode(httpRequest);
+ 
+        switch (httpErrorCode) {
+            case 400: {
                 errorMsg = "Http Hata kodu: 400. Geçersiz istek";
                 break;
             }
@@ -464,17 +499,8 @@ public class MainController {
             }
         }
         errorPage.addObject("errorMsg", errorMsg);
+        errorPage.addObject("errorCode", httpErrorCode);
         return errorPage;
     }
-     
-    private int getErrorCode(HttpServletRequest httpRequest) {
-        return (Integer) httpRequest
-          .getAttribute("javax.servlet.error.status_code");
-    }
-	
-	@RequestMapping(value = "500Error", method = RequestMethod.GET)
-	public void throwRuntimeException() {
-	    throw new NullPointerException("Throwing a null pointer exception");
-	}
 	
 }
