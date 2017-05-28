@@ -20,7 +20,7 @@
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>
-	<title>${title}</title>
+	<title>Şikayet İstatistiği</title>
 </head>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -38,23 +38,27 @@ $(document).ready(function(){
 		$.get("${pageContext.request.contextPath}/getLocSupComplaints?id="+ $(this).children("option").filter(":selected").attr("id") +"&id2="+$('#sup2').children("option").filter(":selected").attr("id"), null, function (data) {
 	        $('#comps3 > tbody:last-child').html(data);
 	    });
+		$('#allDepartmentStatisticsCHILD').hide();
 	});
 	$('#sup2').on('change',function(){
 		$.get("${pageContext.request.contextPath}/getLocSupComplaints?id="+ $('#loc2').children("option").filter(":selected").attr("id") +"&id2="+$(this).children("option").filter(":selected").attr("id"), null, function (data) {
 	        $('#comps3 > tbody:last-child').html(data);
 	    });
+		$('#allDepartmentStatisticsCHILD').hide();
 	});
 	$('#loc3').on('change',function(){
 		getdata(0);
 		$.get("${pageContext.request.contextPath}/getSupporterInfo?id="+ $(this).children("option").filter(":selected").attr("id") +"&id2="+$('#sup3').children("option").filter(":selected").attr("id"), null, function (data) {
 	        $('#comps4 > tbody:last-child').html(data);
 	    });
+		$('#supportPersonnelDensityCHILD').hide();
 	});
 	$('#sup3').on('change',function(){
 		getdata(0);
 		$.get("${pageContext.request.contextPath}/getSupporterInfo?id="+ $('#loc3').children("option").filter(":selected").attr("id") +"&id2="+$(this).children("option").filter(":selected").attr("id"), null, function (data) {
 	        $('#comps4 > tbody:last-child').html(data);
 	    });
+		$('#supportPersonnelDensityCHILD').hide();
 	});
 });</script>
 <script type="text/javascript">
@@ -134,6 +138,9 @@ function getalldata2(id,id2,id3,id4,id5) {
 	      						<tr>
 						      		<th style="width: 10%;">Konum</th>
 						      		<th style="width: 10%;">Destek tipi</th>
+						      		<th style="width: 10%;">Ort. atanma süresi</th>
+						      		<th style="width: 10%;">Ort. farkındalık süresi</th>
+						      		<th style="width: 10%;">Ort. cevap süresi</th>
 						      		<th style="width: 10%;">Toplam şikayet</th>
 						      		<th style="width: 10%;">Onay bekleyen şikayetler</th>
 						      		<th style="width: 10%;">Atanma bekleyen şikayetler</th>
@@ -148,6 +155,18 @@ function getalldata2(id,id2,id3,id4,id5) {
 						      	<tr>
 						      		<td>${data.locationInfo.description }</td>
 						      		<td>${data.supportTypeInfo.type }</td>
+						      		<td><fmt:formatNumber value="${data.avgAssignTime/86400000 }" minFractionDigits="0" maxFractionDigits="0"/> gün<br/>
+				      				<fmt:formatNumber value="${(data.avgAssignTime/3600000)%24}" minFractionDigits="0" maxFractionDigits="0"/> saat<br/>
+				      				<fmt:formatNumber value="${(data.avgAssignTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="0"/> dakika<br/>
+						      		
+						      		<td><fmt:formatNumber value="${data.avgAwarenessTime/86400000 }" minFractionDigits="0" maxFractionDigits="0"/> gün<br/>
+				      				<fmt:formatNumber value="${(data.avgAwarenessTime/3600000)%24}" minFractionDigits="0" maxFractionDigits="0"/> saat<br/>
+				      				<fmt:formatNumber value="${(data.avgAwarenessTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="0"/> dakika<br/>
+				      				
+				      				<td><fmt:formatNumber value="${data.avgResponseTime/86400000 }" minFractionDigits="0" maxFractionDigits="0"/> gün<br/>
+				      				<fmt:formatNumber value="${(data.avgResponseTime/3600000)%24}" minFractionDigits="0" maxFractionDigits="0"/> saat<br/>
+				      				<fmt:formatNumber value="${(data.avgResponseTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="0"/> dakika<br/>
+						      		
 						      		<td onclick="getalldata(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, 0, 1)">
 						      			<c:if test="${data.total != 0 }"><a onclick="$('#allDepartmentStatisticsCHILD').show();" > ${data.total }</a></c:if>
 						      			<c:if test="${data.total == 0 }">${data.total }</c:if>
@@ -328,12 +347,12 @@ function getalldata2(id,id2,id3,id4,id5) {
 						      	<c:if test="${data.total != 0 }"><a onclick="$('#supportPersonnelDensityCHILD').show();"> ${data.total }</a></c:if>
 						      	<c:if test="${data.total == 0 }">${data.total }</c:if>
 						    </td>
-				      		<td><fmt:formatNumber value="${data.avgAwarenessTime/86400000 }" minFractionDigits="0" maxFractionDigits="2"/> gün<br/>
-				      		<fmt:formatNumber value="${(data.avgAwarenessTime/3600000)%24}" minFractionDigits="0" maxFractionDigits="2"/> saat<br/>
-				      		<fmt:formatNumber value="${(data.avgAwarenessTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="2"/> dakika<br/>
-				      		<td><fmt:formatNumber value="${data.avgResponseTime/86400000 }" minFractionDigits="0" maxFractionDigits="2"/> gün<br/>
-				      		<fmt:formatNumber value="${(data.avgResponseTime/3600000)%24 }" minFractionDigits="0" maxFractionDigits="2"/> saat<br/>
-				      		<fmt:formatNumber value="${(data.avgResponseTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="2"/> dakika</td>
+				      		<td><fmt:formatNumber value="${data.avgAwarenessTime/86400000 }" minFractionDigits="0" maxFractionDigits="0"/> gün<br/>
+				      		<fmt:formatNumber value="${(data.avgAwarenessTime/3600000)%24}" minFractionDigits="0" maxFractionDigits="0"/> saat<br/>
+				      		<fmt:formatNumber value="${(data.avgAwarenessTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="0"/> dakika<br/>
+				      		<td><fmt:formatNumber value="${data.avgResponseTime/86400000 }" minFractionDigits="0" maxFractionDigits="0"/> gün<br/>
+				      		<fmt:formatNumber value="${(data.avgResponseTime/3600000)%24 }" minFractionDigits="0" maxFractionDigits="0"/> saat<br/>
+				      		<fmt:formatNumber value="${(data.avgResponseTime/60000)%60 }" minFractionDigits="0" maxFractionDigits="0"/> dakika</td>
 				      		<td onclick="getalldata2(${data.locationInfo.id}, ${data.supportTypeInfo.id}, 0, ${data.userInfo.id}, 2)">
 				      		  	<c:if test="${data.waitingAck != 0 }"><a onclick="$('#supportPersonnelDensityCHILD').show();"> ${data.waitingAck }</a></c:if>
 						      	<c:if test="${data.waitingAck == 0 }">${data.waitingAck }</c:if>
