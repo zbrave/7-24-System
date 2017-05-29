@@ -28,23 +28,35 @@ $(document).ready(function(){
 		$.get("${pageContext.request.contextPath}/getComplaintList?id="+ $(this).children("option").filter(":selected").attr("id") +"&id2="+$('#sup').children("option").filter(":selected").attr("id"), null, function (data) {
 	        $('#comps > tbody:last-child').html(data);
 	    });
+		$('#table').show();
+		$('#table2').hide();
+		$('#table3').hide();
 	});
 	$('#sup').on('change',function(){
 		$.get("${pageContext.request.contextPath}/getComplaintList?id="+ $('#loc').children("option").filter(":selected").attr("id") +"&id2="+$(this).children("option").filter(":selected").attr("id"), null, function (data) {
 	        $('#comps > tbody:last-child').html(data);
 	    });
+		$('#table').show();
+		$('#table2').hide();
+		$('#table3').hide();
 	});
 	$('#loc2').on('change',function(){
 		$.get("${pageContext.request.contextPath}/getLocSupComplaints?id="+ $(this).children("option").filter(":selected").attr("id") +"&id2="+$('#sup2').children("option").filter(":selected").attr("id"), null, function (data) {
 	        $('#comps3 > tbody:last-child').html(data);
 	    });
 		$('#allDepartmentStatisticsCHILD').hide();
+		$('#table').hide();
+		$('#table2').show();
+		$('#table3').hide();
 	});
 	$('#sup2').on('change',function(){
 		$.get("${pageContext.request.contextPath}/getLocSupComplaints?id="+ $('#loc2').children("option").filter(":selected").attr("id") +"&id2="+$(this).children("option").filter(":selected").attr("id"), null, function (data) {
 	        $('#comps3 > tbody:last-child').html(data);
 	    });
 		$('#allDepartmentStatisticsCHILD').hide();
+		$('#table').hide();
+		$('#table2').show();
+		$('#table3').hide();
 	});
 	$('#loc3').on('change',function(){
 		getdata(0);
@@ -52,6 +64,9 @@ $(document).ready(function(){
 	        $('#comps4 > tbody:last-child').html(data);
 	    });
 		$('#supportPersonnelDensityCHILD').hide();
+		$('#table').hide();
+		$('#table2').hide();
+		$('#table3').show();
 	});
 	$('#sup3').on('change',function(){
 		getdata(0);
@@ -59,6 +74,9 @@ $(document).ready(function(){
 	        $('#comps4 > tbody:last-child').html(data);
 	    });
 		$('#supportPersonnelDensityCHILD').hide();
+		$('#table').hide();
+		$('#table2').hide();
+		$('#table3').show();
 	});
 });</script>
 <script type="text/javascript">
@@ -88,17 +106,17 @@ function getalldata2(id,id2,id3,id4,id5) {
     <!-- *******  TAB MENU   ******* -->
  	<ul class="nav nav-tabs">
  		<li role="presentation">
- 			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#allDepartmentStatisticsCHILD').hide(); $('#locationServiceComplaints').show(); $('#supportPersonnelDensity').hide();$('#supportPersonnelDensityCHILD').hide()">
+ 			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#allDepartmentStatisticsCHILD').hide(); $('#locationServiceComplaints').show(); $('#supportPersonnelDensity').hide();$('#supportPersonnelDensityCHILD').hide();$('#table').hide();$('#table2').hide();$('#table3').hide();">
  				Konum/Hizmet tipi şikayetleri
  			</a>
  		</li>
   		<li role="presentation">
-  			<a href="#" onclick="$('#allDepartmentStatistics').show(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').hide(); $('#supportPersonnelDensityCHILD').hide()">
+  			<a href="#" onclick="$('#allDepartmentStatistics').show(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').hide(); $('#supportPersonnelDensityCHILD').hide();$('#table').hide();$('#table2').hide();$('#table3').hide();">
   			Tüm bölümlerin şikayet istatistikleri
   			</a>
   		</li>
   		<li role="presentation">
-  			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#allDepartmentStatisticsCHILD').hide(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').show();">
+  			<a href="#" onclick="$('#allDepartmentStatistics').hide(); $('#allDepartmentStatisticsCHILD').hide(); $('#locationServiceComplaints').hide(); $('#supportPersonnelDensity').show();$('#table').hide();$('#table2').hide();$('#table3').hide();">
   		Personel şikayet yoğunluğu
   			</a>
   		</li>
@@ -131,6 +149,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 			        
 			        </br>
       			<!-- >>> TABLE <<< -->
+      			<div class="collapse" id="table2">
       			<div class="panel panel-default">
       				<div class="panel-heading"><p>Toplam süreç : ${total }</p> </div>
       					<table id="comps3" class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -199,7 +218,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 						      </c:forEach>
 						    </tbody>
       					</table>
-
+				  </div>
       			</div>
       			<!-- <<< TABLE CHILD >>> -->
       			<div class="collapse" id="allDepartmentStatisticsCHILD">
@@ -263,6 +282,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 			        </c:forEach>
 		        </select>
 	        </div>
+	        <div class="collapse" id="table">
       			<div class="panel panel-default">
       				<div class="panel-heading">Şikayet listesi</div>
       				<table id="comps" class="table table-striped custab" style="background-color: #FFF;">
@@ -292,7 +312,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 				</div> <!-- TABLE >>> -->
      
 			</div>
-      
+      	</div>
      </div>
      
       <!---- Personel şikayet yoğunluğu ---->
@@ -319,6 +339,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 			        </c:forEach>
 		        </select>
 	        </div>
+	        	<div class="collapse" id="table3">
       			<div class="panel panel-default">
       				<div class="panel-heading">Destek Ekibi</div>
       				<table id="comps4" class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -379,6 +400,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 				      </tbody>
 				  	</table>
 				</div>
+			</div>
 				  <!-- TABLE >>> -->
 				<div class="collapse" id="supportPersonnelDensityCHILD">
       			<div class="panel panel-default">
