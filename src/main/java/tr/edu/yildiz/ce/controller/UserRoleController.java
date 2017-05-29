@@ -83,12 +83,12 @@ public class UserRoleController {
 		UserInfo user = userDAO.findUserInfo(userRole.getUserId());
 		if (this.userRoleDAO.deleteUserRole(id)) {
 			redirectAttributes.addFlashAttribute("userRoleMsgSuccess", "Silindi");
-			List<ManagerInfo> mn = managerDAO.listManagerInfos();
-			for (ManagerInfo m : mn) {
-				if (m.getUserId() == user.getId()) {
+			if (userRole.getRole().equals("MANAGER")) {
+				List<ManagerInfo> mn = managerDAO.listManagerInfosById(user.getId());
+				for (ManagerInfo m : mn) {
 					managerDAO.deleteManager(m.getId());
-					return "redirect:/addManager";
 				}
+				return "redirect:/addManager";
 			}
 			return "redirect:/userRoleEdit";
 		}
