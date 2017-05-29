@@ -360,12 +360,34 @@ public class ComplaintController {
 			tmp.setComplainantUserInfo(userDAO.findUserInfo(tmp.getSupportUserId()));
 		}
 		for (ComplaintInfo tmp : list4) {
+			res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getComplainantUserInfo().getUsername()+"</td>");
 			if (tmp.getComplaintTime() == null ) {
-				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getComplainantUserInfo().getUsername()+"</td><td>"+"Atama yapılmamış</td><td>"+tmp.getComplaintText()+"</td><td>"+userDAO.findUserInfo(tmp.getComplainantUserId()).getUsername()+"</td><td>"+tmp.getResponseTime()+"</td><td>"+tmp.getResponseText()+"</td><td>"+tmp.getAckTime()+"</td><td>"+tmp.getAssignTime()+"</td><td>"+tmp.isEnded()+"</td><td>"+tmp.isAck()+"</td><td>"+tmp.isReported()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-success btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
+				res = res.concat("<td>"+"Atama yapılmamış</td>");
 			}
-			else {
-				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getComplainantUserInfo().getUsername()+"</td><td>"+tmp.getComplaintTime()+"</td><td>"+tmp.getComplaintText()+"</td><td>"+userDAO.findUserInfo(tmp.getComplainantUserId()).getUsername()+"</td><td>"+tmp.getResponseTime()+"</td><td>"+tmp.getResponseText()+"</td><td>"+tmp.getAckTime()+"</td><td>"+tmp.getAssignTime()+"</td><td>"+tmp.isEnded()+"</td><td>"+tmp.isAck()+"</td><td>"+tmp.isReported()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-success btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
+			else{
+				res = res.concat("<td>"+tmp.getComplaintTime()+"</td>");
 			}
+			res = res.concat("<td>"+tmp.getComplaintText()+"</td><td>"+userDAO.findUserInfo(tmp.getComplainantUserId()).getUsername()+"</td><td>"+tmp.getResponseTime()+"</td><td>"+tmp.getResponseText()+"</td><td>"+tmp.getAckTime()+"</td><td>"+tmp.getAssignTime()+"</td>");
+			
+			if(tmp.isEnded()){
+				res = res.concat("<td><p style=\"color:green;\"><span class=\"glyphicon glyphicon-ok\"></span></p></td>");
+			}else{
+				res = res.concat("<td><p style=\"color:red;\"><span class=\"glyphicon glyphicon-remove\"></span></p></td>");
+			}
+			
+			if(tmp.isAck()){
+				res = res.concat("<td><p style=\"color:green;\"><span class=\"glyphicon glyphicon-ok\"></span></p></td>");
+			}else{
+				res = res.concat("<td><p style=\"color:red;\"><span class=\"glyphicon glyphicon-remove\"></span></p></td>");
+			}
+			
+			if(tmp.isReported()){
+				res = res.concat("<td><p style=\"color:green;\"><span class=\"glyphicon glyphicon-ok\"></span></p></td>");
+			}else{
+				res = res.concat("<td><p style=\"color:red;\"><span class=\"glyphicon glyphicon-remove\"></span></p></td>");
+			}
+			
+			res = res.concat("<td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-success btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
 		}
 		return res;
 	}
@@ -397,12 +419,44 @@ public class ComplaintController {
 			tmp.setComplainantUserInfo(userDAO.findUserInfo(tmp.getSupportUserId()));
 		}
 		for (ComplaintInfo tmp : list4) {
-			if (tmp.getSupportUserId() == null) {
-				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+"Atama yapılmamış."+"</td><td>"+tmp.getComplaintTime()+"</td><td>"+tmp.getComplaintText()+"</td><td>"+userDAO.findUserInfo(tmp.getComplainantUserId()).getUsername()+"</td><td>"+tmp.getResponseTime()+"</td><td>"+tmp.getResponseText()+"</td><td>"+tmp.getAckTime()+"</td><td>"+tmp.getAssignTime()+"</td><td>"+tmp.isEnded()+"</td><td>"+tmp.isAck()+"</td><td>"+tmp.isReported()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
+			
+			res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td>");
+			
+			if (tmp.getSupportUserId() == null) {	
+				res = res.concat("<td>Atama yapılmamış."+"</td>");
+			}else{
+				res = res.concat("<td>"+tmp.getComplainantUserInfo().getUsername()+"</td>");
 			}
-			else {
-				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getComplainantUserInfo().getUsername()+"</td><td>"+tmp.getComplaintTime()+"</td><td>"+tmp.getComplaintText()+"</td><td>"+userDAO.findUserInfo(tmp.getComplainantUserId()).getUsername()+"</td><td>"+tmp.getResponseTime()+"</td><td>"+tmp.getResponseText()+"</td><td>"+tmp.getAckTime()+"</td><td>"+tmp.getAssignTime()+"</td><td>"+tmp.isEnded()+"</td><td>"+tmp.isAck()+"</td><td>"+tmp.isReported()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-success btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
+			
+			res = res.concat("<td>"+tmp.getComplaintTime()+"</td><td>"+tmp.getComplaintText()+"</td><td>"+userDAO.findUserInfo(tmp.getComplainantUserId()).getUsername()+"</td><td>"+tmp.getResponseTime()+"</td><td>"+tmp.getResponseText()+"</td><td>"+tmp.getAckTime()+"</td><td>"+tmp.getAssignTime()+"</td>");
+			
+			if(tmp.isEnded()){
+				res = res.concat("<td><p style=\"color:green;\"><span class=\"glyphicon glyphicon-ok\"></span></p></td>");
+			}else{
+				res = res.concat("<td><p style=\"color:red;\"><span class=\"glyphicon glyphicon-remove\"></span></p></td>");
 			}
+			
+			if(tmp.isAck()){
+				res = res.concat("<td><p style=\"color:green;\"><span class=\"glyphicon glyphicon-ok\"></span></p></td>");
+			}else{
+				res = res.concat("<td><p style=\"color:red;\"><span class=\"glyphicon glyphicon-remove\"></span></p></td>");
+			}
+			
+			if(tmp.isReported()){
+				res = res.concat("<td><p style=\"color:green;\"><span class=\"glyphicon glyphicon-ok\"></span></p></td>");
+			}else{
+				res = res.concat("<td><p style=\"color:red;\"><span class=\"glyphicon glyphicon-remove\"></span></p></td>");
+			}
+			
+			res = res.concat("<td><a href=\"listCompProcess?id="+tmp.getId()+"\" ");
+			
+			if (tmp.getSupportUserId() == null) {	
+				res = res.concat(" class=\"btn btn-danger btn-xs\">");
+			}else{
+				res = res.concat(" class=\"btn btn-success btn-xs\">");
+			}
+			
+			res = res.concat("<span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
 		}
 		return res;
 	}
@@ -455,12 +509,44 @@ public class ComplaintController {
 			tmp.setComplainantUserInfo(userDAO.findUserInfo(tmp.getSupportUserId()));
 		}
 		for (ComplaintInfo tmp : list4) {
-			if (tmp.getSupportUserId() == null) {
-				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+"Atama yapılmamış."+"</td><td>"+tmp.getComplaintTime()+"</td><td>"+tmp.getComplaintText()+"</td><td>"+userDAO.findUserInfo(tmp.getComplainantUserId()).getUsername()+"</td><td>"+tmp.getResponseTime()+"</td><td>"+tmp.getResponseText()+"</td><td>"+tmp.getAckTime()+"</td><td>"+tmp.getAssignTime()+"</td><td>"+tmp.isEnded()+"</td><td>"+tmp.isAck()+"</td><td>"+tmp.isReported()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-danger btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
+			
+			res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td>");
+			
+			if (tmp.getSupportUserId() == null) {	
+				res = res.concat("<td>Atama yapılmamış."+"</td>");
+			}else{
+				res = res.concat("<td>"+tmp.getComplainantUserInfo().getUsername()+"</td>");
 			}
-			else {
-				res = res.concat("<tr><td>"+tmp.getId()+"</td><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getComplainantUserInfo().getUsername()+"</td><td>"+tmp.getComplaintTime()+"</td><td>"+tmp.getComplaintText()+"</td><td>"+userDAO.findUserInfo(tmp.getComplainantUserId()).getUsername()+"</td><td>"+tmp.getResponseTime()+"</td><td>"+tmp.getResponseText()+"</td><td>"+tmp.getAckTime()+"</td><td>"+tmp.getAssignTime()+"</td><td>"+tmp.isEnded()+"</td><td>"+tmp.isAck()+"</td><td>"+tmp.isReported()+"</td><td><a href=\"listCompProcess?id="+tmp.getId()+"\" class=\"btn btn-success btn-xs\"><span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
+			
+			res = res.concat("<td>"+tmp.getComplaintTime()+"</td><td>"+tmp.getComplaintText()+"</td><td>"+userDAO.findUserInfo(tmp.getComplainantUserId()).getUsername()+"</td><td>"+tmp.getResponseTime()+"</td><td>"+tmp.getResponseText()+"</td><td>"+tmp.getAckTime()+"</td><td>"+tmp.getAssignTime()+"</td>");
+			
+			if(tmp.isEnded()){
+				res = res.concat("<td><p style=\"color:green;\"><span class=\"glyphicon glyphicon-ok\"></span></p></td>");
+			}else{
+				res = res.concat("<td><p style=\"color:red;\"><span class=\"glyphicon glyphicon-remove\"></span></p></td>");
 			}
+			
+			if(tmp.isAck()){
+				res = res.concat("<td><p style=\"color:green;\"><span class=\"glyphicon glyphicon-ok\"></span></p></td>");
+			}else{
+				res = res.concat("<td><p style=\"color:red;\"><span class=\"glyphicon glyphicon-remove\"></span></p></td>");
+			}
+			
+			if(tmp.isReported()){
+				res = res.concat("<td><p style=\"color:green;\"><span class=\"glyphicon glyphicon-ok\"></span></p></td>");
+			}else{
+				res = res.concat("<td><p style=\"color:red;\"><span class=\"glyphicon glyphicon-remove\"></span></p></td>");
+			}
+			
+			res = res.concat("<td><a href=\"listCompProcess?id="+tmp.getId()+"\" ");
+			
+			if (tmp.getSupportUserId() == null) {	
+				res = res.concat(" class=\"btn btn-danger btn-xs\">");
+			}else{
+				res = res.concat(" class=\"btn btn-success btn-xs\">");
+			}
+			
+			res = res.concat("<span class=\"glyphicon glyphicon-plus\"></span> Şikayet geçmişi</a></td></tr>");
 		}
 		return res;
 	}

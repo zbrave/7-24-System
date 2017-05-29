@@ -77,7 +77,8 @@
 								</label>
 								<input type="password" id="password" name='password'/>
 							</div>
-							<p class="forgot"><a data-toggle="modal" data-target="#passForgot">Şifremi Unuttum?</a></p>
+							<p class="forgot"><a href="" data-toggle="modal" data-target="#passForgot">Şifremi Unuttum?</a></p>
+							<p class="forgot" style="padding:5px;"><a href="" data-toggle="modal" data-target="#questLogin">Ziyaretçi girişi</a></p>
 							<button class="button button-block" type="submit" name="go">Giriş Yap</button>
 						</form>
 					</div>
@@ -164,6 +165,41 @@
 	
 	  </div>
 	</div><!-- modal end -->
+	
+	<!-- Modal -->
+	<div id="questLogin" class="modal fade" role="dialog">
+	  <div class="modal-dialog" role="document">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h2 class="modal-title">Ziyaretçi girişi</h2>
+	        <h4 class="modal-title">Lütfen geçerli e-mail adresinizi giriniz:</h4>
+	      </div>
+	      <div class="modal-body">
+	      
+	        <form:form action="forgotPass" method="POST" modelAttribute="userForm">
+					<div class="input-group">
+						<span class="input-group-addon">E-mail</span>
+						<input class="form-control" id="email" name="email" value=""/>
+    				
+    				<span class="input-group-btn">
+        					<button type="submit" class="btn btn-default" value="Ekle" >Şikayet Ekleme Linkini Gönder</button>
+        			</span>
+        			</div>
+     	</form:form>
+    
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div><!-- modal end -->
+	
+	
 	<script src="${loginJS}"></script>
 </body>
 </html>
