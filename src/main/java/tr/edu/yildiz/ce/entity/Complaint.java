@@ -20,7 +20,7 @@ public class Complaint {
 	private Integer parentId;
 	private Integer complainantUserId;
 	private byte[] complaintFile;
-	private Byte[] responseFile;
+	private byte[] responseFile;
 	
 	private Date complaintTime;
 	private Date assignTime;
@@ -178,10 +178,10 @@ public class Complaint {
 	}
 	
 	@Column(name = "response_file")
-	public Byte[] getResponseFile() {
+	public byte[] getResponseFile() {
 		return responseFile;
 	}
-	public void setResponseFile(Byte[] responseFile) {
+	public void setResponseFile(byte[] responseFile) {
 		this.responseFile = responseFile;
 	}
 	

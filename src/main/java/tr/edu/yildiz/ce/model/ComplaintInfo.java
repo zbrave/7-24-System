@@ -35,7 +35,7 @@ public class ComplaintInfo{
 	private long percentResponse;
 	private long percentReported;
 	private byte[] complaintFile;
-	private Byte[] responseFile;
+	private byte[] responseFile;
 	
 	public ComplaintInfo(){
 		
@@ -43,7 +43,7 @@ public class ComplaintInfo{
 
 	public ComplaintInfo(Integer id,Integer locationId,Integer supportTypeId,Integer parentId,Integer complainantUserId,Date complaintTime,
 			String complaintText,Integer supportUserId,Date responseTime,String responseText,Integer childId,boolean ended,Date ackTime,
-			boolean ack,boolean reported,Date assignTime,byte[] complaintFile,Byte[] responseFile){
+			boolean ack,boolean reported,Date assignTime,byte[] complaintFile,byte[] responseFile){
 		this.id=id;
 		this.locationId=locationId;
 		this.supportTypeId=supportTypeId;
@@ -256,11 +256,11 @@ public class ComplaintInfo{
 		this.complaintFile = complaintFile;
 	}
 
-	public Byte[] getResponseFile() {
+	public byte[] getResponseFile() {
 		return responseFile;
 	}
 
-	public void setResponseFile(Byte[] responseFile) {
+	public void setResponseFile(byte[] responseFile) {
 		this.responseFile = responseFile;
 	}
 

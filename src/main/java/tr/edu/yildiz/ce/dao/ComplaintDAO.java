@@ -16,8 +16,8 @@ public interface ComplaintDAO {
     public void assingComplaint(Integer id,Integer supportUserId);//manager assign edicek+
     public void ackComplaint(Integer id);// support+
     public void reportComplaint(Integer id);// support un her yerine ekle -ack olanlar ona ait değilse report edebilsin+
-    public void transferComplaint (Integer id,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended,byte[] complaintFile,Byte[] responseFile);
-    public void endComplaint(Integer id,String responseText,Byte[] responseFile);
+    public void transferComplaint (Integer id,String responseText,Integer newLocationId,Integer newSupportTypeId,String newComplaintText,boolean ended,byte[] complaintFile,byte[] responseFile);
+    public void endComplaint(Integer id,String responseText,byte[] responseFile);
     public void uniteComplaints(Integer uniteTo,Integer delete);// manager report edilenler ve assigndan önce+
     
     
