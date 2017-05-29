@@ -1,6 +1,7 @@
 package tr.edu.yildiz.ce.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import tr.edu.yildiz.ce.dao.ManagerDAO;
 import tr.edu.yildiz.ce.dao.UserDAO;
 import tr.edu.yildiz.ce.dao.UserRoleDAO;
 import tr.edu.yildiz.ce.model.ManagerInfo;
+import tr.edu.yildiz.ce.model.UserInfo;
 import tr.edu.yildiz.ce.model.UserRoleInfo;
 
 @Controller
@@ -77,9 +79,17 @@ public class UserRoleController {
 		if (id == null) {
 			return "redirect:/userRoleEdit";
 		}
-		
+		UserRoleInfo userRole = userRoleDAO.findUserRoleInfo(id);
+		UserInfo user = userDAO.findUserInfo(userRole.getUserId());
 		if (this.userRoleDAO.deleteUserRole(id)) {
 			redirectAttributes.addFlashAttribute("userRoleMsgSuccess", "Silindi");
+			List<ManagerInfo> mn = managerDAO.listManagerInfos();
+			for (ManagerInfo m : mn) {
+				if (m.getUserId() == user.getId()) {
+					managerDAO.deleteManager(m.getId());
+					return "redirect:/addManager";
+				}
+			}
 			return "redirect:/userRoleEdit";
 		}
 		redirectAttributes.addFlashAttribute("userRoleMsgError", "Hata oluştu!");
