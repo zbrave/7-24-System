@@ -215,7 +215,8 @@ public class MainController {
 //				}
 //			}
 //		}
-//		model.addAttribute("LocSupTypeInfo", list);
+		
+		model.addAttribute("LocSupTypeInfo", complaintDAO.listLocSupTypeInt());
 		
 		List<SupporterInfo> sups = supporterDAO.reportSupporterInfos();
 		//List<SupporterRepInt> list2 = new ArrayList<SupporterRepInt>();
@@ -239,37 +240,50 @@ public class MainController {
 	@ResponseBody
 	public String getLocSupComplaints(@RequestParam(required = false) Integer id, @RequestParam(required = false) Integer id2) {
 		String res = "";
+		
+//		List<LocationInfo> loc = this.locationDAO.listLocationInfos();
+//		
+//		List<SupportTypeInfo> sup = this.supportTypeDAO.listSupportTypeInfos();
+		List<LocSupTypeInt> list2 = new ArrayList<LocSupTypeInt>();
+		List<LocSupTypeInt> list = complaintDAO.listLocSupTypeInt();
 		System.out.println("idler: "+id+" "+id2);
-		List<LocationInfo> loc = this.locationDAO.listLocationInfos();
-		
-		List<SupportTypeInfo> sup = this.supportTypeDAO.listSupportTypeInfos();
-		
-		List<LocSupTypeInt> list = new ArrayList<LocSupTypeInt>();
-		
-		for (LocationInfo l : loc) {
-			System.out.println("l id: "+l.getId());
-			if (id == null || id == 0 || l.getId() == id) {
-				for (SupportTypeInfo s : sup) {
-					System.out.println("s id: "+s.getId());
-					if (id2 == null || id2 == 0 || s.getId() == id2) {
-						if (complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size() != 0) {
-							LocSupTypeInt x = new LocSupTypeInt();
-							x.setLocationInfo(l);
-							x.setSupportTypeInfo(s);
-							x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId(),null,null).size());
-							x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId(),null,null).size());
-							x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size());
-							x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId(),null,null).size());
-							x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId(),null,null).size());
-							x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId(),null,null).size());
-							x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId(),null,null).size());
-							list.add(x);
-						}
-					}
-				}
+		for (LocSupTypeInt tmp : list) {
+			if (id != 0 && tmp.getLocationInfo().getId() == id) {
+				list2.add(tmp);
+				System.out.println("Ekledim:"+tmp.getLocationInfo().getDescription());
+			}
+			if (id2 != 0 && tmp.getSupportTypeInfo().getId() == id2) {
+				list2.add(tmp);
+				System.out.println("Ekledim2:"+tmp.getSupportTypeInfo().getType());
+			}
+			if (id == 0 && id2 == 0) {
+				list2.add(tmp);
 			}
 		}
-		for (LocSupTypeInt tmp : list) {
+//		for (LocationInfo l : loc) {
+//			System.out.println("l id: "+l.getId());
+//			if (id == null || id == 0 || l.getId() == id) {
+//				for (SupportTypeInfo s : sup) {
+//					System.out.println("s id: "+s.getId());
+//					if (id2 == null || id2 == 0 || s.getId() == id2) {
+//						if (complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size() != 0) {
+//							LocSupTypeInt x = new LocSupTypeInt();
+//							x.setLocationInfo(l);
+//							x.setSupportTypeInfo(s);
+//							x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId(),null,null).size());
+//							x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId(),null,null).size());
+//							x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size());
+//							x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId(),null,null).size());
+//							x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId(),null,null).size());
+//							x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId(),null,null).size());
+//							x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId(),null,null).size());
+//							list.add(x);
+//						}
+//					}
+//				}
+//			}
+//		}
+		for (LocSupTypeInt tmp : list2) {
 			System.out.println("avg"+tmp.getAvgAwarenessTime());
 			res = res.concat("<tr><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getAvgAssignTime()/86400000+" gün<br/>"+tmp.getAvgAssignTime()/3600000%24+" saat<br/>"+tmp.getAvgAssignTime()/60000%60+" dakika</td><td>"+tmp.getAvgAwarenessTime()/86400000+" gün<br/>"+tmp.getAvgAwarenessTime()/3600000%24+" saat<br/>"+tmp.getAvgAwarenessTime()/60000%60+" dakika</td><td>"+tmp.getAvgResponseTime()/86400000+" gün<br/>"+tmp.getAvgResponseTime()/3600000%24+" saat<br/>"+tmp.getAvgResponseTime()/60000%60+" dakika</td>");
 			res = res.concat("<td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 1)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getTotal()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 2)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getWaitAck()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 3)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getWaitAsg()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 4)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getWaitChild()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 5)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getActive()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 6)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getEnded()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 7)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getReport()+"</a></td></tr>");

@@ -56,12 +56,9 @@
         					</select>
         				</div>
     					<div class="input-group">
-    						<span class="input-group-addon"><i class="glyphicon glyphicon-briefcase"></i> Rolü: &ensp;&ensp;&ensp;</span>
-					        <select id="role" class="form-control" name="role" >
-					        	<option value="MANAGER">MANAGER</option>
-					        </select>
+    						<input id="role" name="role" type="hidden" value="MANAGER"/>
 					        <span class="input-group-btn">
-        						<button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
+        						<button type="submit" class="btn btn-success pull-right" value="Ekle" >Ekle</button>
         					</span>
           				</div>
           			</div> <!-- form-group -->

@@ -85,33 +85,35 @@ public class ComplaintController {
 		}
 		System.out.println(complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getComplainantUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getFile());
 		if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+			this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText(), complaintInfo.getParentId(),null);
+
             System.out.println("file empty!");
-            return "redirect:uploadStatus";
+            return "redirect:/complaint";
         }
 //		Byte[] bytes2 = new Byte[file.getBytes().length];
 //		byte[] bytes;
-        try {
-
-            // Get the file and save it somewhere
-        	byte[] bytes = file.getBytes();
-        	this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText(), complaintInfo.getParentId(),bytes);
-
-//            int i=0;    
-            // Associating Byte array values with bytes. (byte[] to Byte[])
-//            for(byte b: bytes)
-//               bytes2[i++] = b;  // Autoboxing.
-//            Path path = Paths.get("D://temp//" + file.getOriginalFilename());
-//            Files.write(path, bytes);
-            redirectAttributes.addFlashAttribute("message",
-                        "You successfully uploaded '" + file.getOriginalFilename() + "'");
-            System.out.println("kaydettim");
-            
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		
+		else {
+			try {
+	
+	            // Get the file and save it somewhere
+	        	byte[] bytes = file.getBytes();
+	        	this.complaintDAO.recordComplaint(complaintInfo.getLocationId(), complaintInfo.getSupportTypeId(), complaintInfo.getComplainantUserId(), complaintInfo.getComplaintText(), complaintInfo.getParentId(),bytes);
+	
+	//            int i=0;    
+	            // Associating Byte array values with bytes. (byte[] to Byte[])
+	//            for(byte b: bytes)
+	//               bytes2[i++] = b;  // Autoboxing.
+	//            Path path = Paths.get("D://temp//" + file.getOriginalFilename());
+	//            Files.write(path, bytes);
+	            redirectAttributes.addFlashAttribute("message",
+	                        "You successfully uploaded '" + file.getOriginalFilename() + "'");
+	            System.out.println("kaydettim");
+	            
+	
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		}
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
 		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet gönderildi.");
@@ -123,7 +125,7 @@ public class ComplaintController {
 	@RequestMapping(value = "/save2Complaint", method = RequestMethod.POST)
 	public String save2Complaint(Model model, HttpServletRequest request, //
 			@ModelAttribute("complaintForm") @Validated ComplaintInfo complaintInfo, //
-			BindingResult result, //
+			@RequestParam("file2") MultipartFile file,BindingResult result, //
 			final RedirectAttributes redirectAttributes) throws IOException, ServletException {
 			
 		if (result.hasErrors()) {
@@ -141,8 +143,38 @@ public class ComplaintController {
 		ComplaintInfo cmp = complaintDAO.findComplaintInfo(complaintInfo.getId());
 		cmp.setLocationId(complaintInfo.getLocationId());
 		cmp.setSupportTypeId(complaintInfo.getSupportTypeId());
-		this.complaintDAO.saveComplaint(cmp);
-
+		cmp.setComplaintText(complaintInfo.getComplaintText());
+		
+		if (file.isEmpty()) {
+			this.complaintDAO.saveComplaint(cmp);
+            System.out.println("file empty!");
+            return "redirect:/assignComplaints";
+        }
+//		Byte[] bytes2 = new Byte[file.getBytes().length];
+//		byte[] bytes;
+		else {
+			try {
+	
+	            // Get the file and save it somewhere
+	        	byte[] bytes = file.getBytes();
+	        	
+	    		cmp.setComplaintFile(bytes);
+	    		this.complaintDAO.saveComplaint(cmp);
+	//            int i=0;    
+	            // Associating Byte array values with bytes. (byte[] to Byte[])
+	//            for(byte b: bytes)
+	//               bytes2[i++] = b;  // Autoboxing.
+	//            Path path = Paths.get("D://temp//" + file.getOriginalFilename());
+	//            Files.write(path, bytes);
+	            redirectAttributes.addFlashAttribute("message",
+	                        "You successfully uploaded '" + file.getOriginalFilename() + "'");
+	            System.out.println("kaydettim");
+	            
+	
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		}
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
 		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet gönderildi.");
@@ -170,7 +202,7 @@ public class ComplaintController {
 	@RequestMapping(value = "/endedComplaint", method = RequestMethod.POST)
 	public String endedComplaint(Model model, Principal principal, //
 			@ModelAttribute("complaintForm") @Validated ComplaintInfo complaintInfo, //
-			BindingResult result, //
+			@RequestParam("file2") MultipartFile file,BindingResult result, //
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
@@ -192,8 +224,36 @@ public class ComplaintController {
 			e.printStackTrace();
 		}
 		System.out.println("detay: "+complaintInfo.getId()+" "+complaintInfo.getSupportUserId()+" "+complaintInfo.getResponseText());
-		this.complaintDAO.endComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),complaintInfo.getResponseFile());
-
+		if (file.isEmpty()) {
+			this.complaintDAO.endComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),complaintInfo.getResponseFile());
+			
+            System.out.println("file empty!");
+            return "redirect:/reportedComplaints";
+        }
+//		Byte[] bytes2 = new Byte[file.getBytes().length];
+//		byte[] bytes;
+		else {
+			try {
+	
+	            // Get the file and save it somewhere
+	        	byte[] bytes = file.getBytes();
+	        	this.complaintDAO.endComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),bytes);
+	    		
+	//            int i=0;    
+	            // Associating Byte array values with bytes. (byte[] to Byte[])
+	//            for(byte b: bytes)
+	//               bytes2[i++] = b;  // Autoboxing.
+	//            Path path = Paths.get("D://temp//" + file.getOriginalFilename());
+	//            Files.write(path, bytes);
+	            redirectAttributes.addFlashAttribute("message",
+	                        "You successfully uploaded '" + file.getOriginalFilename() + "'");
+	            System.out.println("kaydettim");
+	            
+	
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		}
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
 		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet kapatıldı.");
@@ -444,7 +504,7 @@ public class ComplaintController {
 	@RequestMapping(value = "/transferedComplaint", method = RequestMethod.POST)
 	public String transferedComplaint(Model model, Principal principal, //
 			@ModelAttribute("complaintForm") @Validated ComplaintInfo complaintInfo, //
-			BindingResult result, //
+			@RequestParam("file2") MultipartFile file,BindingResult result, //
 			final RedirectAttributes redirectAttributes) {
 			
 		if (result.hasErrors()) {
@@ -468,9 +528,43 @@ public class ComplaintController {
 			System.out.println("Complaint name cannot converted.");
 			e.printStackTrace();
 		}
-		System.out.println("detay: "+complaintInfo.getId()+" "+complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getSupportUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getResponseText()+" "+complaintInfo.isEnded());
-		this.complaintDAO.transferComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),complaintInfo.getLocationId(),complaintInfo.getSupportTypeId(),complaintInfo.getComplaintText(),complaintInfo.isEnded(),complaintInfo.getComplaintFile(),complaintInfo.getResponseFile());
+		if (file.isEmpty()) {
+			this.complaintDAO.transferComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),complaintInfo.getLocationId(),complaintInfo.getSupportTypeId(),complaintInfo.getComplaintText(),complaintInfo.isEnded(),complaintInfo.getComplaintFile(),complaintInfo.getResponseFile());
 
+            System.out.println("file empty!");
+            if (userRoleDAO.getUserRoles(userDAO.findLoginUserInfo(principal.getName()).getId()).contains("MANAGER")) {
+    			return "redirect:/reportedComplaints";
+    		}
+    		else {
+    			return "redirect:/supporter";
+    		}
+        }
+//		Byte[] bytes2 = new Byte[file.getBytes().length];
+//		byte[] bytes;
+		else {
+			try {
+	
+	            // Get the file and save it somewhere
+	        	byte[] bytes = file.getBytes();
+	        	this.complaintDAO.transferComplaint(complaintInfo.getId(),complaintInfo.getResponseText(),complaintInfo.getLocationId(),complaintInfo.getSupportTypeId(),complaintInfo.getComplaintText(),complaintInfo.isEnded(),complaintInfo.getComplaintFile(),bytes);
+
+	//            int i=0;    
+	            // Associating Byte array values with bytes. (byte[] to Byte[])
+	//            for(byte b: bytes)
+	//               bytes2[i++] = b;  // Autoboxing.
+	//            Path path = Paths.get("D://temp//" + file.getOriginalFilename());
+	//            Files.write(path, bytes);
+	            redirectAttributes.addFlashAttribute("message",
+	                        "You successfully uploaded '" + file.getOriginalFilename() + "'");
+	            System.out.println("kaydettim");
+	            
+	
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		}
+		System.out.println("detay: "+complaintInfo.getId()+" "+complaintInfo.getLocationId()+" "+complaintInfo.getSupportTypeId()+" "+complaintInfo.getSupportUserId()+" "+complaintInfo.getComplaintText()+" "+complaintInfo.getResponseText()+" "+complaintInfo.isEnded());
+		
 		// Important!!: Need @EnableWebMvc
 		// Add message to flash scope
 		redirectAttributes.addFlashAttribute("compMsgSuccess", "Şikayet yönlendirildi.");

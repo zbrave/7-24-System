@@ -32,7 +32,7 @@
       	<div class="row justify-content-center">
       		<div class="col-md-6 offset-md-3">
       			<div class="form"> <!-- for background transparent color -->
-      				<form:form action="endedComplaint" method="POST" modelAttribute="complaintForm">
+      				<form:form action="endedComplaint" method="POST" modelAttribute="complaintForm" enctype="multipart/form-data">
 						<div class="form-group">
 						
 							<div class="input-group">
@@ -66,7 +66,10 @@
 					        	<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i> Çözüm açıklaması:</span>
 					        	<textarea id="responseText" class="form-control" name="responseText" rows="5"></textarea>
 					        </div>
-							
+							<div class="input-group">
+							  	<span class="input-group-addon" ><i class="glyphicon glyphicon-paperclip"></i> Ek:</span>
+							  	<input type="file" name="file2" class="form-control" placeholder="Resim veya video ekleyebilirsiniz">
+							</div>
 							
 							</br>
 					        <button type="submit" class="button button-block" value="Ekle" > Çöz</button>
