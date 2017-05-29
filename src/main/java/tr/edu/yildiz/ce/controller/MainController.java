@@ -196,26 +196,26 @@ public class MainController {
 		List<SupportTypeInfo> sup = this.supportTypeDAO.listSupportTypeInfos();
 		model.addAttribute("sup", sup);
 		
-		List<LocSupTypeInt> list = new ArrayList<LocSupTypeInt>();
-		
-		for (LocationInfo l : loc) {
-			for (SupportTypeInfo s : sup) {
-				if (complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size() != 0) {
-					LocSupTypeInt x = new LocSupTypeInt();
-					x.setLocationInfo(l);
-					x.setSupportTypeInfo(s);
-					x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId(),null,null).size());
-					x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId(),null,null).size());
-					x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size());
-					x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId(),null,null).size());
-					x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId(),null,null).size());
-					x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId(),null,null).size());
-					x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId(),null,null).size());
-					list.add(x);
-				}
-			}
-		}
-		model.addAttribute("LocSupTypeInfo", list);
+//		List<LocSupTypeInt> list = new ArrayList<LocSupTypeInt>();
+//		
+//		for (LocationInfo l : loc) {
+//			for (SupportTypeInfo s : sup) {
+//				if (complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size() != 0) {
+//					LocSupTypeInt x = new LocSupTypeInt();
+//					x.setLocationInfo(l);
+//					x.setSupportTypeInfo(s);
+//					x.setActive(complaintDAO.listActiveComplaintInfos(l.getId(), s.getId(),null,null).size());
+//					x.setReport(complaintDAO.listReportedComplaintInfos(l.getId(), s.getId(),null,null).size());
+//					x.setTotal(complaintDAO.listComplaintInfos(l.getId(), s.getId(),null,null).size());
+//					x.setWaitAck(complaintDAO.listWaitingAckComplaintInfos(l.getId(), s.getId(),null,null).size());
+//					x.setWaitAsg(complaintDAO.listWaitingAssingnComplaintInfos(l.getId(), s.getId(),null,null).size());
+//					x.setWaitChild(complaintDAO.listWaitingChildComplaintInfos(l.getId(), s.getId(),null,null).size());
+//					x.setEnded(complaintDAO.listEndedComplaintInfos(l.getId(), s.getId(),null,null).size());
+//					list.add(x);
+//				}
+//			}
+//		}
+//		model.addAttribute("LocSupTypeInfo", list);
 		
 		List<SupporterInfo> sups = supporterDAO.reportSupporterInfos();
 		//List<SupporterRepInt> list2 = new ArrayList<SupporterRepInt>();
@@ -270,6 +270,7 @@ public class MainController {
 			}
 		}
 		for (LocSupTypeInt tmp : list) {
+			System.out.println("avg"+tmp.getAvgAwarenessTime());
 			res = res.concat("<tr><td>"+tmp.getLocationInfo().getDescription()+"</td><td>"+tmp.getSupportTypeInfo().getType()+"</td><td>"+tmp.getAvgAssignTime()/86400000+" gün<br/>"+tmp.getAvgAssignTime()/3600000%24+" saat<br/>"+tmp.getAvgAssignTime()/60000%60+" dakika</td><td>"+tmp.getAvgAwarenessTime()/86400000+" gün<br/>"+tmp.getAvgAwarenessTime()/3600000%24+" saat<br/>"+tmp.getAvgAwarenessTime()/60000%60+" dakika</td><td>"+tmp.getAvgResponseTime()/86400000+" gün<br/>"+tmp.getAvgResponseTime()/3600000%24+" saat<br/>"+tmp.getAvgResponseTime()/60000%60+" dakika</td>");
 			res = res.concat("<td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 1)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getTotal()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 2)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getWaitAck()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 3)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getWaitAsg()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 4)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getWaitChild()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 5)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getActive()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 6)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getEnded()+"</a></td><td onclick=\"getalldata("+tmp.getLocationInfo().getId()+", "+tmp.getSupportTypeInfo().getId()+", 0, 0, 7)\"><a onclick=\"$('#allDepartmentStatisticsCHILD').show();\">"+tmp.getReport()+"</a></td></tr>");
 		}
