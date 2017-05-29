@@ -1,5 +1,6 @@
 package tr.edu.yildiz.ce.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -7,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.sql.Blob;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -214,6 +217,26 @@ public class ComplaintController {
 		List<SupportTypeInfo> list2 = supportTypeDAO.listSupportTypeInfos();
 		model.addAttribute("supportTypeInfos", list2);
 		return "transferComplaint";
+	}
+	
+	@RequestMapping(value = "/getImage", method = RequestMethod.GET)
+	public String getImage(Model model,Principal principal, @RequestParam("id") Integer id) {
+		ComplaintInfo comp = complaintDAO.findComplaintInfo(id);
+		System.out.println("file: "+comp.getComplaintFile());
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    byte[] buf = comp.getComplaintFile();
+	    byte[] bytes = baos.toByteArray();
+	    System.out.println("bytes" +bytes);
+	    byte[] encodeBase64 = Base64.getEncoder().encode(buf);
+	    try {
+			String base64Encoded = new String(encodeBase64, "UTF-8");
+			model.addAttribute("image", base64Encoded);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "image";
 	}
 	
 	@RequestMapping(value = "/savedComplaint", method = RequestMethod.GET)
