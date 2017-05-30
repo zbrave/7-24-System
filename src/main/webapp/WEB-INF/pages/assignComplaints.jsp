@@ -48,13 +48,14 @@
       	<div class="table-responsive">
       	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      	<tr>
-		      	<th style="width: 8%;">ID</th>
-		      	<th style="width: 12%;">Konum</th>
-		      	<th style="width: 12%;">Şikayet türü</th>
-		      	<th style="width: 12%;">Şikayet eden</th>
-		      	<th style="width: 8%;">Tarih</th>
-		      	<th style="width: 34%;">Açıklama</th>
-		      	<th style="width: 33%;">Eylem</th>
+		      	<th >ID</th>
+		      	<th >Konum</th>
+		      	<th >Şikayet türü</th>
+		      	<th >Şikayet eden</th>
+		      	<th >Tarih</th>
+		      	<th >Açıklama</th>
+		      	<th>Dosya</th>
+		      	<th >Eylem</th>
 		    </tr>
       		<c:forEach items="${complaintInfos }" var="data">
       			<tr>
@@ -64,6 +65,14 @@
 			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
+			      	<td>
+				      	<c:if test="${not empty data.complaintFile}">
+				      		<a href="${pageContext.request.contextPath}/getImageC?id=${data.id}">Şikayet Dosyası</a>
+				      	</c:if>
+				      	<c:if test="${not empty data.responseFile}">
+				      		<a href="${pageContext.request.contextPath}/getImageR?id=${data.id}">Çözüm Dosyası</a> 
+				    	</c:if>
+			    	</td>
 			      	<td>
 			      	<a class="btn btn-info btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.complainantUserInfo.id }" role="button">Kullanıcıyı banla</a>
 			      	<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/savedComplaint?id=${data.id }" role="button">Değiştir</a>

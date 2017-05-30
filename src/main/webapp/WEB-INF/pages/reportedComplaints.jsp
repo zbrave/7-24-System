@@ -62,6 +62,7 @@
 		      	<th style="width: 8%;">Tarih</th>
 		      	<th style="width: 20%;">Açıklama</th>
 		      	<th style="width: 10%;">Raporlayan</th>
+		      	<th style="width: 10%;">Dosya</th>
 		      	<th style="width: 15%;">Eylem</th>
 		    </tr>
       		<c:forEach items="${complaintInfos }" var="data">
@@ -73,6 +74,14 @@
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
 			      	<td>${data.supportUserInfo.username }</td>
+			      	<td>
+				      	<c:if test="${not empty data.complaintFile}">
+				      		<a href="${pageContext.request.contextPath}/getImageC?id=${data.id}">Şikayet Dosyası</a>
+				      	</c:if>
+				      	<c:if test="${not empty data.responseFile}">
+				      		<a href="${pageContext.request.contextPath}/getImageR?id=${data.id}">Çözüm Dosyası</a> 
+				    	</c:if>
+			    	</td>
 			      	<td>
 			      	<a class="btn btn-info btn-xs" href="${pageContext.request.contextPath}/banUser?id=${data.complainantUserInfo.id }" role="button">Kullanıcıyı banla</a>
 			      	<a class="btn btn-warning btn-xs" href="${pageContext.request.contextPath}/unifyComplaints?id=${data.id }" role="button">Birleştir</a>

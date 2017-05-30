@@ -55,6 +55,7 @@
 		      	<th style="width: 15%;">Şikayet</th>
 		      	<th style="width: 15%;">Çözüm Tarihi</th>
 		      	<th style="width: 15%;">Çözüm</th>
+		      	<th style="width: 10%;">Dosya</th>
 		    </tr>
       		<c:forEach items="${complaintInfos }" var="data">
       			<tr>
@@ -66,6 +67,14 @@
 			      	<td>${data.complaintText }</td>
 			      	<td>${data.responseTime }</td>
 			      	<td>${data.responseText }</td>
+			      	<td>
+				      	<c:if test="${not empty data.complaintFile}">
+				      		<a href="${pageContext.request.contextPath}/getImageC?id=${data.id}">Şikayet Dosyası</a>
+				      	</c:if>
+				      	<c:if test="${not empty data.responseFile}">
+				      		<a href="${pageContext.request.contextPath}/getImageR?id=${data.id}">Çözüm Dosyası</a> 
+				    	</c:if>
+			    	</td>
 			      	<td><a href="listCompProcess?id=${data.id }" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> Şikayet geçmişi</a></td>
 			    </tr>
 			</c:forEach>

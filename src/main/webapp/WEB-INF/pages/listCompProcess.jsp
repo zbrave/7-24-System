@@ -39,6 +39,8 @@
 		      	<th style="width: 12%;">Şikayet eden</th>
 		      	<th style="width: 8%;">Tarih</th>
 		      	<th style="width: 35%;">Açıklama</th>
+		      	<th style="width: 10%;">Dosya</th>
+		      	
 		    </tr>
       		<c:forEach items="${tree }" var="data">
       			<tr>
@@ -48,6 +50,14 @@
 			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
+			      	<td>
+				      	<c:if test="${not empty data.complaintFile}">
+				      		<a href="${pageContext.request.contextPath}/getImageC?id=${data.id}">Şikayet Dosyası</a>
+				      	</c:if>
+				      	<c:if test="${not empty data.responseFile}">
+				      		<a href="${pageContext.request.contextPath}/getImageR?id=${data.id}">Çözüm Dosyası</a> 
+				    	</c:if>
+			    	</td>
 			      	<!--  <td>${data.percentReported }</td> -->
 			    </tr>
 			</c:forEach>
@@ -95,13 +105,18 @@
 	        <h4 class="modal-title" id="myModalLabel">Toplam şikayet yüzdesi: <fmt:formatNumber value="${data.percentAssign+data.percentAck+data.percentResponse }" minFractionDigits="0" maxFractionDigits="0"/>%</h4>
 	      </div>
 	      <div class="modal-body center-block">
-	        	<p>ID</p>${data.id }
-		      	<p>Konum</p>${data.locationInfo.description }
-		      	<p>Şikayet türü</p>${data.supportTypeInfo.type }
-		      	<p>Şikayet eden</p>${data.complainantUserInfo.username }
-		      	<p>Tarih</p>${data.complaintTime }
-		      	<p>Şikayet açıklaması</p>${data.complaintText }
-		      	<p>Şikayet cevabı</p>${data.responseText }
+	        	<p>ID: ${data.id }</p>
+		      	<p>Konum: ${data.locationInfo.description }</p>
+		      	<p>Şikayet türü: ${data.supportTypeInfo.type }</p>
+		      	<p>Şikayet eden: ${data.complainantUserInfo.username }</p>
+		      	<p>Tarih: ${data.complaintTime }</p>
+		      	<p>Şikayet açıklaması: ${data.complaintText }</p>
+		      	<p>Şikayet cevabı: ${data.responseText }</p>
+		      	<p><a><c:if test="${not empty data.responseFile}">
+				      		<a href="${pageContext.request.contextPath}/getImageR?id=${data.id}">Çözüm Dosyası</a> 
+				    	</c:if>
+				   </a>
+				</p>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
