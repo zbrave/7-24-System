@@ -76,6 +76,7 @@
       		<!-- TABLE <<< -->
       			<div class="panel panel-default">
       				<div class="panel-heading">Kullanıcı ID ve Rolleri:</div>
+      				<div class="table-responsive">
       				<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      				<tr>
 					      	<th style="width: 10%;">ID</th>
@@ -99,6 +100,7 @@
 						    </tr>
 						</c:forEach>
 					</table>
+					</div>
 				</div> <!-- TABLE >>> -->
      			<tag:paginate max="15" offset="${offset}" count="${count}"
 						uri="userRoleEdit" next="&raquo;" previous="&laquo;" />

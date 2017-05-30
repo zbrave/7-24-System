@@ -29,15 +29,16 @@
     </div>
     <div style="padding: 50px;">
     <div class="panel panel-default">
-    				 <c:if test="${not empty message}">
-					<div class="alert alert-success alert-dismissible" role="alert">
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								${message}
-					</div>
-				</c:if>
+	 <c:if test="${not empty message}">
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					${message}
+		</div>
+	</c:if>
     
     
       	<div class="panel-heading">Şikayetler</div>
+      	<div class="table-responsive">
       	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      	<tr>
 		      	<th style="width: 8%;">ID</th>
@@ -62,6 +63,7 @@
 			    </tr>
 			</c:forEach>
       	</table>
+      	</div>
    </div>
    </div>
 <footer align="bottom"> &copy; Yildiz Teknik Üniversitesi </footer>

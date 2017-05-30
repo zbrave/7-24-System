@@ -19,13 +19,13 @@
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>	
-	<title>${title}</title>
+	<title>Destek Personeli Gelen Şikayetler</title>
 </head>
 <body>
 	<%@include file="navbar2.jsp" %>	
     <div class="text-center">	
     	<p style="font-size: 30px; color: white; text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;">
-    		Destek Personeli Sayfası
+    		Destek Personeli Gelen Şikayetler
     	</p>
     </div>
     <c:if test="${not empty compMsgSuccess}">
@@ -44,6 +44,7 @@
     <div style="padding: 50px;">
     <div class="panel panel-default">
       	<div class="panel-heading">Şikayetler</div>
+      	<div class="table-responsive">
       	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      	<tr>
 		      	<th style="width: 8%;">ID</th>
@@ -69,6 +70,7 @@
 			    </tr>
 			</c:forEach>
       	</table>
+      	</div>
       	<tag:paginate max="15" offset="${offset}" count="${count}"
 						uri="supporterAck" next="&raquo;" previous="&laquo;" />
    </div>

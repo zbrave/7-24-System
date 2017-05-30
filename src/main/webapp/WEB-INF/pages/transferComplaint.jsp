@@ -18,7 +18,7 @@
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>	
-	<title>${title}</title>
+	<title>Şikayet yönlendir</title>
 </head>
 <body>
 	<%@include file="navbar2.jsp" %>	
@@ -82,8 +82,12 @@
 							</br>
 					        <button type="submit" class="button button-block" value="Ekle" > Ekle</button>
 			        		</br>
-				        	<c:if test="${not empty compMsg}">
-						   		<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsg}
+				        	<c:if test="${not empty compMsgSuccess}">
+						   		<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsgSuccess}
+						   		</div>
+							</c:if>
+							<c:if test="${not empty compMsgError}">
+						   		<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>${compMsgError}
 						   		</div>
 							</c:if>
 							

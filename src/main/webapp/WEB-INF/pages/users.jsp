@@ -35,6 +35,7 @@
       			<!-- TABLE <<< -->
       			<div class="panel panel-default">
       				<div class="panel-heading">Kullanıcılar:</div>
+      				<div class="table-responsive">
       					<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
       						<tr>
 					      		<th style="width: 5%;">ID</th>
@@ -65,6 +66,7 @@
 						      	</tr>
 						      </c:forEach>
       					</table>
+      				</div>
       			</div>  <!-- TABLE >>> -->
       			<a class="btn btn-danger btn-xs" href="${pageContext.request.contextPath}/deleteInactiveUsers" 
 						      		data-toggle="confirmation" data-btn-ok-label="Onaylıyorum" data-btn-ok-icon="glyphicon glyphicon-share-alt"

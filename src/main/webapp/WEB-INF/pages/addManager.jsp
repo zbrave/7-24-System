@@ -27,8 +27,8 @@
 <body>
     <%@include file="navbar2.jsp" %>
       <div style="padding:50px;">
-      <!-- UserRole set -->
-      <div id="userRoleTab">
+
+
       <div class="container">
       		<div class="col-md-12">
       		<div class="form" style="max-width: 600px;"> <!-- for background transparent color -->
@@ -81,7 +81,8 @@
       		<!-- TABLE <<< -->
       			<div class="panel panel-default">
       				<div class="panel-heading">Mevcut Yöneticiler:</div>
-      				<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
+      				<div class="table-responsive">
+      				<table class="table table-striped custab" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      				<tr>
 					      	<th style="width: 5%;">ID</th>
 					      	<th style="width: 20%;">Kullanıcı Adı</th>
@@ -106,10 +107,12 @@
 						    </tr>
 						</c:forEach>
 					</table>
-				</div> <!-- TABLE >>> -->
-      					<tag:paginate max="15" offset="${offset}" count="${count}"
+					</div>
+					</div>
+					<tag:paginate max="15" offset="${offset}" count="${count}"
 						uri="addManager" next="&raquo;" previous="&laquo;" />
-			</div>
+				</div> <!-- TABLE >>> -->
+      					
 			</div>
       	</div>
       </div>

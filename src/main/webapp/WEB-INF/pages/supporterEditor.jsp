@@ -88,6 +88,7 @@
      		<!-- TABLE <<< -->
       			<div class="panel panel-default">
       				<div class="panel-heading">Destek Ekibi:</div>
+      				<div class="table-responsive">
       				<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      				<tr>
 				      		<th style="width: 5%;">ID</th>
@@ -111,6 +112,7 @@
 						</tr>
 				      </c:forEach>
 				  	</table>
+				  	</div>
 				</div>
 				  <!-- TABLE >>> -->
 				  <tag:paginate max="15" offset="${offset}" count="${count}"

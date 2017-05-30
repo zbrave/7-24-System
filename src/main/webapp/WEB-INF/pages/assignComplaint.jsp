@@ -18,7 +18,7 @@
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>	
-	<title>${title}</title>
+	<title>Şikayet atama</title>
 </head>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -26,7 +26,9 @@ $(document).ready(function(){
 		$.get("${pageContext.request.contextPath}/getSupportComplaints?id="+ $(this).children("option").filter(":selected").attr("id"), null, function (data) {
 	        $('#comps > tbody:last-child').html(data);
 	    });
+		$('#tableComplaint').show();
 	});
+	
 });</script>
 <body>
 	<%@include file="navbar2.jsp" %>	
@@ -38,7 +40,7 @@ $(document).ready(function(){
     <!-- Complaint set -->
     <div class="container">
       	<div class="row justify-content-center">
-      		<div class="col-md-6 offset-md-3">
+      		<div class="col-md-12">
       			<div class="form"> <!-- for background transparent color -->
       				<form:form action="assignedComplaint" method="POST" modelAttribute="complaintForm">
 						<div class="form-group">
@@ -85,21 +87,33 @@ $(document).ready(function(){
       		</div>
       	</div>
       </div>
-      <table id="comps" class="table table-striped custab" style="background-color: #FFF;">
-	    <thead>
-	        <tr>
-	            <th>ID</th>
-	            <th>Konumu</th>
-	            <th>Destek tipi</th>
-	            <th>Sorumlu kişi</th>
-	            <th>Kayıt tarihi</th>
-	            <th>Eylem</th>
-	        </tr>
-	    </thead>
-	   	<tbody>
-	   		
-	   	</tbody>
-	    </table>
+      
+      <div class="collapse" id="tableComplaint">
+      	<div class="col-md-12">
+	      <div class="form" style="max-width: 700px;">
+	      <div class="panel panel-default">
+	      <div class="panel-heading"><p>Personel iş yükü</p> </div>
+		      <div class="table-responsive">
+		      <table id="comps" class="table table-striped custab" style="background-color: #FFF;">
+			    <thead>
+			        <tr>
+			            <th>ID</th>
+			            <th>Konumu</th>
+			            <th>Destek tipi</th>
+			            <th>Sorumlu kişi</th>
+			            <th>Kayıt tarihi</th>
+			            <th>Eylem</th>
+			        </tr>
+			    </thead>
+			   	<tbody>
+			   		
+			   	</tbody>
+			    </table>
+			    </div>
+			</div>
+		</div>
+		</div>
+	</div>
 </body>
 	
 </html>

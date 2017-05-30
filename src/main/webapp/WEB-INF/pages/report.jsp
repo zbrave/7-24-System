@@ -152,10 +152,11 @@ function getalldata2(id,id2,id3,id4,id5) {
       			<div class="collapse" id="table2">
       			<div class="panel panel-default">
       				<div class="panel-heading"><p>Toplam süreç : ${total }</p> </div>
-      					<table id="comps3" class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
+      					<div class="table-responsive">
+      					<table id="comps3" class="table table-hover" width="100%" border="0" cellpadding="0" cellspacing="0">
       						<thead>
-	      						<tr>
-						      		<th style="width: 10%;">Konum</th>
+	      						<tr class="headings">
+						      		<th class="column-title" style="width: 10%;">Konum</th>
 						      		<th style="width: 10%;">Destek tipi</th>
 						      		<th style="width: 10%;">Ort. atanma süresi</th>
 						      		<th style="width: 10%;">Ort. farkındalık süresi</th>
@@ -170,7 +171,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 	      						</tr>
       						</thead>
       						<tbody>
-						      <c:forEach items="${LocSupTypeInfo }" var="data">
+						      <!--<c:forEach items="${LocSupTypeInfo }" var="data">
 						      	<tr>
 						      		<td>${data.locationInfo.description }</td>
 						      		<td>${data.supportTypeInfo.type }</td>
@@ -215,15 +216,17 @@ function getalldata2(id,id2,id3,id4,id5) {
 						      			<c:if test="${data.report == 0 }">${data.report }</c:if>
 						      		</td>
 						      	</tr>
-						      </c:forEach>
+						      </c:forEach>-->
 						    </tbody>
       					</table>
+      					</div>
 				  </div>
       			</div>
       			<!-- <<< TABLE CHILD >>> -->
       			<div class="collapse" id="allDepartmentStatisticsCHILD">
       			<div class="panel panel-default">
       				<div class="panel-heading"><p>Detaylı liste</p> </div>
+	      			<div class="table-responsive">
 	      			<table id="comps5" class="table table-striped custab" style="background-color: #FFF;">
 						<thead>
 						        <tr>
@@ -249,8 +252,8 @@ function getalldata2(id,id2,id3,id4,id5) {
 						   	</tbody>
 					</table>
 					</div>
-				      </div>
-
+				    </div>
+				  </div>
       			</div><!-- div-form -->
       		</div>
      </div>  <!-- Tüm bölümlerin şikayet istatistikleri -->
@@ -285,6 +288,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 	        <div class="collapse" id="table">
       			<div class="panel panel-default">
       				<div class="panel-heading">Şikayet listesi</div>
+      				<div class="table-responsive">
       				<table id="comps" class="table table-striped custab" style="background-color: #FFF;">
 				    <thead>
 				        <tr>
@@ -309,6 +313,8 @@ function getalldata2(id,id2,id3,id4,id5) {
 				   		
 				   	</tbody>
 				    </table>
+				    </div>
+				    </div>
 				</div> <!-- TABLE >>> -->
      
 			</div>
@@ -342,7 +348,8 @@ function getalldata2(id,id2,id3,id4,id5) {
 	        	<div class="collapse" id="table3">
       			<div class="panel panel-default">
       				<div class="panel-heading">Destek Ekibi</div>
-      				<table id="comps4" class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
+      				<div class="table-responsive">
+      				<table id="comps4" class="table table-hover" width="100%" border="0" cellpadding="0" cellspacing="0">
       				<thead>
 	      				<tr>
 				      		<th style="width: 5%;">Personel adı</th>
@@ -359,7 +366,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 				      	</tr>
 			      	</thead>
 			      	<tbody>
-				      <c:forEach items="${SupporterRepInfo }" var="data">
+				      <!--<c:forEach items="${SupporterRepInfo }" var="data">
 				      	<tr>
 				      		<td>${data.userInfo.username }</td>
 				      		<td>${data.locationInfo.description }</td>
@@ -396,15 +403,17 @@ function getalldata2(id,id2,id3,id4,id5) {
 						    </td>
 				      		
 						</tr>
-				      </c:forEach>
+				      </c:forEach>-->
 				      </tbody>
 				  	</table>
+				  	</div>
 				</div>
 			</div>
 				  <!-- TABLE >>> -->
 				<div class="collapse" id="supportPersonnelDensityCHILD">
       			<div class="panel panel-default">
       				<div class="panel-heading"><p>Detaylı liste</p> </div>
+				  <div class="table-responsive">
 				  <table id="comps2"  class="table table-striped custab" style="background-color: #FFF;">
 	    <thead>
 	        <tr>
@@ -429,6 +438,7 @@ function getalldata2(id,id2,id3,id4,id5) {
 	   		
 	   	</tbody>
 	    </table>
+	    </div>
 		</div>
       </div>
      </div>
