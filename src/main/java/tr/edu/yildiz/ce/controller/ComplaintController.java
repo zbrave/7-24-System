@@ -279,12 +279,30 @@ public class ComplaintController {
 		return "transferComplaint";
 	}
 	
-	@RequestMapping(value = "/getImage", method = RequestMethod.GET)
-	public String getImage(Model model,Principal principal, @RequestParam("id") Integer id) {
+	@RequestMapping(value = "/getImageC", method = RequestMethod.GET)
+	public String getImageC(Model model,Principal principal, @RequestParam("id") Integer id) {
 		ComplaintInfo comp = complaintDAO.findComplaintInfo(id);
-		System.out.println("file: "+comp.getComplaintFile());
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	    byte[] buf = comp.getComplaintFile();
+	    byte[] bytes = baos.toByteArray();
+	    System.out.println("bytes" +bytes);
+	    byte[] encodeBase64 = Base64.getEncoder().encode(buf);
+	    try {
+			String base64Encoded = new String(encodeBase64, "UTF-8");
+			model.addAttribute("image", base64Encoded);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "image";
+	}
+	
+	@RequestMapping(value = "/getImageR", method = RequestMethod.GET)
+	public String getImageR(Model model,Principal principal, @RequestParam("id") Integer id) {
+		ComplaintInfo comp = complaintDAO.findComplaintInfo(id);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    byte[] buf = comp.getResponseFile();
 	    byte[] bytes = baos.toByteArray();
 	    System.out.println("bytes" +bytes);
 	    byte[] encodeBase64 = Base64.getEncoder().encode(buf);
