@@ -179,10 +179,10 @@
 	      </div>
 	      <div class="modal-body">
 	      
-	        <form:form action="forgotPass" method="POST" modelAttribute="userForm">
+	        <form:form action="guestAct" method="GET" modelAttribute="userForm">
 					<div class="input-group">
 						<span class="input-group-addon">E-mail</span>
-						<input class="form-control" id="email" name="email" value=""/>
+						<input class="form-control" id="mail" name="mail" value=""/>
     				
     				<span class="input-group-btn">
         					<button type="submit" class="btn btn-default" value="Ekle" >Şikayet Ekleme Linkini Gönder</button>

@@ -2,6 +2,7 @@ package tr.edu.yildiz.ce.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -205,6 +206,32 @@ public class UserController {
 		else {
 			return "redirect:/403";
 		}
+	}
+	
+	@RequestMapping(value = "/guestAct", method = RequestMethod.GET)
+	public String guestAct(Model model, @RequestParam String mail,	final RedirectAttributes redirectAttributes) {
+		if (!validate(mail)) {
+			model.addAttribute("signupMsgError", "Email onaylanmadı.");
+			System.out.println("Email onaylanmadı.");
+			return "loginPage";
+		}
+		UserInfo user = new UserInfo();
+		user.setUsername(mail);
+		user.setEmail(mail);
+		user.setEnabled(false);
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		user.setPassword(encoder.encode("123"));
+		Activation act = new Activation();
+		act.setUsername(user.getUsername());
+	    act.setCode(getSaltString());
+	    act.setRecordDate(new Date());
+	    activationDAO.saveActivation(act);
+	    String text = "7/24 ziyaretçi hesabını aktif etmek için aşağıdaki linke tıklayın.\n\n";
+	    text = text.concat("http://localhost:8080/sysprog/activate?code="+act.getCode().toString()+"\n Kullanıcı adı: "+user.getUsername()+"\nŞifre: 123\n Giriş yaptıktan sonra lütfen şifrenizi değiştiriniz.");
+	    mailSend.sendSimpleMessage(user.getEmail(), "7/24 Sistem Aktivasyon", text);
+		redirectAttributes.addFlashAttribute("signupMsgSuccess", "Mailinize gönderilen link ile aktivasyonu tamamlayın.");
+		userDAO.saveUser(user);
+		return "redirect:/login";
 	}
 	
 	protected String getSaltString() {

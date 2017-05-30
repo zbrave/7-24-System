@@ -74,14 +74,16 @@ public class UserDAOImpl implements UserDAO {
 			isNew = true;
 			user = new User();
 			user.setEnabled(false);
-			Activation act = new Activation();
-			act.setUsername(userInfo.getUsername());
-		    act.setCode(getSaltString());
-		    act.setRecordDate(new Date());
-		    activationDAO.saveActivation(act);
-		    String text = "7/24 Sistem hesabını aktif etmek için aşağıdaki linke tıklayın.\n\n";
-		    text = text.concat("http://localhost:8080/sysprog/activate?code="+act.getCode().toString());
-		    mailSend.sendSimpleMessage(userInfo.getEmail(), "7/24 Sistem Aktivasyon", text);
+			if (!userInfo.getUsername().contains("@")) {
+				Activation act = new Activation();
+				act.setUsername(userInfo.getUsername());
+			    act.setCode(getSaltString());
+			    act.setRecordDate(new Date());
+			    activationDAO.saveActivation(act);
+			    String text = "7/24 Sistem hesabını aktif etmek için aşağıdaki linke tıklayın.\n\n";
+			    text = text.concat("http://localhost:8080/sysprog/activate?code="+act.getCode().toString());
+			    mailSend.sendSimpleMessage(userInfo.getEmail(), "7/24 Sistem Aktivasyon", text);
+			}
 		}
 		user.setId(userInfo.getId());
 	    user.setEmail(userInfo.getEmail());
