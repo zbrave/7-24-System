@@ -65,7 +65,7 @@
 				        		</c:forEach>
 				        	</select>
 				        	<span class="input-group-btn">
-        						<button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
+        						<button type="submit" class="btn btn-success" value="Ekle" >Ekle</button>
         					</span>
         				</div>
        				</div> <!-- form-group -->

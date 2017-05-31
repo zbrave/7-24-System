@@ -19,7 +19,7 @@
 	<link href="${styleCSS}" rel="stylesheet" />
 	<script src="${jqueryJS}"></script>
 	<script src="${bootstrapJS}"></script>	
-	<title>${title}</title>
+	<title>İşlem Geçmişi</title>
 </head>
 <body>
 	<%@include file="navbar2.jsp" %>	
@@ -27,7 +27,24 @@
  	<c:if test="${not empty message}">
     	<h1>Message : ${message}</h1>
     </c:if>
-    
+     <div style="margin-left: 400px;">
+    <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: 10%">
+		    <span class="sr-only">${data.percentAssign }% Complete (assign)</span><a href="#myModala" data-toggle="modal">
+		    </a>Şikayetin atanma süresi
+		  </div>
+		  <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 10%;margin-left: 150px">
+		    <span class="sr-only">${data.percentAssign }% Complete (assign)</span><a href="#myModala" data-toggle="modal">
+		    </a>Şikayetin kabul edilme süresi
+		  </div>
+		  <div class="progress-bar progress-bar-info progress-bar-striped" style="width: 10%;margin-left: 150px">
+		    <span class="sr-only">${data.percentAssign }% Complete (assign)</span><a href="#myModala" data-toggle="modal">
+		    </a>Şikayetin çözüm süresi
+		  </div>
+		  <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 10%;margin-left: 150px">
+		    <span class="sr-only">${data.percentAssign }% Complete (assign)</span><a href="#myModala" data-toggle="modal">
+		    </a>Şikayetin raporlanma süresi
+		  </div>
+		  </div>
       <div style="padding: 50px;">
     <div class="panel panel-default">
       	<div class="panel-heading">Şikayet Ağacı ("${main.complaintText }" için)</div>

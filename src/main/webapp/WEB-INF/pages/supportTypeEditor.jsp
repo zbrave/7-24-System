@@ -40,7 +40,7 @@
 							<span class="input-group-addon"><i class="glyphicon glyphicon-wrench"></i> Tipi</span>
    							<input id="type" type="text" class="form-control" name="type" placeholder="Destekçi tipini belirleyiniz"/>
         					<span class="input-group-btn">
-        						<button type="submit" class="btn btn-default" value="Ekle" >Ekle</button>
+        						<button type="submit" class="btn btn-success" value="Ekle" >Ekle</button>
         					</span>
        					</div>
        				</div>
