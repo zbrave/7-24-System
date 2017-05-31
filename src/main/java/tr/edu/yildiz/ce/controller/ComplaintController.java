@@ -577,6 +577,7 @@ public class ComplaintController {
 			t.setLocationInfo(locationDAO.findLocationInfo(t.getLocationId()));
 			t.setSupportTypeInfo(supportTypeDAO.findSupportTypeInfo(t.getSupportTypeId()));
 			t.setComplainantUserInfo(userDAO.findUserInfo(t.getComplainantUserId()));
+			t.setSupportUserInfo(userDAO.findUserInfo(t.getSupportUserId()));
 		}
 		model.addAttribute("tree", tree);
 		model.addAttribute("main", main);

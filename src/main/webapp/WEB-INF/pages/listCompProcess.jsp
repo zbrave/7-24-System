@@ -33,12 +33,15 @@
       	<div class="panel-heading">Şikayet Ağacı ("${main.complaintText }" için)</div>
       	<table class="table" width="100%" border="0" cellpadding="0" cellspacing="0">
 	      	<tr>
-		      	<th style="width: 8%;">ID</th>
-		      	<th style="width: 12%;">Konum</th>
-		      	<th style="width: 12%;">Destek türü</th>
+		      	<th style="width: 6%;">ID</th>
+		      	<th style="width: 10%;">Konum</th>
+		      	<th style="width: 6%;">Destek türü</th>
+		      	<th style="width: 6%;">Sorumlu kişi</th>
 		      	<th style="width: 12%;">Şikayet eden</th>
-		      	<th style="width: 8%;">Tarih</th>
-		      	<th style="width: 35%;">Açıklama</th>
+		      	<th style="width: 8%;">Şikayet Tarihi</th>
+		      	<th style="width: 15%;">Şikayet Açıklaması</th>
+		      	<th style="width: 8%;">Çözüm Tarihi</th>
+		      	<th style="width: 15%;">Çözüm Açıklaması</th>
 		      	<th style="width: 10%;">Dosya</th>
 		      	
 		    </tr>
@@ -47,9 +50,12 @@
       				<td>${data.id }</td>
 			      	<td>${data.locationInfo.description }</td>
 			      	<td>${data.supportTypeInfo.type }</td>
+			      	<td>${data.supportUserInfo.username }</td>
 			      	<td>${data.complainantUserInfo.username }</td>
 			      	<td>${data.complaintTime }</td>
 			      	<td>${data.complaintText }</td>
+			      	<td>${data.responseTime }</td>
+			      	<td>${data.responseText }</td>
 			      	<td>
 				      	<c:if test="${not empty data.complaintFile}">
 				      		<a href="${pageContext.request.contextPath}/getImageC?id=${data.id}">Şikayet Dosyası</a>
