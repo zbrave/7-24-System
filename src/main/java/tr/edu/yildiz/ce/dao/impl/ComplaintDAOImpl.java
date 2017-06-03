@@ -542,6 +542,10 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 			com.setPercentReported(reportedFinal);
 		}
 		if(totalFinal<100){
+			System.out.println("Sayı"+numOfPer);
+			if (numOfPer == 0 ){
+				numOfPer = 1;
+			}
 			long inc=1+(100-totalFinal)/numOfPer;;
 			long amount=100-totalFinal;
 			for(ComplaintInfo com:complaintInfos){

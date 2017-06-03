@@ -361,7 +361,15 @@ public class MainController {
 		model.addAttribute("userInfos", user);
 		
 		List<LocationInfo> list6 = locationDAO.listLocationInfos();
+		
+		for (LocationInfo l : list6) {
+			while (l.getParentId() != null){
+				l.setDescription(locationDAO.findLocationInfo(l.getParentId()).getDescription()+">"+l.getDescription());
+				l = locationDAO.findLocationInfo(l.getParentId());
+			}
+		}
 		model.addAttribute("locInfos", list6);
+		
 		
 		List<ManagerInfo> listManager = managerDAO.listManagerInfosPagination(offset, maxResults);
 		model.addAttribute("count", managerDAO.count());
